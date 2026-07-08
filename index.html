@@ -477,6 +477,12 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .order-summary{text-align:left;background:var(--rk-white);border:1px solid var(--rk-line);border-radius:12px;padding:14px;font-size:13px;}
 .order-summary div{display:flex;justify-content:space-between;padding:4px 0;color:var(--rk-ink-soft);}
 .order-summary div b{color:var(--rk-ink);font-weight:600;}
+.order-items-box{text-align:left;background:var(--rk-white);border:1px solid var(--rk-line);border-radius:12px;padding:14px;font-size:13px;margin-bottom:10px;}
+.order-item-row{margin-bottom:8px;}
+.order-item-row:last-child{margin-bottom:0;}
+.order-item-main{display:flex;justify-content:space-between;color:var(--rk-ink-soft);}
+.order-item-main b{color:var(--rk-ink);font-weight:600;}
+.order-item-sub{font-size:11.5px;color:var(--rk-ink-soft);opacity:.8;margin-top:2px;}
 
 /* ============================================================
    MOBILE — tuned against iPhone 14 Pro Max (430×932 CSS px)
@@ -783,8 +789,8 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
       <a href="#">Instagram</a>
       <a href="#">Zalo</a>
       <div class="delivery-row">
-        <span class="delivery-pill">GrabFood</span>
-        <span class="delivery-pill">ShopeeFood</span>
+        <a class="delivery-pill" href="https://food.grab.com/vn/vi/restaurant/online-delivery/5-C7N1KCBBTNTJAT?sourceID=20260708_181039_41FB9445298E455E841079FAC2DD8414_MEXMPS" target="_blank" rel="noopener">GrabFood</a>
+        <!-- ShopeeFood temporarily removed -->
       </div>
     </div>
   </div>
@@ -2247,6 +2253,71 @@ function downloadRecipe(){
   });
 }
 
+/* ---------- order confirmation email (rendered receipt -> JPEG -> Apps Script) ---------- */
+// Deploy Order-Email.gs as its own Apps Script Web App, then paste the /exec URL here.
+const ORDER_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxEUDzjOj0oe-IYKViai4ItRB_UGE-xNoRn_z9m_m1Fxxt7OFfRHKMAXPvR44gRcpH5wg/exec';
+
+function buildOrderReceiptHtml(order){
+  const titleKey = {Mr:'title_mr', Ms:'title_ms', Mx:'title_mx'}[order.contact.title];
+  const displayTitle = titleKey ? tr_(titleKey) : order.contact.title;
+  let groups = '';
+  order.lines.forEach(line=>{
+    const lineKcal = Math.round(line.nutrition.kcal * line.qty);
+    groups += `<div class="r-line">
+      <span style="flex:1">${line.label}${line.qty>1?(' × '+line.qty):''}</span>
+      <span>${lineKcal} kcal</span>
+    </div>`;
+    if(line.ingredients && line.ingredients.length){
+      groups += `<div style="padding:0 0 6px 38px;font-size:11.5px;color:var(--rk-ink-soft);">${line.ingredients.map(ing=>ing.name+(ing.qty>1?(' x'+ing.qty):'')).join(', ')}</div>`;
+    }
+  });
+
+  return `<div class="r-pad">
+    <div class="r-title">ROKUSHO — ${tr_('order_confirmed_title')}</div>
+    <div style="font-family:var(--font-mono);font-size:17px;font-weight:600;letter-spacing:.05em;background:var(--rk-paper-deep);border:1px dashed var(--rk-yuzu);border-radius:10px;padding:12px;margin-bottom:16px;text-align:center;">${order.code}</div>
+    <div class="r-group-label">${tr_('order_items')}</div>
+    ${groups}
+    <div class="r-totals">
+      <div class="r-stat"><b>${Math.round(order.nutrition.kcal)}</b><span>${tr_('label_kcal').toUpperCase()}</span></div>
+      <div class="r-stat"><b>${order.nutrition.protein.toFixed(1)}g</b><span>${tr_('label_protein').toUpperCase()}</span></div>
+      <div class="r-stat"><b>${order.nutrition.carbs.toFixed(1)}g</b><span>${tr_('label_carbs').toUpperCase()}</span></div>
+      <div class="r-stat"><b>${order.nutrition.fat.toFixed(1)}g</b><span>${tr_('label_fat').toUpperCase()}</span></div>
+    </div>
+    <div style="font-size:12.5px;color:var(--rk-ink-soft);line-height:1.6;">
+      <div>${tr_('order_delivery')}: ${order.dateLabel}, ${order.slotLabel}</div>
+      <div>${tr_('order_contact')}: ${displayTitle} ${order.contact.name}, ${order.contact.phone}</div>
+      <div>${tr_('order_address')}: ${order.contact.address}</div>
+    </div>
+    <div class="r-footer"><span>rokusho.vn</span><span>@rokusho</span></div>
+  </div>`;
+}
+
+function sendOrderConfirmationEmail(order){
+  if(!ORDER_WEBHOOK_URL || ORDER_WEBHOOK_URL.indexOf('PASTE_')===0){
+    console.warn('ORDER_WEBHOOK_URL not configured — skipping order confirmation email.');
+    return;
+  }
+  if(typeof html2canvas !== 'function') return;
+
+  const receipt = document.getElementById('receipt');
+  receipt.innerHTML = buildOrderReceiptHtml(order);
+
+  html2canvas(receipt, {scale:2, backgroundColor:'#FFFFFF'}).then(canvas=>{
+    const imageBase64 = canvas.toDataURL('image/jpeg', 0.92);
+    fetch(ORDER_WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({
+        type: 'order_email',
+        orderCode: order.code,
+        customerEmail: order.contact.email || '',
+        imageBase64: imageBase64
+      })
+    }).catch(err => console.error('Order confirmation email error:', err));
+  }).catch(err => console.error('Order receipt render error:', err));
+}
+
 /* ============================================================
    CHEF'S PICKS — preset bento combinations (placeholder catalogue;
    swap names/prices once real menu data is available)
@@ -2661,6 +2732,18 @@ function renderCartDone(body, footer){
       <div class="order-code">${lastOrder.code}</div>
       <p class="order-screenshot-note">${tr_('screenshot_note')}</p>
       <p class="order-followup-note">${tr_('followup_note')}</p>
+      <div class="order-items-box">
+        ${lastOrder.lines.map(line=>{
+          const lineKcal = Math.round(line.nutrition.kcal * line.qty);
+          const sub = (line.ingredients && line.ingredients.length)
+            ? `<div class="order-item-sub">${line.ingredients.map(ing=>ing.name+(ing.qty>1?(' x'+ing.qty):'')).join(', ')}</div>`
+            : '';
+          return `<div class="order-item-row">
+            <div class="order-item-main"><span>${line.label}${line.qty>1?(' \u00d7 '+line.qty):''}</span><b>${lineKcal} kcal</b></div>
+            ${sub}
+          </div>`;
+        }).join('')}
+      </div>
       <div class="order-summary">
         <div><span>${tr_('order_items')}</span><b>${lastOrder.itemCount}</b></div>
         <div><span>${tr_('order_delivery')}</span><b>${lastOrder.dateLabel}, ${lastOrder.slotLabel}</b></div>
@@ -2707,6 +2790,19 @@ function syncContactFields(){
   if(document.getElementById('ckEmail')) checkoutData.email = get('ckEmail');
 }
 
+function snapshotCartLines(){
+  return cart.map(line=>{
+    const label = line.type==='pick'
+      ? (PICKS.find(p=>p.id===line.pickId) ? pickName(PICKS.find(p=>p.id===line.pickId)) : line.label)
+      : tr_('custom_bento_label');
+    const ingredients = line.type==='custom' ? line.lines.map(l=>{
+      const found = findItem(l.id);
+      return {name: found ? itemName(found.item) : l.name, qty: l.qty};
+    }) : null;
+    return {type: line.type, label, qty: line.qty, nutrition: lineNutrition(line), ingredients};
+  });
+}
+
 function confirmOrder(){
   syncContactFields();
   if(!checkoutData.phone || !checkoutData.name || !checkoutData.address){
@@ -2719,7 +2815,8 @@ function confirmOrder(){
     nutrition: cartNutritionTotals(),
     dateLabel: checkoutData.dateLabel,
     slotLabel: checkoutData.slotLabel,
-    contact: {...checkoutData}
+    contact: {...checkoutData},
+    lines: snapshotCartLines()
   };
   cart.length = 0;
   renderCartBadge();
@@ -2727,6 +2824,7 @@ function confirmOrder(){
   calendarViewDate = null;
   cartStep = 'done';
   renderCartPanel();
+  sendOrderConfirmationEmail(lastOrder);
 }
 function startNewOrder(){
   cartStep = 'review';
