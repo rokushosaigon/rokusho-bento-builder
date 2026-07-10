@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Rokusho — Build Your Own Healthy Bento</title>
+<title>Rokusho — Build Your Own Bento</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -420,8 +420,14 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .pick-icons{display:flex;gap:6px;flex-wrap:wrap;}
 .pick-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
 .pick-icon .icon-svg{width:14px;height:14px;}
-.pick-name{font-family:var(--font-display);font-size:18px;letter-spacing:-0.01em;}
-.pick-tagline{font-size:13px;color:var(--rk-ink-soft);line-height:1.4;}
+.pick-name{
+  font-family:var(--font-display);font-size:18px;letter-spacing:-0.01em;line-height:1.25;
+  min-height:2.5em;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.pick-tagline{
+  font-size:13px;color:var(--rk-ink-soft);line-height:1.4;
+  min-height:4.2em;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
 .pick-nutrition{display:flex;gap:8px;padding:10px 0;border-top:1px solid var(--rk-line);border-bottom:1px solid var(--rk-line);margin-top:2px;}
 .pick-macro{display:flex;flex-direction:column;flex:1;min-width:0;font-family:var(--font-mono);}
 .pick-macro b{font-size:13px;font-weight:600;color:var(--rk-ink);line-height:1.3;}
@@ -642,7 +648,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 <section class="hero">
   <div class="hero-text">
     <span class="eyebrow" data-i18n="hero_eyebrow">Calorie calculator</span>
-    <h1 data-i18n="hero_title">Build your own healthy bento</h1>
+    <h1 data-i18n="hero_title">Build your own bento</h1>
     <p data-i18n="hero_desc">Pick your protein, carbs, sides and sauce in pure Japanese style — delicious, balanced, made exactly your way.</p>
   </div>
   <div class="hero-illustration-wrap">
@@ -769,7 +775,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   <a class="quick-action-btn quick-action-zalo" href="https://zalo.me/84783888802" target="_blank" rel="noopener" aria-label="Chat on Zalo" title="Zalo">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.49 10.2722v-.4496h1.3467v6.3218h-.7704a.576.576 0 01-.5763-.5729l-.0006.0005a3.273 3.273 0 01-1.9372.6321c-1.8138 0-3.2844-1.4697-3.2844-3.2823 0-1.8125 1.4706-3.2822 3.2844-3.2822a3.273 3.273 0 011.9372.6321l.0006.0005zM6.9188 7.7896v.205c0 .3823-.051.6944-.2995 1.0605l-.03.0343c-.0542.0615-.1815.206-.2421.2843L2.024 14.8h4.8948v.7682a.5764.5764 0 01-.5767.5761H0v-.3622c0-.4436.1102-.6414.2495-.8476L4.8582 9.23H.1922V7.7896h6.7266zm8.5513 8.3548a.4805.4805 0 01-.4803-.4798v-7.875h1.4416v8.3548H15.47zM20.6934 9.6C22.52 9.6 24 11.0807 24 12.9044c0 1.8252-1.4801 3.306-3.3066 3.306-1.8264 0-3.3066-1.4808-3.3066-3.306 0-1.8237 1.4802-3.3044 3.3066-3.3044zm-10.1412 5.253c1.0675 0 1.9324-.8645 1.9324-1.9312 0-1.065-.865-1.9295-1.9324-1.9295s-1.9324.8644-1.9324 1.9295c0 1.0667.865 1.9312 1.9324 1.9312zm10.1412-.0033c1.0737 0 1.945-.8707 1.945-1.9453 0-1.073-.8713-1.9436-1.945-1.9436-1.0753 0-1.945.8706-1.945 1.9436 0 1.0746.8697 1.9453 1.945 1.9453z"/></svg>
   </a>
-  <a class="quick-action-btn quick-action-hotline" href="tel:0900000000" aria-label="Call hotline" title="Hotline">
+  <a class="quick-action-btn quick-action-hotline" href="tel:0783888802" aria-label="Call hotline" title="Hotline">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.7 3.6 4.9 6.3 6.3l2.1-2.1c0.3-0.3 0.7-0.4 1.1-0.3 1.2 0.4 2.5 0.6 3.8 0.6 0.6 0 1.1 0.5 1.1 1.1V20c0 0.6-0.5 1.1-1.1 1.1C10.5 21.1 3 13.6 3 4.4 3 3.8 3.5 3.3 4.1 3.3H7.4c0.6 0 1.1 0.5 1.1 1.1 0 1.3 0.2 2.6 0.6 3.8 0.1 0.4 0 0.8-0.3 1.1L6.6 10.8z" fill="currentColor"/></svg>
   </a>
 </div>
@@ -812,16 +818,15 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
     </div>
     <div class="footer-col">
       <h4 data-i18n="footer_contact">Contact</h4>
-      <a href="tel:0900000000">090 000 0000</a>
-      <a href="mailto:hello@rokusho.vn">hello@rokusho.vn</a>
-      <p data-i18n="footer_hours">10AM – 9PM, every day</p>
-      <p class="placeholder-note" data-i18n="footer_placeholder_contact">* Placeholder contact details — update with real info.</p>
+      <a href="tel:0783888802">078 388 8802</a>
+      <a href="mailto:info@rokusho.vn">info@rokusho.vn</a>
+      <p data-i18n="footer_hours">Mon – Sun, 11AM – 1.30PM</p>
     </div>
     <div class="footer-col">
       <h4 data-i18n="footer_follow">Follow &amp; order</h4>
-      <a href="#">Facebook</a>
-      <a href="#">Instagram</a>
-      <a href="#">Zalo</a>
+      <a href="https://www.facebook.com/rokusho.sg/" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.instagram.com/rokusho.sgn/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://zalo.me/84783888802" target="_blank" rel="noopener">Zalo</a>
       <div class="delivery-row">
         <a class="delivery-pill" href="https://food.grab.com/vn/vi/restaurant/online-delivery/5-C7N1KCBBTNTJAT?sourceID=20260708_181039_41FB9445298E455E841079FAC2DD8414_MEXMPS" target="_blank" rel="noopener">GrabFood</a>
         <!-- ShopeeFood temporarily removed -->
@@ -896,7 +901,7 @@ const I18N = {
     "cart_nutrition_total": "Nutrition total",
     "order_nutrition_total": "Nutrition total",
     "hero_eyebrow": "Calorie calculator",
-    "hero_title": "Build your own healthy bento",
+    "hero_title": "Build your own bento",
     "hero_desc": "Pick your protein, carbs, sides and sauce in pure Japanese style — delicious, balanced, made exactly your way.",
     "hero_caption": "Placeholder illustration — real bento photography coming soon",
     "picks_eyebrow": "Ready in one tap",
@@ -976,8 +981,7 @@ const I18N = {
     "toast_fill_fields": "Please fill in your phone, name and address.",
     "footer_tagline": "Your Japanese-style healthy food companion.",
     "footer_contact": "Contact",
-    "footer_hours": "10AM – 9PM, every day",
-    "footer_placeholder_contact": "* Placeholder contact details — update with real info.",
+    "footer_hours": "Mon – Sun, 11AM – 1.30PM",
     "footer_follow": "Follow & order",
     "footer_copyright": "© 2026 Rokusho. All rights reserved.",
     "footer_privacy": "Privacy policy · Terms",
@@ -998,7 +1002,7 @@ const I18N = {
   "order_nutrition_total": "Tổng dinh dưỡng",
 
   "hero_eyebrow": "Tính dinh dưỡng",
-  "hero_title": "Tự tạo Healthy Bento của bạn",
+  "hero_title": "Tự tạo Bento của bạn",
   "hero_desc": "Tự chọn Protein, tinh bột, món ăn kèm và nước sốt để tạo nên hộp Bento chuẩn vị Nhật theo sở thích của bạn.",
   "hero_caption": "Hình ảnh sản phẩm sẽ sớm được cập nhật",
 
@@ -1110,10 +1114,9 @@ const I18N = {
   "toast_added": "Đã thêm vào giỏ hàng",
   "toast_fill_fields": "Vui lòng nhập đầy đủ số điện thoại, họ tên và địa chỉ.",
 
-  "footer_tagline": "Healthy Bento chuẩn Nhật mỗi ngày.",
+  "footer_tagline": "Bento chuẩn Nhật mỗi ngày.",
   "footer_contact": "Liên hệ",
-  "footer_hours": "10:00 - 21:00 hằng ngày",
-  "footer_placeholder_contact": "* Thông tin liên hệ sẽ được cập nhật.",
+  "footer_hours": "Thứ 2 - CN, 11:00 - 13:30",
   "footer_follow": "Theo dõi chúng tôi",
 
   "footer_copyright": "© 2026 Rokusho. Bảo lưu mọi quyền.",
@@ -1131,7 +1134,7 @@ const I18N = {
     "cart_nutrition_total": "栄養素の合計",
     "order_nutrition_total": "栄養素の合計",
     "hero_eyebrow": "カロリー計算",
-    "hero_title": "あなただけのヘルシー弁当を作ろう",
+    "hero_title": "あなただけの弁当を作ろう",
     "hero_desc": "タンパク質・炭水化物・副菜・ソースを純和風スタイルで選べます — おいしく、バランスよく、あなた好みに。",
     "hero_caption": "仮の画像です — 実際の弁当写真は近日公開予定",
     "picks_eyebrow": "ワンタップで注文完了",
@@ -1211,8 +1214,7 @@ const I18N = {
     "toast_fill_fields": "電話番号・お名前・ご住所をご入力ください。",
     "footer_tagline": "あなたの和風ヘルシーフードパートナー。",
     "footer_contact": "お問い合わせ",
-    "footer_hours": "毎日 10:00〜21:00",
-    "footer_placeholder_contact": "※ 仮の連絡先です — 実際の情報に更新してください。",
+    "footer_hours": "月〜日 11:00〜13:30",
     "footer_follow": "フォロー＆注文",
     "footer_copyright": "© 2026 Rokusho. All rights reserved.",
     "footer_privacy": "プライバシーポリシー・利用規約",
@@ -1228,7 +1230,7 @@ const I18N = {
     "cart_nutrition_total": "영양 합계",
     "order_nutrition_total": "영양 합계",
     "hero_eyebrow": "칼로리 계산기",
-    "hero_title": "나만의 건강한 벤토 만들기",
+    "hero_title": "나만의 벤토 만들기",
     "hero_desc": "단백질, 탄수화물, 사이드, 소스를 정통 일본식으로 골라보세요 — 맛있고 균형 잡힌, 나만의 방식으로.",
     "hero_caption": "임시 이미지입니다 — 실제 벤토 사진은 곧 업데이트됩니다",
     "picks_eyebrow": "한 번의 탭으로 완성",
@@ -1308,8 +1310,7 @@ const I18N = {
     "toast_fill_fields": "전화번호, 이름, 주소를 입력해 주세요.",
     "footer_tagline": "당신의 일본식 건강식 파트너.",
     "footer_contact": "문의",
-    "footer_hours": "매일 오전 10시 – 오후 9시",
-    "footer_placeholder_contact": "* 임시 연락처입니다 — 실제 정보로 업데이트해 주세요.",
+    "footer_hours": "월 – 일, 오전 11시 – 오후 1시 30분",
     "footer_follow": "팔로우 & 주문",
     "footer_copyright": "© 2026 Rokusho. All rights reserved.",
     "footer_privacy": "개인정보 처리방침 · 이용약관",
@@ -1325,7 +1326,7 @@ const I18N = {
     "cart_nutrition_total": "营养总计",
     "order_nutrition_total": "营养总计",
     "hero_eyebrow": "卡路里计算器",
-    "hero_title": "打造专属健康便当",
+    "hero_title": "打造专属便当",
     "hero_desc": "以纯正日式风格挑选蛋白质、碳水、配菜与酱汁 —— 美味均衡，完全按你的喜好搭配。",
     "hero_caption": "占位插图 —— 真实便当照片即将上线",
     "picks_eyebrow": "一键即可下单",
@@ -1405,8 +1406,7 @@ const I18N = {
     "toast_fill_fields": "请填写电话号码、姓名和地址。",
     "footer_tagline": "您的日式健康餐伙伴。",
     "footer_contact": "联系我们",
-    "footer_hours": "每日 10:00–21:00",
-    "footer_placeholder_contact": "* 临时联系方式 —— 请更新为真实信息。",
+    "footer_hours": "周一至周日 11:00–13:30",
     "footer_follow": "关注与下单",
     "footer_copyright": "© 2026 Rokusho。保留所有权利。",
     "footer_privacy": "隐私政策 · 条款",
@@ -2396,19 +2396,12 @@ function pickCardTemplate(pick){
   const nutri = pickNutrition(pick);
   const meta = GROUP_META[pick.group];
   const name = pickName(pick);
-  const icons = pick.items.map(id=>{
-    const found = findItem(id);
-    if(!found) return '';
-    const pastel = CAT_PASTEL[found.cat];
-    return `<span class="pick-icon" style="background:${pastel.bg};color:${pastel.text}">${iconSvg(found.item.icon)}</span>`;
-  }).join('');
   const q = pickQty[pick.id];
   return `<div class="pick-card">
     <div class="pick-media" style="background:${meta.pastelBg}">
       <img class="pick-illustration" src="${LOGO_SRC}" alt="${name}">
     </div>
     <div class="pick-body">
-      <div class="pick-icons">${icons}</div>
       <div class="pick-name">${name}</div>
       <div class="pick-tagline">${pickTagline(pick)}</div>
       <div class="pick-nutrition">
