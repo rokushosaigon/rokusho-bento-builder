@@ -299,6 +299,21 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
   font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 5px;
 }
 .fab-text small{display:block;font-weight:400;opacity:.7;font-size:11px;}
+
+/* ---------- attention bump — draws the eye to the bento bar right after a fresh selection ---------- */
+@keyframes fab-bump{
+  0%{transform:scale(1);}
+  35%{transform:scale(1.08);}
+  60%{transform:scale(.97);}
+  100%{transform:scale(1);}
+}
+@keyframes fab-count-glow{
+  0%{box-shadow:0 0 0 0 rgba(159,47,45,.5);}
+  70%{box-shadow:0 0 0 10px rgba(159,47,45,0);}
+  100%{box-shadow:0 0 0 0 rgba(159,47,45,0);}
+}
+.bento-bar-main.is-bumped{animation:fab-bump .5s cubic-bezier(.34,1.56,.64,1);}
+.bento-bar-main.is-bumped .fab-count{animation:fab-count-glow .9s ease-out;}
 /* kcal + protein grouped together, right-aligned — hidden on desktop where the
    sticky step nav already shows live totals; shown as part of the bar on mobile */
 .bento-bar-stats{display:none;}
@@ -1716,6 +1731,7 @@ function renderGrids(){
   document.getElementById('sauceCount').textContent = categoryCount('sauce');
 }
 
+let lastBentoItemTotal = 0;
 function renderStats(){
   const t = computeTotals();
   document.querySelectorAll('.stat-kcal').forEach(el=>el.textContent = Math.round(t.kcal));
@@ -1725,6 +1741,14 @@ function renderStats(){
 
   const totalItems = CATS.reduce((s,c)=>s+categoryCount(c),0);
   document.getElementById('fabCount').textContent = totalItems;
+
+  if(totalItems > lastBentoItemTotal){
+    const fab = document.querySelector('.bento-bar-main');
+    fab.classList.remove('is-bumped');
+    void fab.offsetWidth; // restart the animation even if it's already mid-run
+    fab.classList.add('is-bumped');
+  }
+  lastBentoItemTotal = totalItems;
 
   document.querySelectorAll('.step-tab').forEach(tab=>{
     const cat = tab.getAttribute('data-target');
