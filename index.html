@@ -939,6 +939,8 @@ const I18N = {
     "title_ms": "Ms",
     "label_fullname": "Full name",
     "fullname_placeholder": "Your name",
+    "label_notes": "Notes / special requests (optional)",
+    "notes_placeholder": "e.g. no chili, peanut allergy...",
     "confirm_request": "Confirm request",
     "order_done_title": "Thank you",
     "order_done_desc": "Your request has been received and our team will follow up shortly.",
@@ -946,6 +948,7 @@ const I18N = {
     "followup_note": "Our team will contact you shortly to confirm your order and proceed with payment.",
     "order_items": "Items",
     "order_contact": "Contact",
+    "order_notes": "Notes",
     "new_order_btn": "Start a new request",
     "order_default_name": "there",
     "toast_added": "Added to cart",
@@ -1042,6 +1045,9 @@ const I18N = {
   "label_fullname": "Họ và tên",
   "fullname_placeholder": "Nhập họ và tên",
 
+  "label_notes": "Ghi chú / yêu cầu khác (không bắt buộc)",
+  "notes_placeholder": "VD: không ăn cay, dị ứng đậu phộng...",
+
   "confirm_request": "Xác nhận yêu cầu",
 
   "order_done_title": "Cảm ơn bạn!",
@@ -1053,6 +1059,7 @@ const I18N = {
 
   "order_items": "Sản phẩm",
   "order_contact": "Liên hệ",
+  "order_notes": "Ghi chú",
 
   "new_order_btn": "Tạo yêu cầu mới",
 
@@ -1134,6 +1141,8 @@ const I18N = {
     "title_ms": "女性",
     "label_fullname": "お名前",
     "fullname_placeholder": "お名前を入力",
+    "label_notes": "備考・ご要望（任意）",
+    "notes_placeholder": "例：辛いものNG、ピーナッツアレルギーなど",
     "confirm_request": "リクエストを確定する",
     "order_done_title": "ありがとうございます",
     "order_done_desc": "リクエストを承りました。担当スタッフより追ってご連絡いたします。",
@@ -1141,6 +1150,7 @@ const I18N = {
     "followup_note": "担当スタッフより追ってご連絡し、ご注文の確認とお支払い手続きを行います。",
     "order_items": "点数",
     "order_contact": "連絡先",
+    "order_notes": "備考",
     "new_order_btn": "新しいリクエストを始める",
     "order_default_name": "お客様",
     "toast_added": "カートに追加しました",
@@ -1216,6 +1226,8 @@ const I18N = {
     "title_ms": "여성",
     "label_fullname": "이름",
     "fullname_placeholder": "이름을 입력하세요",
+    "label_notes": "메모 / 요청 사항 (선택)",
+    "notes_placeholder": "예: 맵지 않게, 땅콩 알레르기 등",
     "confirm_request": "요청 확정",
     "order_done_title": "감사합니다",
     "order_done_desc": "요청이 접수되었으며 저희 팀이 곧 연락드리겠습니다.",
@@ -1223,6 +1235,7 @@ const I18N = {
     "followup_note": "저희 팀이 곧 연락드려 주문을 확인하고 결제를 진행해 드리겠습니다.",
     "order_items": "품목 수",
     "order_contact": "연락처",
+    "order_notes": "메모",
     "new_order_btn": "새 요청 시작하기",
     "order_default_name": "고객님",
     "toast_added": "장바구니에 담았습니다",
@@ -1298,6 +1311,8 @@ const I18N = {
     "title_ms": "女士",
     "label_fullname": "姓名",
     "fullname_placeholder": "请输入姓名",
+    "label_notes": "备注/其他要求（选填）",
+    "notes_placeholder": "例如：不要辣、对花生过敏等",
     "confirm_request": "确认请求",
     "order_done_title": "感谢您的订购",
     "order_done_desc": "您的请求已提交，我们的团队将很快与您联系。",
@@ -1305,6 +1320,7 @@ const I18N = {
     "followup_note": "我们的团队将很快与您联系，确认订单并处理付款。",
     "order_items": "商品数",
     "order_contact": "联系方式",
+    "order_notes": "备注",
     "new_order_btn": "开始新请求",
     "order_default_name": "您",
     "toast_added": "已加入购物车",
@@ -1854,6 +1870,7 @@ function buildOrderReceiptHtml(order){
     </div>
     <div style="font-size:12.5px;color:var(--rk-ink-soft);line-height:1.6;">
       <div>${tr_('order_contact')}: ${displayTitle} ${order.contact.name}, ${order.contact.phone}</div>
+      ${order.contact.notes ? `<div>${tr_('order_notes')}: ${order.contact.notes}</div>` : ''}
     </div>
     <div class="r-footer"><span>rokusho.vn</span><span>@rokusho</span></div>
   </div>`;
@@ -1895,6 +1912,7 @@ function sendOrderConfirmationEmail(order){
         contactName: order.contact.name || '',
         contactPhone: order.contact.phone || '',
         customerEmail: order.contact.email || '',
+        customerNote: order.contact.notes || '',
         itemCount: order.itemCount,
         proteinItem: proteinItem,
         carbsItem: carbsItem,
@@ -2000,7 +2018,7 @@ function removeCartLine(cartId){
    CHECKOUT — contact info + confirmation
    ============================================================ */
 let cartStep = 'review'; // review | contact | done
-let checkoutData = {phone:'', name:'', title:'Mr'};
+let checkoutData = {phone:'', name:'', title:'Mr', notes:''};
 let lastOrder = null;
 
 function generateOrderCode(){
@@ -2099,6 +2117,10 @@ function renderCartContact(body, footer){
       <label>${tr_('label_phone')}</label>
       <input type="tel" id="ckPhone" placeholder="${tr_('phone_placeholder')}" value="${checkoutData.phone}">
     </div>
+    <div class="form-field" style="margin-bottom:0">
+      <label>${tr_('label_notes')}</label>
+      <textarea id="ckNotes" rows="3" placeholder="${tr_('notes_placeholder')}">${checkoutData.notes}</textarea>
+    </div>
   `;
   footer.innerHTML = `<div style="display:flex;gap:10px;width:100%">
       <button class="btn btn-ghost" id="cartBackBtn" style="flex:1">${tr_('back_btn')}</button>
@@ -2139,6 +2161,7 @@ function renderCartDone(body, footer){
         <div><span>${tr_('order_items')}</span><b>${lastOrder.itemCount}</b></div>
         <div><span>${tr_('order_contact')}</span><b>${doneDisplayTitle} ${lastOrder.contact.name}, ${lastOrder.contact.phone}</b></div>
         <div><span>${tr_('order_nutrition_total')}</span><b>${Math.round(lastOrder.nutrition.kcal)} kcal · ${lastOrder.nutrition.protein.toFixed(1)}g ${tr_('label_protein')} · ${lastOrder.nutrition.carbs.toFixed(1)}g ${tr_('label_carbs')} · ${lastOrder.nutrition.fat.toFixed(1)}g ${tr_('label_fat')}</b></div>
+        ${lastOrder.contact.notes ? `<div><span>${tr_('order_notes')}</span><b>${lastOrder.contact.notes}</b></div>` : ''}
       </div>
     </div>`;
   footer.innerHTML = `<button class="btn btn-solid" id="cartNewOrderBtn">${tr_('new_order_btn')}</button>`;
@@ -2157,6 +2180,7 @@ function syncContactFields(){
   if(document.getElementById('ckPhone')) checkoutData.phone = get('ckPhone');
   if(document.getElementById('ckName')) checkoutData.name = get('ckName');
   if(document.getElementById('ckTitle')) checkoutData.title = get('ckTitle') || 'Mr';
+  if(document.getElementById('ckNotes')) checkoutData.notes = get('ckNotes');
 }
 
 function snapshotCartLines(){
@@ -2264,6 +2288,26 @@ document.addEventListener('keydown', e=>{
 document.addEventListener('change', e=>{
   if(e.target && e.target.id==='langSelect'){ setLanguage(e.target.value); }
 });
+
+/* ---------- messenger: try opening the native app before falling back to web ---------- */
+(function(){
+  const btn = document.querySelector('.quick-action-messenger');
+  if(!btn) return;
+  const pageId = '1041737169016337';
+  const webUrl = 'https://m.me/' + pageId;
+  const appUrl = 'fb-messenger://user-thread/' + pageId;
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    let leftPage = false;
+    const onHide = ()=>{ leftPage = true; };
+    document.addEventListener('visibilitychange', onHide, {once:true});
+    window.location.href = appUrl;
+    setTimeout(()=>{
+      document.removeEventListener('visibilitychange', onHide);
+      if(!leftPage) window.open(webUrl, '_blank', 'noopener');
+    }, 900);
+  });
+})();
 
 /* ---------- scrollspy ---------- */
 const sections = CATS.map(id=>document.getElementById(id));
