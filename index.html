@@ -75,6 +75,23 @@ button{font-family:inherit;cursor:pointer;}
 a{color:inherit;text-decoration:none;}
 :focus-visible{outline:2.5px solid var(--rk-primary);outline-offset:3px;}
 
+/* ---------- page loader (shown on every load / reload) ---------- */
+.page-loader{
+  position:fixed;inset:0;z-index:999;background:var(--rk-paper);
+  display:flex;align-items:center;justify-content:center;
+  opacity:1;visibility:visible;transition:opacity .45s ease,visibility .45s ease;
+}
+.page-loader.is-hidden{opacity:0;visibility:hidden;pointer-events:none;}
+.page-loader-inner{display:flex;flex-direction:column;align-items:center;gap:20px;}
+.page-loader-logo{height:34px;width:auto;animation:rk-loader-pulse 1.6s ease-in-out infinite;}
+.page-loader-spinner{
+  width:26px;height:26px;border-radius:50%;flex:none;
+  border:2.5px solid var(--rk-line);border-top-color:var(--rk-primary);
+  animation:rk-loader-spin .8s linear infinite;
+}
+@keyframes rk-loader-pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.55;transform:scale(.94);}}
+@keyframes rk-loader-spin{to{transform:rotate(360deg);}}
+
 /* ---------- header ---------- */
 .site-header{background:var(--rk-paper);border-bottom:1px solid var(--rk-line);}
 .site-header-inner{
@@ -110,21 +127,12 @@ a{color:inherit;text-decoration:none;}
   background:var(--rk-primary);color:var(--rk-white);font-size:10.5px;font-weight:700;
   display:flex;align-items:center;justify-content:center;
 }
-.mode-pill{font-family:inherit;}
 @media(max-width:880px){
   .site-header-inner{flex-wrap:wrap;}
   .logo{order:1;}
   .header-right{order:2;}
   .main-nav{order:3;display:flex;flex:0 0 100%;justify-content:center;gap:22px;margin-top:12px;font-size:13.5px;}
 }
-
-/* ---------- mode pills ---------- */
-.mode-pills{display:flex;gap:10px;max-width:1180px;margin:0 auto;padding:22px 24px 8px;flex-wrap:wrap;}
-.mode-pill{
-  border:1.5px solid var(--rk-line);border-radius:999px;padding:8px 18px;
-  font-size:13.5px;font-weight:600;color:var(--rk-ink-soft);background:transparent;
-}
-.mode-pill.is-active{background:var(--rk-ink);border-color:var(--rk-ink);color:var(--rk-paper);}
 
 /* ---------- hero ---------- */
 .hero{
@@ -144,7 +152,6 @@ a{color:inherit;text-decoration:none;}
   display:flex;align-items:center;justify-content:center;padding:15%;
 }
 .hero-bento{width:100%;height:auto;object-fit:contain;}
-.hero-illustration-caption{display:block;text-align:center;font-size:11.5px;color:var(--rk-ink-soft);margin-top:10px;}
 @media(max-width:840px){
   .hero{grid-template-columns:1fr;}
   .hero-illustration-wrap{max-width:220px;order:-1;}
@@ -216,7 +223,7 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
   position:relative;background:var(--rk-white);border:1px solid var(--rk-line);
   border-radius:var(--radius-m);padding:12px 12px 14px;display:flex;flex-direction:column;
   align-items:stretch;gap:10px;text-align:left;box-shadow:var(--shadow-card);
-  transition:border-color .15s;
+  transition:border-color .15s;cursor:pointer;
 }
 .ing-card.has-qty{border-color:var(--rk-primary);box-shadow:0 0 0 1px var(--rk-primary) inset;}
 .ing-media{
@@ -263,6 +270,15 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 .step-btn[disabled]:hover{border-color:var(--rk-line);color:var(--rk-ink);}
 .step-count{min-width:16px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums;}
 
+.select-btn{
+  width:100%;border-radius:var(--radius-s);padding:8px 10px;font-size:12.5px;font-weight:600;
+  border:1.5px solid var(--rk-line);background:transparent;color:var(--rk-ink-soft);
+  margin-top:2px;transition:.15s;font-family:var(--font-body);
+}
+.select-btn:hover{border-color:var(--rk-primary);color:var(--rk-primary);}
+.select-btn.is-selected{background:var(--rk-primary);border-color:var(--rk-primary);color:var(--rk-white);}
+.line-remove{font-size:11px;color:var(--rk-ink-soft);text-decoration:underline;background:none;border:none;padding:0;cursor:pointer;font-family:inherit;flex:none;}
+
 /* ---------- floating bento bar (bento button + live totals + quick cart) ---------- */
 .bento-bar{
   position:fixed;right:22px;bottom:calc(22px + env(safe-area-inset-bottom));z-index:40;
@@ -287,9 +303,9 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 /* quick-open cart button — hidden on desktop where the header cart is one tap away */
 .bento-bar-cart{display:none;}
 
-/* ---------- quick contact actions (floating left, vertically centered) ---------- */
+/* ---------- quick contact actions (floating right, vertically centered) ---------- */
 .quick-actions{
-  position:fixed;left:18px;top:50%;transform:translateY(-50%);z-index:41;
+  position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:41;
   display:flex;flex-direction:column;gap:12px;
 }
 .quick-action-btn{
@@ -300,6 +316,7 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 .quick-action-btn svg{width:24px;height:24px;}
 .quick-action-messenger{background:var(--rk-ink);}
 .quick-action-zalo{background:var(--rk-ink);}
+.quick-action-whatsapp{background:var(--rk-ink);}
 .quick-action-hotline{background:var(--rk-primary);}
 
 /* ---------- bento summary panel ---------- */
@@ -369,8 +386,37 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .footer-col h4{font-family:var(--font-body);font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--rk-ink-soft);margin-bottom:14px;}
 .footer-col p,.footer-col a{display:block;font-size:14.5px;margin-bottom:9px;color:var(--rk-ink);}
 .footer-col a:hover{color:var(--rk-primary);}
+.footer-hours{margin-top:4px;}
+.footer-hours-row{margin-bottom:12px;}
+.footer-hours-row:last-child{margin-bottom:0;}
+.footer-hours-label-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.footer-hours-label{font-size:12.5px;font-weight:700;color:var(--rk-ink);text-transform:uppercase;letter-spacing:.03em;}
+.footer-hours-time{display:block;font-size:14px;color:var(--rk-ink-soft);margin-top:3px;}
+.footer-hours-badge{
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--rk-yuzu-deep);background:var(--rk-yuzu-pale);padding:2px 8px;border-radius:999px;
+}
 .delivery-row{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;}
 .delivery-pill{border:1px solid var(--rk-line);border-radius:999px;padding:6px 14px;font-size:12.5px;color:var(--rk-ink-soft);}
+.footer-map-wrap{margin-top:14px;}
+.footer-map{
+  width:100%;aspect-ratio:16/10;border:1px solid var(--rk-line);border-radius:var(--radius-m);
+  overflow:hidden;background:var(--rk-paper-deep);
+}
+.footer-map iframe{width:100%;height:100%;border:0;display:block;}
+.footer-map-rating{
+  display:flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;color:var(--rk-ink);
+}
+.footer-map-rating b{font-family:var(--font-mono);font-weight:700;}
+.footer-map-rating .stars{color:var(--rk-yuzu-deep);letter-spacing:1px;font-size:12px;}
+.footer-map-rating a{color:var(--rk-ink-soft);text-decoration:underline;font-size:12.5px;}
+.footer-directions-btn{
+  display:inline-flex;align-items:center;gap:6px;margin-top:10px;
+  font-size:13px;font-weight:600;color:var(--rk-primary);border:1.5px solid var(--rk-primary);
+  border-radius:999px;padding:7px 16px;transition:.15s;
+}
+.footer-directions-btn:hover{background:var(--rk-primary);color:var(--rk-white);}
+.footer-directions-btn svg{width:14px;height:14px;}
 .footer-bottom{
   border-top:1px solid var(--rk-line);padding:18px 24px;max-width:1180px;margin:0 auto;
   display:flex;justify-content:space-between;font-size:12.5px;color:var(--rk-ink-soft);flex-wrap:wrap;gap:8px;
@@ -397,45 +443,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 #receipt .r-thumb img{width:100%;height:100%;object-fit:contain;padding:5px;opacity:.9;}
 #receipt .r-footer{border-top:1px solid var(--rk-line);margin-top:18px;padding-top:14px;display:flex;justify-content:space-between;font-size:11px;color:var(--rk-ink-soft);}
 
-/* ---------- chef's picks ---------- */
-.picks-hero{grid-template-columns:1fr;text-align:left;padding-bottom:10px;}
-.picks-main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
-.picks-group{margin-bottom:42px;}
-.picks-group:last-child{margin-bottom:0;}
-.picks-group-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px;}
-.picks-group-dot{width:10px;height:10px;border-radius:50%;margin-top:9px;flex:none;}
-.picks-group-head h3{font-family:var(--font-display);font-size:20px;}
-.picks-group-head p{font-size:13.5px;color:var(--rk-ink-soft);margin-top:4px;max-width:480px;}
-.picks-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
-.pick-card{
-  background:var(--rk-white);border:1px solid var(--rk-line);border-radius:var(--radius-m);
-  overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-card);text-align:left;align-items:stretch;
-}
-.pick-media{
-  aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;padding:14%;
-  border-bottom:1px solid var(--rk-line);
-}
-.pick-illustration{width:100%;height:100%;object-fit:contain;opacity:.82;}
-.pick-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1;}
-.pick-icons{display:flex;gap:6px;flex-wrap:wrap;}
-.pick-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
-.pick-icon .icon-svg{width:14px;height:14px;}
-.pick-name{
-  font-family:var(--font-display);font-size:18px;letter-spacing:-0.01em;line-height:1.25;
-  min-height:2.5em;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-}
-.pick-tagline{
-  font-size:13px;color:var(--rk-ink-soft);line-height:1.4;
-  min-height:4.2em;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
-}
-.pick-nutrition{display:flex;gap:8px;padding:10px 0;border-top:1px solid var(--rk-line);border-bottom:1px solid var(--rk-line);margin-top:2px;}
-.pick-macro{display:flex;flex-direction:column;flex:1;min-width:0;font-family:var(--font-mono);}
-.pick-macro b{font-size:13px;font-weight:600;color:var(--rk-ink);line-height:1.3;}
-.pick-macro small{font-size:9.5px;color:var(--rk-ink-soft);text-transform:uppercase;letter-spacing:.03em;}
-.pick-actions{display:flex;align-items:center;gap:10px;margin-top:auto;}
-.pick-actions .stepper{flex:none;}
-.pick-actions .btn{padding:10px 14px;font-size:13px;}
-
 /* ---------- cart drawer ---------- */
 .panel-actions-primary{padding:0 24px calc(22px + env(safe-area-inset-bottom));}
 .panel-actions-primary .btn{width:100%;}
@@ -457,23 +464,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .cart-summary-row.total{color:var(--rk-ink);font-weight:700;font-size:16px;border-top:1px solid var(--rk-line);margin-top:6px;padding-top:12px;}
 
 .checkout-note{font-size:13px;color:var(--rk-ink-soft);background:var(--rk-paper-deep);border-radius:12px;padding:12px 14px;margin-bottom:16px;line-height:1.5;}
-.date-chip{border:1.5px solid var(--rk-line);border-radius:12px;padding:10px 8px;font-size:13px;font-weight:600;background:var(--rk-white);color:var(--rk-ink);}
-.date-chip.is-selected{border-color:var(--rk-primary);background:var(--rk-primary-pale);color:var(--rk-primary-deep);}
-.slot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px;margin-bottom:14px;}
-.calendar{border:1px solid var(--rk-line);border-radius:14px;padding:14px;margin-bottom:18px;}
-.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.cal-month-label{font-family:var(--font-display);font-size:16px;font-weight:400;}
-.cal-nav{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--rk-line);background:var(--rk-white);font-size:16px;line-height:1;color:var(--rk-ink);display:flex;align-items:center;justify-content:center;}
-.cal-nav:hover:not([disabled]){border-color:var(--rk-primary);color:var(--rk-primary);}
-.cal-nav[disabled]{opacity:.3;cursor:default;}
-.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:10.5px;color:var(--rk-ink-soft);margin-bottom:6px;}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
-.cal-cell{min-height:32px;display:flex;align-items:center;justify-content:center;font-size:13px;}
-.cal-day{border:1.5px solid transparent;border-radius:8px;background:var(--rk-white);color:var(--rk-ink);font-weight:600;}
-.cal-day:hover:not([disabled]){border-color:var(--rk-primary);}
-.cal-day.is-selected{background:var(--rk-primary);color:var(--rk-white);}
-.cal-day.is-disabled{color:var(--rk-line);cursor:default;}
-.freeship-note{font-size:11.5px;color:var(--rk-matcha);background:var(--rk-matcha-pale);padding:8px 10px;border-radius:8px;margin:2px 0 10px;}
 .order-followup-note{font-size:12.5px;color:var(--rk-ink-soft);background:var(--rk-paper-deep);border-radius:10px;padding:10px 12px;margin-bottom:14px;line-height:1.5;}
 
 .form-field{margin-bottom:14px;}
@@ -484,7 +474,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 }
 .form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--rk-primary);outline:none;}
 .form-row{display:grid;grid-template-columns:1fr 2fr;gap:10px;}
-.autofill-note{font-size:12px;color:var(--rk-matcha);margin:-6px 0 14px;}
+.note-banner{font-size:12.5px;color:var(--rk-yuzu-deep);background:var(--rk-yuzu-pale);border-radius:10px;padding:9px 12px;margin:0 0 16px;line-height:1.5;}
 
 .order-done{text-align:center;padding:20px 4px 10px;}
 .order-done-check{
@@ -527,16 +517,12 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   .cart-btn{padding:8px 12px;}
   .cart-icon{width:18px;height:18px;}
 
-  .mode-pills{padding:16px 16px 6px;gap:8px;}
-  .mode-pill{padding:8px 15px;font-size:13px;}
-
   .hero{padding:20px 16px 26px;gap:22px;}
   .hero h1{font-size:26px;}
   .hero p{font-size:14.5px;margin-top:10px;}
   .eyebrow{font-size:11.5px;margin-bottom:10px;}
   .hero-illustration-wrap{max-width:180px;}
   .hero-illustration{padding:16%;}
-  .hero-illustration-caption{font-size:10.5px;}
 
   main{padding:0 16px 104px;}
   .builder-step{padding:30px 0 4px;}
@@ -556,7 +542,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   .step-btn{width:30px;height:30px;font-size:16px;}
   .stepper{gap:8px;}
 
-  .quick-actions{top:auto;bottom:84px;left:10px;transform:none;flex-direction:row;gap:8px;}
+  .quick-actions{top:auto;bottom:84px;right:10px;transform:none;flex-direction:row;gap:8px;}
   .quick-action-btn{width:40px;height:40px;}
   .quick-action-btn svg{width:19px;height:19px;}
 
@@ -590,20 +576,10 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   .totals-grid .stat-box{padding:9px 4px;}
   .totals-grid .stat-box b{font-size:15px;}
 
-  .picks-hero{padding-bottom:4px;}
-  .picks-main{padding:0 16px 40px;}
-  .picks-group{margin-bottom:32px;}
-  .picks-group-head h3{font-size:18px;}
-  .picks-grid{grid-template-columns:1fr;gap:12px;}
-  .pick-body{padding:14px 16px 16px;}
-  .pick-name{font-size:16.5px;}
-
   .footer-top{padding:40px 16px 28px;gap:26px;}
   .footer-bottom{padding:16px;}
 
   .form-row{grid-template-columns:1fr 1fr;gap:8px;}
-  .slot-grid{grid-template-columns:repeat(2,1fr);}
-  .cal-cell{min-height:34px;}
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -612,6 +588,13 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 </style>
 </head>
 <body>
+<div id="pageLoader" class="page-loader" aria-hidden="true">
+  <div class="page-loader-inner">
+    <img class="page-loader-logo" src="data:image/png;base64,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" alt="Rokusho">
+    <span class="page-loader-spinner"></span>
+  </div>
+</div>
+
 
 <header class="site-header">
   <div class="site-header-inner">
@@ -620,16 +603,15 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
     </div>
     <nav class="main-nav">
       <a href="#" class="nav-cta" data-i18n="nav_menu">Bento</a>
-      <a href="https://food.grab.com/vn/vi/restaurant/online-delivery/5-C7N1KCBBTNTJAT?sourceID=20260708_181039_41FB9445298E455E841079FAC2DD8414_MEXMPS" target="_blank" rel="noopener" class="nav-link">GrabFood</a>
       <a href="https://linktr.ee/rokusho.vn" target="_blank" rel="noopener" class="nav-link" data-i18n="nav_about">More</a>
     </nav>
     <div class="header-right">
       <select class="lang-select" id="langSelect" aria-label="Language">
-        <option value="en">EN</option>
-        <option value="vi">VI</option>
-        <option value="ja">JA</option>
-        <option value="ko">KO</option>
-        <option value="zh">ZH</option>
+        <option value="en">🇬🇧 EN</option>
+        <option value="vi">🇻🇳 VI</option>
+        <option value="ja">🇯🇵 JA</option>
+        <option value="ko">🇰🇷 KO</option>
+        <option value="zh">🇨🇳 ZH</option>
       </select>
       <button class="cart-btn" id="cartBtn" type="button" aria-label="Open cart">
         <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1.6" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.6" fill="currentColor" stroke="none"/><path d="M2.5 3h2.4l2.1 11.4a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 7H6"/></svg>
@@ -639,12 +621,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   </div>
 </header>
 
-<div class="mode-pills">
-  <button type="button" class="mode-pill is-active" data-view="byo" data-i18n="mode_byo">Build your own</button>
-  <button type="button" class="mode-pill" data-view="picks" data-i18n="mode_picks">Chef's picks</button>
-</div>
-
-<div id="byoView">
 <section class="hero">
   <div class="hero-text">
     <span class="eyebrow" data-i18n="hero_eyebrow">Calorie calculator</span>
@@ -655,7 +631,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   <div class="hero-illustration">
     <img class="hero-bento" src="data:image/png;base64,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" alt="Rokusho">
   </div>
-    <p class="hero-illustration-caption" data-i18n="hero_caption">Placeholder illustration — real bento photography coming soon</p>
   </div>
 </section>
 
@@ -683,11 +658,12 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
         <span class="step-badge">01</span>
         <div>
           <h2 data-i18n="step1_title">Select protein</h2>
-          <p class="step-desc" data-i18n="step1_desc">Sous-vide the Japanese way — locking in moisture and nutrition.</p>
+          <p class="step-desc" data-i18n="step1_desc">Grilled the Japanese way — locking in flavour and nutrition.</p>
         </div>
       </div>
       <div class="step-counter"><b id="proteinCount">0</b> <span data-i18n="step_added">added</span></div>
     </div>
+    <p class="note-banner" data-i18n="note_single_select">Pick any 1 item in this category.</p>
     <div class="card-grid" id="grid-protein"></div>
   </section>
 
@@ -702,6 +678,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
       </div>
       <div class="step-counter"><b id="carbsCount">0</b> <span data-i18n="step_added">added</span></div>
     </div>
+    <p class="note-banner" data-i18n="note_single_select">Pick any 1 item in this category.</p>
     <div class="card-grid" id="grid-carbs"></div>
   </section>
 
@@ -716,6 +693,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
       </div>
       <div class="step-counter"><b id="sideCount">0</b> <span data-i18n="step_added">added</span></div>
     </div>
+    <p class="note-banner" data-i18n="note_single_select">Pick any 1 item in this category.</p>
     <div class="card-grid" id="grid-side"></div>
   </section>
 
@@ -730,6 +708,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
       </div>
       <div class="step-counter"><b id="sauceCount">0</b> <span data-i18n="step_added">added</span></div>
     </div>
+    <p class="note-banner" data-i18n="note_single_select">Pick any 1 item in this category.</p>
     <div class="card-grid" id="grid-sauce"></div>
   </section>
 </main>
@@ -766,8 +745,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   </div>
 </aside>
 
-</div><!-- /#byoView -->
-
 <div class="quick-actions">
   <a class="quick-action-btn quick-action-messenger" href="https://m.me/1041737169016337" target="_blank" rel="noopener" aria-label="Chat on Messenger" title="Messenger">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0C5.24 0 0 4.952 0 11.64c0 3.499 1.434 6.521 3.769 8.61a.96.96 0 0 1 .323.683l.065 2.135a.96.96 0 0 0 1.347.85l2.381-1.053a.96.96 0 0 1 .641-.046A13 13 0 0 0 12 23.28c6.76 0 12-4.952 12-11.64S18.76 0 12 0m6.806 7.44c.522-.03.971.567.63 1.094l-4.178 6.457a.707.707 0 0 1-.977.208l-3.87-2.504a.44.44 0 0 0-.49.007l-4.363 3.01c-.637.438-1.415-.317-.995-.966l4.179-6.457a.706.706 0 0 1 .977-.21l3.87 2.505c.15.097.344.094.491-.007l4.362-3.008a.7.7 0 0 1 .364-.13"/></svg>
@@ -775,23 +752,12 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   <a class="quick-action-btn quick-action-zalo" href="https://zalo.me/84783888802" target="_blank" rel="noopener" aria-label="Chat on Zalo" title="Zalo">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.49 10.2722v-.4496h1.3467v6.3218h-.7704a.576.576 0 01-.5763-.5729l-.0006.0005a3.273 3.273 0 01-1.9372.6321c-1.8138 0-3.2844-1.4697-3.2844-3.2823 0-1.8125 1.4706-3.2822 3.2844-3.2822a3.273 3.273 0 011.9372.6321l.0006.0005zM6.9188 7.7896v.205c0 .3823-.051.6944-.2995 1.0605l-.03.0343c-.0542.0615-.1815.206-.2421.2843L2.024 14.8h4.8948v.7682a.5764.5764 0 01-.5767.5761H0v-.3622c0-.4436.1102-.6414.2495-.8476L4.8582 9.23H.1922V7.7896h6.7266zm8.5513 8.3548a.4805.4805 0 01-.4803-.4798v-7.875h1.4416v8.3548H15.47zM20.6934 9.6C22.52 9.6 24 11.0807 24 12.9044c0 1.8252-1.4801 3.306-3.3066 3.306-1.8264 0-3.3066-1.4808-3.3066-3.306 0-1.8237 1.4802-3.3044 3.3066-3.3044zm-10.1412 5.253c1.0675 0 1.9324-.8645 1.9324-1.9312 0-1.065-.865-1.9295-1.9324-1.9295s-1.9324.8644-1.9324 1.9295c0 1.0667.865 1.9312 1.9324 1.9312zm10.1412-.0033c1.0737 0 1.945-.8707 1.945-1.9453 0-1.073-.8713-1.9436-1.945-1.9436-1.0753 0-1.945.8706-1.945 1.9436 0 1.0746.8697 1.9453 1.945 1.9453z"/></svg>
   </a>
+  <a class="quick-action-btn quick-action-whatsapp" href="https://wa.me/84783888802" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="WhatsApp">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.02 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.45 1.26 4.9L2 22l5.24-1.24A9.96 9.96 0 0 0 12.02 22c5.52 0 10-4.48 10-10s-4.48-10-10-10m0 18.2c-1.6 0-3.13-.43-4.46-1.24l-.32-.19-3.31.78.79-3.24-.21-.33A8.17 8.17 0 0 1 3.83 12c0-4.53 3.68-8.2 8.19-8.2 4.5 0 8.18 3.67 8.18 8.2s-3.68 8.2-8.18 8.2m4.49-6.13c-.25-.12-1.45-.71-1.67-.79-.22-.08-.39-.12-.55.12-.16.25-.63.79-.77.95-.14.16-.28.18-.53.06-.25-.12-1.04-.38-1.98-1.21-.73-.65-1.23-1.45-1.37-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.16.04-.31-.02-.43-.06-.12-.55-1.32-.75-1.81-.2-.48-.4-.41-.55-.42-.14-.01-.31-.01-.47-.01-.16 0-.43.06-.65.31-.22.25-.86.84-.86 2.04 0 1.2.88 2.36 1 2.52.12.16 1.73 2.64 4.2 3.7.59.25 1.05.4 1.41.52.59.19 1.13.16 1.55.1.47-.07 1.45-.59 1.66-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.47-.28"/></svg>
+  </a>
   <a class="quick-action-btn quick-action-hotline" href="tel:0783888802" aria-label="Call hotline" title="Hotline">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.7 3.6 4.9 6.3 6.3l2.1-2.1c0.3-0.3 0.7-0.4 1.1-0.3 1.2 0.4 2.5 0.6 3.8 0.6 0.6 0 1.1 0.5 1.1 1.1V20c0 0.6-0.5 1.1-1.1 1.1C10.5 21.1 3 13.6 3 4.4 3 3.8 3.5 3.3 4.1 3.3H7.4c0.6 0 1.1 0.5 1.1 1.1 0 1.3 0.2 2.6 0.6 3.8 0.1 0.4 0 0.8-0.3 1.1L6.6 10.8z" fill="currentColor"/></svg>
   </a>
-</div>
-
-<div id="picksView" style="display:none">
-  <section class="hero picks-hero">
-    <div class="hero-text">
-      <span class="eyebrow" data-i18n="picks_eyebrow">Ready in one tap</span>
-      <h1 data-i18n="picks_title">Chef's picks</h1>
-      <p data-i18n="picks_desc">Eight house bentos across four collections — pick a quantity and send it straight to your cart.</p>
-      <p class="placeholder-note" data-i18n="picks_note">Prices shown exclude VAT — tax is added automatically at checkout.</p>
-    </div>
-  </section>
-  <div class="picks-main">
-    <div id="picksGrid"></div>
-  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -820,13 +786,39 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
       <h4 data-i18n="footer_contact">Contact</h4>
       <a href="tel:0783888802">078 388 8802</a>
       <a href="mailto:info@rokusho.vn">info@rokusho.vn</a>
-      <p data-i18n="footer_hours">Mon – Sun, 11AM – 1.30PM</p>
+      <div class="footer-hours">
+        <div class="footer-hours-row">
+          <span class="footer-hours-label" data-i18n="hours_dining_label">Dining · Dine-in &amp; Delivery</span>
+          <span class="footer-hours-time" data-i18n="hours_dining_time">Mon – Sun · 5PM – Late</span>
+        </div>
+        <div class="footer-hours-row">
+          <span class="footer-hours-label-row">
+            <span class="footer-hours-label" data-i18n="hours_lunch_label">Lunch Healthy Bento</span>
+            <span class="footer-hours-badge" data-i18n="hours_coming_soon">Coming soon</span>
+          </span>
+          <span class="footer-hours-time" data-i18n="hours_lunch_time">Mon – Sun · 11AM – 1:30PM</span>
+        </div>
+      </div>
+      <div class="footer-map-wrap">
+        <div class="footer-map">
+          <iframe src="https://www.google.com/maps?q=Rokusho%20Saigon%2C%2002%20Thi%20S%C3%A1ch%2C%20S%C3%A0i%20G%C3%B2n%2C%20H%E1%BB%93%20Ch%C3%AD%20Minh%20700000&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Rokusho Saigon on Google Maps"></iframe>
+        </div>
+        <div class="footer-map-rating">
+          <span class="stars" aria-hidden="true">★★★★★</span>
+          <b>4.9</b>
+          <a href="https://www.google.com/maps?q=Rokusho+Saigon,+02+Thi+S%C3%A1ch,+S%C3%A0i+G%C3%B2n,+H%E1%BB%93+Ch%C3%AD+Minh+700000&ftid=0x31752fdc279436fd:0xda4176c8fd161f4f&entry=gps" target="_blank" rel="noopener" data-i18n="footer_reviews">Google reviews</a>
+        </div>
+        <a class="footer-directions-btn" href="https://www.google.com/maps?q=Rokusho+Saigon,+02+Thi+S%C3%A1ch,+S%C3%A0i+G%C3%B2n,+H%E1%BB%93+Ch%C3%AD+Minh+700000&ftid=0x31752fdc279436fd:0xda4176c8fd161f4f&entry=gps" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C7.6 2 4 5.6 4 10c0 5.4 7 11.5 7.3 11.7a1 1 0 0 0 1.4 0C13 21.5 20 15.4 20 10c0-4.4-3.6-8-8-8m0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/></svg>
+          <span data-i18n="footer_directions">Get directions</span>
+        </a>
+      </div>
     </div>
     <div class="footer-col">
-      <h4 data-i18n="footer_follow">Follow &amp; order</h4>
+      <h4 data-i18n="footer_follow">Follow</h4>
       <a href="https://www.facebook.com/rokusho.sg/" target="_blank" rel="noopener">Facebook</a>
       <a href="https://www.instagram.com/rokusho.sgn/" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://zalo.me/84783888802" target="_blank" rel="noopener">Zalo</a>
+      <a href="https://www.tiktok.com/@rokusho.sgn" target="_blank" rel="noopener">TikTok</a>
       <div class="delivery-row">
         <a class="delivery-pill" href="https://food.grab.com/vn/vi/restaurant/online-delivery/5-C7N1KCBBTNTJAT?sourceID=20260708_181039_41FB9445298E455E841079FAC2DD8414_MEXMPS" target="_blank" rel="noopener">GrabFood</a>
         <!-- ShopeeFood temporarily removed -->
@@ -895,21 +887,14 @@ const I18N = {
     "nav_menu": "Bento",
     "nav_about": "More",
     "mode_byo": "Build your own",
-    "mode_picks": "Chef's picks",
-    "add_to_cart_short": "Add to cart",
-    "order_confirmed_title": "Order confirmed",
+    "order_confirmed_title": "Request confirmed",
     "cart_nutrition_total": "Nutrition total",
     "order_nutrition_total": "Nutrition total",
     "hero_eyebrow": "Calorie calculator",
     "hero_title": "Build your own bento",
     "hero_desc": "Pick your protein, carbs, sides and sauce in pure Japanese style — delicious, balanced, made exactly your way.",
-    "hero_caption": "Placeholder illustration — real bento photography coming soon",
-    "picks_eyebrow": "Ready in one tap",
-    "picks_title": "Chef's picks",
-    "picks_desc": "Eight house bentos across four collections — pick a quantity and send it straight to your cart.",
-    "picks_note": "Prices shown exclude VAT — tax is added automatically at checkout.",
     "step1_title": "Select protein",
-    "step1_desc": "Sous-vide the Japanese way — locking in moisture and nutrition.",
+    "step1_desc": "Grilled the Japanese way — locking in flavour and nutrition.",
     "step2_title": "Select carbs",
     "step2_desc": "From Japanese rice to soba — choose the base of your bento.",
     "step3_title": "Select sides",
@@ -917,6 +902,9 @@ const I18N = {
     "step4_title": "Select sauce",
     "step4_desc": "Pure Japanese flavour, made to drizzle.",
     "step_added": "added",
+    "note_single_select": "Pick any 1 item in this category.",
+    "btn_select": "Select",
+    "btn_selected": "Selected",
     "tab_protein": "Protein",
     "tab_carbs": "Carbs",
     "tab_side": "Sides",
@@ -932,57 +920,47 @@ const I18N = {
     "panel_empty": "Your bento is empty — start adding ingredients in the steps above.",
     "fab_view_bento": "View bento",
     "cart_your_cart": "Your cart",
-    "cart_empty": "Your cart is empty — add a custom bento or a chef's pick to get started.",
-    "cart_continue_delivery": "Continue to delivery time",
+    "cart_empty": "Your cart is empty — add a custom bento to get started.",
+    "cart_continue_contact": "Continue to your details",
     "cart_est_total": "Estimated total",
     "cart_show_ing": "Show ingredients",
     "cart_hide_ing": "Hide ingredients",
     "cart_remove": "Remove",
     "custom_bento_label": "Custom bento",
-    "chefs_pick_label": "Chef's pick",
     "ingredient_singular": "ingredient",
     "ingredient_plural": "ingredients",
-    "delivery_time_title": "Delivery time",
-    "step2of3": "Step 2 of 3",
-    "checkout_note_late": "It's past 6:00 PM, so the earliest available delivery date is in 2 days. Orders placed before 6:00 PM can get next-day delivery.",
-    "checkout_note_ontime": "Order before 6:00 PM today for tomorrow's delivery. Any date further out is always available, with no cutoff.",
-    "delivery_date_label": "Delivery date",
-    "delivery_slot_label": "Delivery time slot",
-    "checkout_slot_note": "Times are an estimate — our rider will arrive within the selected 30-minute window, every day from 11:00 AM to 1:30 PM.",
     "back_btn": "Back",
-    "continue_details": "Continue to your details",
     "contact_title": "Your details",
-    "step3of3": "Step 3 of 3",
+    "step2of2": "Step 2 of 2",
     "label_phone": "Phone number",
     "phone_placeholder": "e.g. 0900000001",
-    "autofill_note": "We found your saved details — feel free to edit them.",
     "label_title_field": "Title",
     "title_mr": "Mr",
     "title_ms": "Ms",
-    "title_mx": "Mx",
     "label_fullname": "Full name",
     "fullname_placeholder": "Your name",
-    "label_address": "Delivery address",
-    "address_placeholder": "Street, ward, district, city",
-    "label_email": "Email (optional)",
-    "email_placeholder": "you@email.com",
-    "confirm_order": "Confirm order",
+    "confirm_request": "Confirm request",
     "order_done_title": "Thank you",
-    "order_done_desc": "Your order has been placed and is being prepared.",
+    "order_done_desc": "Your request has been received and our team will follow up shortly.",
     "screenshot_note": "Please take a screenshot of this screen to save your order code.",
     "followup_note": "Our team will contact you shortly to confirm your order and proceed with payment.",
     "order_items": "Items",
-    "order_delivery": "Delivery",
     "order_contact": "Contact",
-    "order_address": "Address",
-    "new_order_btn": "Start a new order",
+    "new_order_btn": "Start a new request",
     "order_default_name": "there",
     "toast_added": "Added to cart",
-    "toast_fill_fields": "Please fill in your phone, name and address.",
+    "toast_fill_fields": "Please fill in your name and phone number.",
+    "toast_slow_down": "Please wait a few seconds before submitting again.",
     "footer_tagline": "Your Japanese-style healthy food companion.",
     "footer_contact": "Contact",
-    "footer_hours": "Mon – Sun, 11AM – 1.30PM",
-    "footer_follow": "Follow & order",
+    "hours_dining_label": "Dining · Dine-in & Delivery",
+    "hours_dining_time": "Mon – Sun · 5PM – Late",
+    "hours_lunch_label": "Lunch Healthy Bento",
+    "hours_lunch_time": "Mon – Sun · 11AM – 1:30PM",
+    "hours_coming_soon": "Coming soon",
+    "footer_follow": "Follow",
+    "footer_directions": "Get directions",
+    "footer_reviews": "Google reviews",
     "footer_copyright": "© 2026 Rokusho. All rights reserved.",
     "footer_privacy": "Privacy policy · Terms",
     "lang_switcher_label": "Language"
@@ -992,11 +970,8 @@ const I18N = {
   "nav_about": "Khác",
 
   "mode_byo": "Tự tạo Bento",
-  "mode_picks": "Set nổi bật",
 
-  "add_to_cart_short": "Thêm vào giỏ",
-
-  "order_confirmed_title": "Đặt hàng thành công",
+  "order_confirmed_title": "Đã xác nhận yêu cầu",
 
   "cart_nutrition_total": "Tổng dinh dưỡng",
   "order_nutrition_total": "Tổng dinh dưỡng",
@@ -1004,15 +979,9 @@ const I18N = {
   "hero_eyebrow": "Tính dinh dưỡng",
   "hero_title": "Tự tạo Bento của bạn",
   "hero_desc": "Tự chọn Protein, tinh bột, món ăn kèm và nước sốt để tạo nên hộp Bento chuẩn vị Nhật theo sở thích của bạn.",
-  "hero_caption": "Hình ảnh sản phẩm sẽ sớm được cập nhật",
-
-  "picks_eyebrow": "Chọn nhanh",
-  "picks_title": "Bento nổi bật",
-  "picks_desc": "Các set Bento bán chạy do đầu bếp tuyển chọn. Chỉ cần chọn số lượng và thêm vào giỏ hàng.",
-  "picks_note": "Giá chưa bao gồm VAT. Thuế sẽ được tính khi thanh toán.",
 
   "step1_title": "Chọn Protein",
-  "step1_desc": "Chế biến Sous-vide giúp giữ trọn vị ngon và dinh dưỡng.",
+  "step1_desc": "Nướng chuẩn kiểu Nhật, giữ trọn vị ngon và dinh dưỡng.",
 
   "step2_title": "Chọn Tinh bột",
   "step2_desc": "Lựa chọn nền tảng cho hộp Bento của bạn.",
@@ -1024,6 +993,9 @@ const I18N = {
   "step4_desc": "Hoàn thiện hương vị chuẩn Nhật.",
 
   "step_added": "Đã thêm",
+  "note_single_select": "Chọn 1 món bất kỳ trong mục này.",
+  "btn_select": "Chọn",
+  "btn_selected": "Đã chọn",
 
   "tab_protein": "Protein",
   "tab_carbs": "Tinh bột",
@@ -1045,79 +1017,61 @@ const I18N = {
 
   "cart_your_cart": "Giỏ hàng",
   "cart_empty": "Giỏ hàng đang trống.",
-  "cart_continue_delivery": "Tiếp tục",
+  "cart_continue_contact": "Tiếp tục",
   "cart_est_total": "Tạm tính",
   "cart_show_ing": "Xem nguyên liệu",
   "cart_hide_ing": "Ẩn nguyên liệu",
   "cart_remove": "Xóa",
 
   "custom_bento_label": "Bento tự chọn",
-  "chefs_pick_label": "Bento có sẵn",
 
   "ingredient_singular": "nguyên liệu",
   "ingredient_plural": "nguyên liệu",
 
-  "delivery_time_title": "Thời gian giao hàng",
-  "step2of3": "Bước 2/3",
-
-  "checkout_note_late": "Đã sau 18:00. Đơn sớm nhất sẽ được giao sau 2 ngày. Đặt trước 18:00 để được giao vào ngày hôm sau.",
-  "checkout_note_ontime": "Đặt trước 18:00 hôm nay để nhận hàng vào ngày mai. Bạn cũng có thể chọn bất kỳ ngày nào sau đó.",
-
-  "delivery_date_label": "Ngày giao",
-  "delivery_slot_label": "Khung giờ giao",
-
-  "checkout_slot_note": "Thời gian giao mang tính dự kiến trong khung giờ bạn đã chọn (11:00 - 13:30).",
-
   "back_btn": "Quay lại",
-  "continue_details": "Tiếp tục",
 
-  "contact_title": "Thông tin nhận hàng",
-  "step3of3": "Bước 3/3",
+  "contact_title": "Thông tin liên hệ",
+  "step2of2": "Bước 2/2",
 
   "label_phone": "Số điện thoại",
   "phone_placeholder": "Ví dụ: 0901234567",
 
-  "autofill_note": "Thông tin của bạn đã được điền sẵn. Bạn có thể chỉnh sửa nếu cần.",
-
   "label_title_field": "Danh xưng",
   "title_mr": "Anh",
   "title_ms": "Chị",
-  "title_mx": "Khác",
-
   "label_fullname": "Họ và tên",
   "fullname_placeholder": "Nhập họ và tên",
 
-  "label_address": "Địa chỉ nhận hàng",
-  "address_placeholder": "Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố",
-
-  "label_email": "Email (không bắt buộc)",
-  "email_placeholder": "email@example.com",
-
-  "confirm_order": "Xác nhận đặt hàng",
+  "confirm_request": "Xác nhận yêu cầu",
 
   "order_done_title": "Cảm ơn bạn!",
-  "order_done_desc": "Đơn hàng của bạn đã được tiếp nhận và đang được chuẩn bị.",
+  "order_done_desc": "Yêu cầu của bạn đã được tiếp nhận. Nhân viên sẽ sớm liên hệ để xác nhận.",
 
   "screenshot_note": "Vui lòng chụp màn hình để lưu mã đơn hàng.",
 
   "followup_note": "Nhân viên sẽ sớm liên hệ để xác nhận đơn hàng và hướng dẫn thanh toán.",
 
   "order_items": "Sản phẩm",
-  "order_delivery": "Giao hàng",
   "order_contact": "Liên hệ",
-  "order_address": "Địa chỉ",
 
-  "new_order_btn": "Đặt đơn mới",
+  "new_order_btn": "Tạo yêu cầu mới",
 
   "order_default_name": "bạn",
 
   "toast_added": "Đã thêm vào giỏ hàng",
-  "toast_fill_fields": "Vui lòng nhập đầy đủ số điện thoại, họ tên và địa chỉ.",
+  "toast_fill_fields": "Vui lòng nhập đầy đủ họ tên và số điện thoại.",
+  "toast_slow_down": "Vui lòng đợi vài giây trước khi gửi lại.",
 
   "footer_tagline": "Bento chuẩn Nhật mỗi ngày.",
   "footer_contact": "Liên hệ",
-  "footer_hours": "Thứ 2 - CN, 11:00 - 13:30",
-  "footer_follow": "Theo dõi chúng tôi",
+  "hours_dining_label": "Dining · Dùng tại chỗ & Giao hàng",
+  "hours_dining_time": "Thứ 2 - CN · 17:00 - Muộn",
+  "hours_lunch_label": "Lunch Healthy Bento",
+  "hours_lunch_time": "Thứ 2 - CN · 11:00 - 13:30",
+  "hours_coming_soon": "Sắp ra mắt",
+  "footer_follow": "Theo dõi",
+  "footer_directions": "Chỉ đường",
+  "footer_reviews": "Đánh giá trên Google",
 
   "footer_copyright": "© 2026 Rokusho. Bảo lưu mọi quyền.",
   "footer_privacy": "Chính sách bảo mật · Điều khoản",
@@ -1128,21 +1082,14 @@ const I18N = {
     "nav_menu": "Bento",
     "nav_about": "店舗情報",
     "mode_byo": "自分で作る",
-    "mode_picks": "シェフのおすすめ",
-    "add_to_cart_short": "カートに追加",
-    "order_confirmed_title": "ご注文を確定しました",
+    "order_confirmed_title": "リクエストを確定しました",
     "cart_nutrition_total": "栄養素の合計",
     "order_nutrition_total": "栄養素の合計",
     "hero_eyebrow": "カロリー計算",
     "hero_title": "あなただけの弁当を作ろう",
     "hero_desc": "タンパク質・炭水化物・副菜・ソースを純和風スタイルで選べます — おいしく、バランスよく、あなた好みに。",
-    "hero_caption": "仮の画像です — 実際の弁当写真は近日公開予定",
-    "picks_eyebrow": "ワンタップで注文完了",
-    "picks_title": "シェフのおすすめ",
-    "picks_desc": "4つのコレクションから選べる8種類の弁当 — 数量を選んでそのままカートへ。",
-    "picks_note": "表示価格は税抜きです — 消費税はご注文時に自動で加算されます。",
     "step1_title": "タンパク質を選ぶ",
-    "step1_desc": "和風スタイルの低温調理 — うまみと栄養を閉じ込めます。",
+    "step1_desc": "和風グリルスタイル — うまみと栄養を閉じ込めます。",
     "step2_title": "炭水化物を選ぶ",
     "step2_desc": "白ごはんからそばまで — 弁当のベースを選びましょう。",
     "step3_title": "副菜を選ぶ",
@@ -1150,6 +1097,9 @@ const I18N = {
     "step4_title": "ソースを選ぶ",
     "step4_desc": "純和風の味わいを、お好みでかけて。",
     "step_added": "個選択中",
+    "note_single_select": "このカテゴリーからお好きな1品をお選びください。",
+    "btn_select": "選ぶ",
+    "btn_selected": "選択済み",
     "tab_protein": "タンパク質",
     "tab_carbs": "炭水化物",
     "tab_side": "副菜",
@@ -1165,57 +1115,47 @@ const I18N = {
     "panel_empty": "弁当はまだ空です — 上のステップで具材を選んでください。",
     "fab_view_bento": "弁当を見る",
     "cart_your_cart": "カート",
-    "cart_empty": "カートは空です — 自分で作った弁当かおすすめセットを追加してください。",
-    "cart_continue_delivery": "配達時間の選択へ進む",
-    "cart_est_total": "合計金額（概算）",
+    "cart_empty": "カートは空です — 自分で作った弁当を追加してください。",
+    "cart_continue_contact": "お客様情報の入力へ進む",
+    "cart_est_total": "合計金額(概算)",
     "cart_show_ing": "具材を見る",
     "cart_hide_ing": "具材を隠す",
     "cart_remove": "削除",
     "custom_bento_label": "カスタム弁当",
-    "chefs_pick_label": "おすすめセット",
     "ingredient_singular": "具材",
     "ingredient_plural": "具材",
-    "delivery_time_title": "配達時間",
-    "step2of3": "ステップ 2/3",
-    "checkout_note_late": "18時を過ぎているため、最短のお届け日は2日後です。18時前のご注文は翌日お届け可能です。",
-    "checkout_note_ontime": "本日18時までのご注文で翌日お届け可能です。それ以降の日付はいつでもお選びいただけます。",
-    "delivery_date_label": "お届け日",
-    "delivery_slot_label": "お届け時間帯",
-    "checkout_slot_note": "時間は目安です — 配達員は選択された30分の枠内（毎日11:00〜13:30）にお伺いします。",
     "back_btn": "戻る",
-    "continue_details": "お客様情報の入力へ",
     "contact_title": "お客様情報",
-    "step3of3": "ステップ 3/3",
+    "step2of2": "ステップ 2/2",
     "label_phone": "電話番号",
-    "phone_placeholder": "例：0900000001",
-    "autofill_note": "保存済みの情報が見つかりました — 必要に応じて編集できます。",
+    "phone_placeholder": "例:0900000001",
     "label_title_field": "敬称",
     "title_mr": "男性",
     "title_ms": "女性",
-    "title_mx": "その他",
     "label_fullname": "お名前",
     "fullname_placeholder": "お名前を入力",
-    "label_address": "配達先住所",
-    "address_placeholder": "番地・町名・区・市",
-    "label_email": "メールアドレス（任意）",
-    "email_placeholder": "you@email.com",
-    "confirm_order": "注文を確定する",
-    "order_done_title": "ご注文ありがとうございます",
-    "order_done_desc": "ご注文を承りました。ただいま準備中です。",
+    "confirm_request": "リクエストを確定する",
+    "order_done_title": "ありがとうございます",
+    "order_done_desc": "リクエストを承りました。担当スタッフより追ってご連絡いたします。",
     "screenshot_note": "注文コードを保存するため、この画面のスクリーンショットを撮ってください。",
     "followup_note": "担当スタッフより追ってご連絡し、ご注文の確認とお支払い手続きを行います。",
     "order_items": "点数",
-    "order_delivery": "お届け",
     "order_contact": "連絡先",
-    "order_address": "住所",
-    "new_order_btn": "新しい注文を始める",
+    "new_order_btn": "新しいリクエストを始める",
     "order_default_name": "お客様",
     "toast_added": "カートに追加しました",
-    "toast_fill_fields": "電話番号・お名前・ご住所をご入力ください。",
+    "toast_fill_fields": "お名前・電話番号をご入力ください。",
+    "toast_slow_down": "数秒待ってから再度お試しください。",
     "footer_tagline": "あなたの和風ヘルシーフードパートナー。",
     "footer_contact": "お問い合わせ",
-    "footer_hours": "月〜日 11:00〜13:30",
-    "footer_follow": "フォロー＆注文",
+    "hours_dining_label": "Dining・店内飲食＆デリバリー",
+    "hours_dining_time": "月〜日・17:00〜遅くまで",
+    "hours_lunch_label": "Lunch Healthy Bento",
+    "hours_lunch_time": "月〜日・11:00〜13:30",
+    "hours_coming_soon": "近日公開",
+    "footer_follow": "フォロー",
+    "footer_directions": "道順を見る",
+    "footer_reviews": "Googleクチコミ",
     "footer_copyright": "© 2026 Rokusho. All rights reserved.",
     "footer_privacy": "プライバシーポリシー・利用規約",
     "lang_switcher_label": "言語"
@@ -1224,21 +1164,14 @@ const I18N = {
     "nav_menu": "Bento",
     "nav_about": "소개",
     "mode_byo": "직접 구성하기",
-    "mode_picks": "셰프 추천",
-    "add_to_cart_short": "장바구니 담기",
-    "order_confirmed_title": "주문이 확정되었습니다",
+    "order_confirmed_title": "요청이 확정되었습니다",
     "cart_nutrition_total": "영양 합계",
     "order_nutrition_total": "영양 합계",
     "hero_eyebrow": "칼로리 계산기",
     "hero_title": "나만의 벤토 만들기",
     "hero_desc": "단백질, 탄수화물, 사이드, 소스를 정통 일본식으로 골라보세요 — 맛있고 균형 잡힌, 나만의 방식으로.",
-    "hero_caption": "임시 이미지입니다 — 실제 벤토 사진은 곧 업데이트됩니다",
-    "picks_eyebrow": "한 번의 탭으로 완성",
-    "picks_title": "셰프 추천",
-    "picks_desc": "4가지 컬렉션, 총 8종의 시그니처 벤토 — 수량을 선택하고 바로 장바구니에 담아보세요.",
-    "picks_note": "표시된 가격은 부가세 별도입니다 — 결제 시 세금이 자동으로 추가됩니다.",
     "step1_title": "단백질 선택",
-    "step1_desc": "일본식 저온조리 방식 — 촉촉함과 영양을 그대로 담아냅니다.",
+    "step1_desc": "일본식 그릴 방식 — 풍미와 영양을 그대로 담아냅니다.",
     "step2_title": "탄수화물 선택",
     "step2_desc": "일본식 쌀밥부터 소바까지 — 벤토의 베이스를 골라보세요.",
     "step3_title": "사이드 선택",
@@ -1246,6 +1179,9 @@ const I18N = {
     "step4_title": "소스 선택",
     "step4_desc": "정통 일본식 풍미, 곁들여 뿌려보세요.",
     "step_added": "개 선택됨",
+    "note_single_select": "이 카테고리에서 원하는 1개를 선택하세요.",
+    "btn_select": "선택",
+    "btn_selected": "선택됨",
     "tab_protein": "단백질",
     "tab_carbs": "탄수화물",
     "tab_side": "사이드",
@@ -1261,57 +1197,47 @@ const I18N = {
     "panel_empty": "벤토가 비어 있습니다 — 위 단계에서 재료를 선택해 보세요.",
     "fab_view_bento": "벤토 보기",
     "cart_your_cart": "장바구니",
-    "cart_empty": "장바구니가 비어 있습니다 — 커스텀 벤토나 셰프 추천 세트를 담아보세요.",
-    "cart_continue_delivery": "배달 시간 선택으로 이동",
+    "cart_empty": "장바구니가 비어 있습니다 — 커스텀 벤토를 담아보세요.",
+    "cart_continue_contact": "고객 정보 입력으로 이동",
     "cart_est_total": "예상 총 금액",
     "cart_show_ing": "재료 보기",
     "cart_hide_ing": "재료 숨기기",
     "cart_remove": "삭제",
     "custom_bento_label": "커스텀 벤토",
-    "chefs_pick_label": "셰프 추천 세트",
     "ingredient_singular": "재료",
     "ingredient_plural": "재료",
-    "delivery_time_title": "배달 시간",
-    "step2of3": "3단계 중 2단계",
-    "checkout_note_late": "오후 6시가 지나 가장 빠른 배달일은 2일 후입니다. 오후 6시 이전 주문 시 다음날 배달이 가능합니다.",
-    "checkout_note_ontime": "오늘 오후 6시 이전 주문 시 내일 배달이 가능합니다. 그 이후 날짜는 언제든 선택할 수 있습니다.",
-    "delivery_date_label": "배달 날짜",
-    "delivery_slot_label": "배달 시간대",
-    "checkout_slot_note": "시간은 예상 기준입니다 — 라이더는 매일 11:00~13:30 사이, 선택하신 30분 구간 내에 도착합니다.",
     "back_btn": "뒤로",
-    "continue_details": "상세 정보 입력으로 이동",
     "contact_title": "고객 정보",
-    "step3of3": "3단계 중 3단계",
+    "step2of2": "2단계 중 2단계",
     "label_phone": "전화번호",
     "phone_placeholder": "예: 0900000001",
-    "autofill_note": "저장된 정보를 찾았습니다 — 필요하면 자유롭게 수정하세요.",
     "label_title_field": "호칭",
     "title_mr": "남성",
     "title_ms": "여성",
-    "title_mx": "기타",
     "label_fullname": "이름",
     "fullname_placeholder": "이름을 입력하세요",
-    "label_address": "배달 주소",
-    "address_placeholder": "도로명, 동, 구, 시",
-    "label_email": "이메일 (선택 사항)",
-    "email_placeholder": "you@email.com",
-    "confirm_order": "주문 확정",
+    "confirm_request": "요청 확정",
     "order_done_title": "감사합니다",
-    "order_done_desc": "주문이 접수되었으며 현재 준비 중입니다.",
+    "order_done_desc": "요청이 접수되었으며 저희 팀이 곧 연락드리겠습니다.",
     "screenshot_note": "주문 코드를 저장하려면 이 화면을 캡처해 주세요.",
     "followup_note": "저희 팀이 곧 연락드려 주문을 확인하고 결제를 진행해 드리겠습니다.",
     "order_items": "품목 수",
-    "order_delivery": "배달",
     "order_contact": "연락처",
-    "order_address": "주소",
-    "new_order_btn": "새 주문 시작하기",
+    "new_order_btn": "새 요청 시작하기",
     "order_default_name": "고객님",
     "toast_added": "장바구니에 담았습니다",
-    "toast_fill_fields": "전화번호, 이름, 주소를 입력해 주세요.",
+    "toast_fill_fields": "이름과 전화번호를 입력해 주세요.",
+    "toast_slow_down": "몇 초 후에 다시 시도해 주세요.",
     "footer_tagline": "당신의 일본식 건강식 파트너.",
     "footer_contact": "문의",
-    "footer_hours": "월 – 일, 오전 11시 – 오후 1시 30분",
-    "footer_follow": "팔로우 & 주문",
+    "hours_dining_label": "Dining · 다이닝 & 배달",
+    "hours_dining_time": "월 – 일 · 오후 5시 – 늦게까지",
+    "hours_lunch_label": "Lunch Healthy Bento",
+    "hours_lunch_time": "월 – 일 · 오전 11시 – 오후 1시 30분",
+    "hours_coming_soon": "출시 예정",
+    "footer_follow": "팔로우",
+    "footer_directions": "길찾기",
+    "footer_reviews": "Google 리뷰",
     "footer_copyright": "© 2026 Rokusho. All rights reserved.",
     "footer_privacy": "개인정보 처리방침 · 이용약관",
     "lang_switcher_label": "언어"
@@ -1320,21 +1246,14 @@ const I18N = {
     "nav_menu": "Bento",
     "nav_about": "关于我们",
     "mode_byo": "自选搭配",
-    "mode_picks": "主厨精选",
-    "add_to_cart_short": "加入购物车",
-    "order_confirmed_title": "订单已确认",
+    "order_confirmed_title": "请求已确认",
     "cart_nutrition_total": "营养总计",
     "order_nutrition_total": "营养总计",
     "hero_eyebrow": "卡路里计算器",
     "hero_title": "打造专属便当",
     "hero_desc": "以纯正日式风格挑选蛋白质、碳水、配菜与酱汁 —— 美味均衡，完全按你的喜好搭配。",
-    "hero_caption": "占位插图 —— 真实便当照片即将上线",
-    "picks_eyebrow": "一键即可下单",
-    "picks_title": "主厨精选",
-    "picks_desc": "四大系列共八款招牌便当 —— 选择数量，直接加入购物车。",
-    "picks_note": "显示价格不含增值税 —— 结账时将自动加收税费。",
     "step1_title": "选择蛋白质",
-    "step1_desc": "日式舒肥低温烹调 —— 锁住水分与营养。",
+    "step1_desc": "日式炭烤风味 —— 锁住美味与营养。",
     "step2_title": "选择碳水",
     "step2_desc": "从日式米饭到荞麦面 —— 选择便当的基底。",
     "step3_title": "选择配菜",
@@ -1342,6 +1261,9 @@ const I18N = {
     "step4_title": "选择酱汁",
     "step4_desc": "纯正日式风味，淋在便当上恰到好处。",
     "step_added": "已选",
+    "note_single_select": "从此类别中任选1项。",
+    "btn_select": "选择",
+    "btn_selected": "已选择",
     "tab_protein": "蛋白质",
     "tab_carbs": "碳水",
     "tab_side": "配菜",
@@ -1357,564 +1279,208 @@ const I18N = {
     "panel_empty": "便当还是空的 —— 请在上方步骤中选择食材。",
     "fab_view_bento": "查看便当",
     "cart_your_cart": "购物车",
-    "cart_empty": "购物车是空的 —— 添加自选便当或主厨精选套餐开始下单吧。",
-    "cart_continue_delivery": "继续选择送达时间",
+    "cart_empty": "购物车是空的 —— 添加自选便当开始下单吧。",
+    "cart_continue_contact": "继续填写详细信息",
     "cart_est_total": "预估总计",
     "cart_show_ing": "查看食材",
     "cart_hide_ing": "隐藏食材",
     "cart_remove": "删除",
     "custom_bento_label": "自选便当",
-    "chefs_pick_label": "主厨精选",
     "ingredient_singular": "种食材",
     "ingredient_plural": "种食材",
-    "delivery_time_title": "送达时间",
-    "step2of3": "第2步，共3步",
-    "checkout_note_late": "已过晚上6点，最早可送达日期为2天后。晚上6点前下单可享次日送达。",
-    "checkout_note_ontime": "今天晚上6点前下单可于明天送达。更远的日期随时可选，没有限制。",
-    "delivery_date_label": "送达日期",
-    "delivery_slot_label": "送达时间段",
-    "checkout_slot_note": "时间为预估 —— 骑手将在您选择的30分钟时段内送达，每日11:00至13:30。",
     "back_btn": "返回",
-    "continue_details": "继续填写详细信息",
     "contact_title": "您的详细信息",
-    "step3of3": "第3步，共3步",
+    "step2of2": "第2步，共2步",
     "label_phone": "电话号码",
     "phone_placeholder": "例如：0900000001",
-    "autofill_note": "已找到您保存的信息 —— 可随时修改。",
     "label_title_field": "称呼",
     "title_mr": "先生",
     "title_ms": "女士",
-    "title_mx": "其他",
     "label_fullname": "姓名",
     "fullname_placeholder": "请输入姓名",
-    "label_address": "送达地址",
-    "address_placeholder": "街道、坊/村、区、城市",
-    "label_email": "电子邮箱（选填）",
-    "email_placeholder": "you@email.com",
-    "confirm_order": "确认下单",
+    "confirm_request": "确认请求",
     "order_done_title": "感谢您的订购",
-    "order_done_desc": "您的订单已提交，正在准备中。",
+    "order_done_desc": "您的请求已提交，我们的团队将很快与您联系。",
     "screenshot_note": "请截图保存此页面以保留您的订单编号。",
     "followup_note": "我们的团队将很快与您联系，确认订单并处理付款。",
     "order_items": "商品数",
-    "order_delivery": "配送",
     "order_contact": "联系方式",
-    "order_address": "地址",
-    "new_order_btn": "开始新订单",
+    "new_order_btn": "开始新请求",
     "order_default_name": "您",
     "toast_added": "已加入购物车",
-    "toast_fill_fields": "请填写电话号码、姓名和地址。",
+    "toast_fill_fields": "请填写姓名和电话号码。",
+    "toast_slow_down": "请稍等几秒后再试。",
     "footer_tagline": "您的日式健康餐伙伴。",
     "footer_contact": "联系我们",
-    "footer_hours": "周一至周日 11:00–13:30",
-    "footer_follow": "关注与下单",
+    "hours_dining_label": "Dining · 堂食与外送",
+    "hours_dining_time": "周一至周日 · 17:00–打烊",
+    "hours_lunch_label": "Lunch Healthy Bento",
+    "hours_lunch_time": "周一至周日 · 11:00–13:30",
+    "hours_coming_soon": "即将上线",
+    "footer_follow": "关注",
+    "footer_directions": "获取路线",
+    "footer_reviews": "Google 评价",
     "footer_copyright": "© 2026 Rokusho。保留所有权利。",
     "footer_privacy": "隐私政策 · 条款",
     "lang_switcher_label": "语言"
   }
 };
 const ITEM_I18N = {
-  "beef-full": {
-    "vi": "Bò teriyaki sous-vide — phần đầy đủ",
-    "ja": "牛肉照り焼き（低温調理）— フル",
-    "ko": "저온조리 소고기 데리야키 — 풀 사이즈",
-    "zh": "舒肥照烧牛肉 — 全份"
+  "chicken-drumstick": {
+    "vi": "Đùi gà nướng",
+    "ja": "鶏もも肉のグリル",
+    "ko": "그릴에 구운 닭다리",
+    "zh": "烤鸡腿"
   },
-  "beef-half": {
-    "vi": "Bò teriyaki sous-vide — phần nửa",
-    "ja": "牛肉照り焼き（低温調理）— ハーフ",
-    "ko": "저온조리 소고기 데리야키 — 하프 사이즈",
-    "zh": "舒肥照烧牛肉 — 半份"
-  },
-  "chicken-o-full": {
-    "vi": "Gà sous-vide nguyên vị — phần đầy đủ",
-    "ja": "鶏肉オリジナル（低温調理）— フル",
-    "ko": "저온조리 오리지널 치킨 — 풀 사이즈",
-    "zh": "舒肥原味鸡肉 — 全份"
-  },
-  "chicken-o-half": {
-    "vi": "Gà sous-vide nguyên vị — phần nửa",
-    "ja": "鶏肉オリジナル（低温調理）— ハーフ",
-    "ko": "저온조리 오리지널 치킨 — 하프 사이즈",
-    "zh": "舒肥原味鸡肉 — 半份"
-  },
-  "chicken-yuzu-full": {
-    "vi": "Gà sous-vide yuzu-shichimi — phần đầy đủ",
-    "ja": "鶏肉 柚子七味（低温調理）— フル",
-    "ko": "저온조리 유자시치미 치킨 — 풀 사이즈",
-    "zh": "舒肥柚子七味鸡肉 — 全份"
-  },
-  "chicken-yuzu-half": {
-    "vi": "Gà sous-vide yuzu-shichimi — phần nửa",
-    "ja": "鶏肉 柚子七味（低温調理）— ハーフ",
-    "ko": "저온조리 유자시치미 치킨 — 하프 사이즈",
-    "zh": "舒肥柚子七味鸡肉 — 半份"
-  },
-  "prawn": {
-    "vi": "Tôm sous-vide yuzu kosho",
-    "ja": "海老 柚子胡椒（低温調理）",
-    "ko": "저온조리 유자고쇼 새우",
-    "zh": "舒肥柚子胡椒虾"
+  "chicken-breast": {
+    "vi": "Ức gà nướng",
+    "ja": "鶏むね肉のグリル",
+    "ko": "그릴에 구운 닭가슴살",
+    "zh": "烤鸡胸肉"
   },
   "salmon": {
-    "vi": "Cá hồi Na Uy áp chảo",
-    "ja": "ノルウェーサーモンのソテー",
-    "ko": "노르웨이 연어 시어링",
-    "zh": "香煎挪威三文鱼"
+    "vi": "Cá hồi nướng",
+    "ja": "サーモンのグリル",
+    "ko": "그릴에 구운 연어",
+    "zh": "烤三文鱼"
   },
-  "basa": {
-    "vi": "Cá basa sous-vide sốt miso",
-    "ja": "バサ魚 味噌風味（低温調理）",
-    "ko": "저온조리 미소 바사 생선",
-    "zh": "舒肥味噌巴沙鱼"
+  "beef-belly": {
+    "vi": "Ba chỉ bò nướng",
+    "ja": "牛バラ肉のグリル",
+    "ko": "그릴에 구운 소 삼겹살",
+    "zh": "烤牛五花"
   },
-  "duck": {
-    "vi": "Ức vịt sous-vide",
-    "ja": "鴨胸肉（低温調理）",
-    "ko": "저온조리 오리 가슴살",
-    "zh": "舒肥鸭胸肉"
+  "saba": {
+    "vi": "Cá Saba nướng",
+    "ja": "サバのグリル",
+    "ko": "그릴에 구운 고등어(사바)",
+    "zh": "烤鲭鱼（Saba）"
   },
-  "tuna": {
-    "vi": "Cá ngừ sous-vide",
-    "ja": "マグロ（低温調理）",
-    "ko": "저온조리 참치",
-    "zh": "舒肥金枪鱼"
-  },
-  "tofu": {
-    "vi": "Đậu hũ giòn sốt mật ong miso",
-    "ja": "揚げ豆腐 はちみつ味噌がけ",
-    "ko": "바삭한 두부, 꿀 미소 글레이즈",
-    "zh": "香脆豆腐配蜂蜜味噌酱"
+  "cod-fish": {
+    "vi": "Cá tuyết nướng",
+    "ja": "タラのグリル",
+    "ko": "그릴에 구운 대구",
+    "zh": "烤鳕鱼"
   },
   "rice-white": {
-    "vi": "Cơm trắng Nhật Bản",
+    "vi": "Cơm Nhật",
     "ja": "白ごはん",
     "ko": "일본식 백미밥",
     "zh": "日式白米饭"
   },
   "rice-brown": {
     "vi": "Cơm gạo lứt",
-    "ja": "玄米",
+    "ja": "玄米ごはん",
     "ko": "현미밥",
     "zh": "糙米饭"
   },
-  "don-white": {
-    "vi": "Cơm donburi trắng",
-    "ja": "どんぶり 白ごはん",
-    "ko": "돈부리 백미밥",
-    "zh": "丼饭用白米饭"
-  },
-  "don-brown": {
-    "vi": "Cơm donburi gạo lứt",
-    "ja": "どんぶり 玄米",
-    "ko": "돈부리 현미밥",
-    "zh": "丼饭用糙米饭"
-  },
-  "sweet-potato": {
-    "vi": "Khoai lang Nhật nướng mật ong",
-    "ja": "蜜焼き さつまいも",
-    "ko": "꿀 구이 일본 고구마",
-    "zh": "蜂蜜烤日本红薯"
-  },
-  "baby-potato": {
-    "vi": "Khoai tây bi nướng",
-    "ja": "ベビーポテトのロースト",
-    "ko": "베이비 감자 구이",
-    "zh": "烤迷你土豆"
-  },
   "soba": {
-    "vi": "Mì soba lạnh",
-    "ja": "冷やしそば",
-    "ko": "냉모밀",
-    "zh": "冷荞麦面"
-  },
-  "udon": {
-    "vi": "Mì udon lạnh sốt mè",
-    "ja": "冷やし胡麻うどん",
-    "ko": "냉 참깨 우동",
-    "zh": "冷芝麻乌冬面"
-  },
-  "purple-cabbage": {
-    "vi": "Bắp cải tím",
-    "ja": "紫キャベツ",
-    "ko": "자색 양배추",
-    "zh": "紫甘蓝"
-  },
-  "onsen-egg": {
-    "vi": "Trứng onsen",
-    "ja": "温泉卵",
-    "ko": "온천계란",
-    "zh": "温泉蛋"
-  },
-  "pak-choi": {
-    "vi": "Cải thìa xào",
-    "ja": "チンゲン菜のソテー",
-    "ko": "청경채 볶음",
-    "zh": "炒小白菜"
-  },
-  "tsukemono": {
-    "vi": "Dưa muối tsukemono",
-    "ja": "漬物",
-    "ko": "츠케모노 절임",
-    "zh": "日式腌菜"
-  },
-  "wakame": {
-    "vi": "Salad rong biển wakame",
-    "ja": "わかめサラダ",
-    "ko": "미역 샐러드",
-    "zh": "裙带菜沙拉"
-  },
-  "mixed-veg": {
-    "vi": "Rau củ thập cẩm xào",
-    "ja": "野菜炒めミックス",
-    "ko": "모듬 야채 볶음",
-    "zh": "什锦炒蔬菜"
-  },
-  "sesame-spinach": {
-    "vi": "Rau bina sốt mè",
-    "ja": "ほうれん草の胡麻和え",
-    "ko": "참깨 시금치",
-    "zh": "芝麻菠菜"
-  },
-  "shiitake": {
-    "vi": "Nấm shiitake xào",
-    "ja": "しいたけのソテー",
-    "ko": "표고버섯 볶음",
-    "zh": "香煎香菇"
-  },
-  "french-bean": {
-    "vi": "Đậu que xào",
-    "ja": "いんげんのソテー",
-    "ko": "그린빈 볶음",
-    "zh": "炒四季豆"
-  },
-  "pumpkin": {
-    "vi": "Bí đỏ nướng mật ong",
-    "ja": "かぼちゃの蜂蜜ロースト",
-    "ko": "꿀 호박 구이",
-    "zh": "蜂蜜烤南瓜"
-  },
-  "cauliflower": {
-    "vi": "Súp lơ trắng nướng",
-    "ja": "カリフラワーのロースト",
-    "ko": "콜리플라워 구이",
-    "zh": "烤花椰菜"
+    "vi": "Mì soba",
+    "ja": "そば",
+    "ko": "소바(메밀국수)",
+    "zh": "荞麦面"
   },
   "sweet-corn": {
-    "vi": "Ngô ngọt hấp",
+    "vi": "Bắp Mỹ luộc",
     "ja": "蒸しとうもろこし",
-    "ko": "옥수수 찜",
-    "zh": "清蒸甜玉米"
+    "ko": "찐 옥수수",
+    "zh": "水煮玉米"
   },
-  "avocado": {
-    "vi": "Bơ tươi",
-    "ja": "新鮮なアボカド",
-    "ko": "신선한 아보카도",
-    "zh": "新鲜牛油果"
+  "sweet-potato": {
+    "vi": "Khoai lang luộc",
+    "ja": "蒸しさつまいも",
+    "ko": "찐 고구마",
+    "zh": "水煮红薯"
   },
-  "edamame": {
-    "vi": "Đậu nành Nhật edamame",
-    "ja": "枝豆",
-    "ko": "에다마메",
-    "zh": "毛豆"
+  "mushroom-simmered": {
+    "vi": "Nấm kho",
+    "ja": "きのこの煮込み",
+    "ko": "버섯조림",
+    "zh": "炖菇"
+  },
+  "tomato-grilled": {
+    "vi": "Cà chua nướng",
+    "ja": "トマトのグリル",
+    "ko": "구운 토마토",
+    "zh": "烤番茄"
+  },
+  "mixed-salad": {
+    "vi": "Salad theo ngày",
+    "ja": "本日のサラダ",
+    "ko": "오늘의 샐러드",
+    "zh": "每日沙拉"
+  },
+  "stir-fried-veg": {
+    "vi": "Rau xào",
+    "ja": "野菜炒め",
+    "ko": "야채볶음",
+    "zh": "炒时蔬"
   },
   "broccoli": {
-    "vi": "Bông cải xanh hấp",
+    "vi": "Bông cải luộc",
     "ja": "蒸しブロッコリー",
-    "ko": "브로콜리 찜",
-    "zh": "清蒸西兰花"
+    "ko": "찐 브로콜리",
+    "zh": "水煮西兰花"
   },
-  "lotus-root": {
-    "vi": "Củ sen giòn",
-    "ja": "れんこんチップス",
-    "ko": "바삭한 연근",
-    "zh": "香脆莲藕"
+  "spinach": {
+    "vi": "Bó xôi luộc",
+    "ja": "蒸しほうれん草",
+    "ko": "찐 시금치",
+    "zh": "水煮菠菜"
   },
-  "cherry-tomato": {
-    "vi": "Cà chua bi nướng",
-    "ja": "プチトマトのロースト",
-    "ko": "방울토마토 구이",
-    "zh": "烤圣女果"
+  "carrot": {
+    "vi": "Cà rốt hấp",
+    "ja": "蒸しにんじん",
+    "ko": "찐 당근",
+    "zh": "蒸胡萝卜"
   },
-  "beetroot": {
-    "vi": "Củ dền nướng",
-    "ja": "ビーツのロースト",
-    "ko": "비트 구이",
-    "zh": "烤甜菜根"
+  "potato-grilled": {
+    "vi": "Khoai tây nướng",
+    "ja": "じゃがいものグリル",
+    "ko": "구운 감자",
+    "zh": "烤土豆"
   },
-  "wafu": {
-    "vi": "Sốt Nhật truyền thống (wafu)",
-    "ja": "和風ドレッシング",
-    "ko": "클래식 와후 드레싱",
-    "zh": "经典日式和风酱"
+  "pumpkin-grilled": {
+    "vi": "Bí đỏ nướng paprika",
+    "ja": "かぼちゃのパプリカグリル",
+    "ko": "파프리카 호박구이",
+    "zh": "烤南瓜（红椒粉）"
   },
-  "goma": {
-    "vi": "Sốt mè cay goma",
-    "ja": "辛味胡麻だれ",
-    "ko": "스파이시 고마 소스",
-    "zh": "辣味芝麻酱"
+  "sesame-mayo": {
+    "vi": "Sốt mè mayo",
+    "ja": "ごまマヨソース",
+    "ko": "참깨 마요 소스",
+    "zh": "芝麻蛋黄酱"
   },
-  "wasabi-mayo": {
-    "vi": "Sốt mayo wasabi",
-    "ja": "わさびマヨネーズ",
-    "ko": "와사비 마요",
-    "zh": "芥末蛋黄酱"
+  "shoyu-dressing": {
+    "vi": "Sốt trái cây",
+    "ja": "醤油フルーツドレッシング",
+    "ko": "쇼유 과일 드레싱",
+    "zh": "酱油水果酱汁"
   },
-  "wasabi-soy": {
-    "vi": "Sốt tương wasabi",
-    "ja": "わさび醤油",
-    "ko": "와사비 간장",
-    "zh": "芥末酱油"
+  "mentsuyu": {
+    "vi": "Sốt mì lạnh (Mentsuyu)",
+    "ja": "麺つゆ",
+    "ko": "멘츠유(냉소바 소스)",
+    "zh": "面露酱汁"
   },
-  "honey-soy": {
-    "vi": "Sốt mật ong tương",
-    "ja": "蜂蜜醤油",
-    "ko": "꿀 간장",
-    "zh": "蜂蜜酱油"
+  "soy-sauce": {
+    "vi": "Sốt nước tương",
+    "ja": "醤油",
+    "ko": "간장 소스",
+    "zh": "酱油"
   },
-  "yuzu-ponzu": {
-    "vi": "Sốt yuzu ponzu",
-    "ja": "柚子ポン酢",
-    "ko": "유자 폰즈",
-    "zh": "柚子橙醋"
+  "teriyaki": {
+    "vi": "Sốt teriyaki",
+    "ja": "照り焼きソース",
+    "ko": "데리야키 소스",
+    "zh": "照烧酱"
   },
-  "ume": {
-    "vi": "Sốt mận ume",
-    "ja": "梅ドレッシング",
-    "ko": "우메 매실 드레싱",
-    "zh": "梅子酱"
-  },
-  "miso-honey": {
-    "vi": "Sốt miso mật ong",
-    "ja": "味噌はちみつ",
-    "ko": "미소 꿀 소스",
-    "zh": "味噌蜂蜜酱"
-  },
-  "olive-herb": {
-    "vi": "Dầu olive thảo mộc",
-    "ja": "オリーブオイル＆ハーブ",
-    "ko": "올리브 오일 허브",
-    "zh": "橄榄油香草酱"
-  }
-};
-const PICK_I18N = {
-  "pick-teriyaki-beef": {
-    "vi": {
-      "name": "Bento Bò Teriyaki",
-      "tagline": "Bò teriyaki sous-vide, cơm trắng Nhật, đậu edamame & rau bina sốt mè"
-    },
-    "ja": {
-      "name": "照り焼きビーフ弁当",
-      "tagline": "牛肉照り焼き（低温調理）、白ごはん、枝豆、ほうれん草の胡麻和え"
-    },
-    "ko": {
-      "name": "데리야키 소고기 벤토",
-      "tagline": "저온조리 소고기 데리야키, 백미밥, 에다마메 & 참깨 시금치"
-    },
-    "zh": {
-      "name": "照烧牛肉便当",
-      "tagline": "舒肥照烧牛肉、日式白米饭、毛豆和芝麻菠菜"
-    }
-  },
-  "pick-duck-soba": {
-    "vi": {
-      "name": "Bento Vịt & Mì Soba",
-      "tagline": "Ức vịt sous-vide, mì soba lạnh, củ sen, cà chua bi & sốt mận ume"
-    },
-    "ja": {
-      "name": "鴨と蕎麦の弁当",
-      "tagline": "鴨胸肉（低温調理）、冷やしそば、れんこん、プチトマト、梅ドレッシング"
-    },
-    "ko": {
-      "name": "오리 & 소바 벤토",
-      "tagline": "저온조리 오리 가슴살, 냉모밀, 연근, 방울토마토 & 우메 드레싱"
-    },
-    "zh": {
-      "name": "鸭肉荞麦便当",
-      "tagline": "舒肥鸭胸肉、冷荞麦面、莲藕、圣女果和梅子酱"
-    }
-  },
-  "pick-original-chicken": {
-    "vi": {
-      "name": "Bento Gà Nguyên Vị",
-      "tagline": "Gà sous-vide ít béo, cơm gạo lứt, bông cải xanh, cà chua bi & sốt tương wasabi"
-    },
-    "ja": {
-      "name": "オリジナルチキン弁当",
-      "tagline": "低脂肪鶏肉（低温調理）、玄米、ブロッコリー、プチトマト、わさび醤油"
-    },
-    "ko": {
-      "name": "오리지널 치킨 벤토",
-      "tagline": "저지방 저온조리 치킨, 현미밥, 브로콜리, 방울토마토 & 와사비 간장"
-    },
-    "zh": {
-      "name": "原味鸡肉便当",
-      "tagline": "低脂舒肥鸡肉、糙米饭、西兰花、圣女果和芥末酱油"
-    }
-  },
-  "pick-seared-tuna": {
-    "vi": {
-      "name": "Bento Cá Ngừ Áp Chảo",
-      "tagline": "Cá ngừ sous-vide ít béo, khoai tây bi, bông cải xanh, bắp cải tím & sốt yuzu ponzu"
-    },
-    "ja": {
-      "name": "マグロ焼き弁当",
-      "tagline": "低脂肪マグロ（低温調理）、ベビーポテト、ブロッコリー、紫キャベツ、柚子ポン酢"
-    },
-    "ko": {
-      "name": "참치 시어링 벤토",
-      "tagline": "저지방 저온조리 참치, 베이비 감자, 브로콜리, 자색 양배추 & 유자 폰즈"
-    },
-    "zh": {
-      "name": "香煎金枪鱼便当",
-      "tagline": "低脂舒肥金枪鱼、迷你土豆、西兰花、紫甘蓝和柚子橙醋"
-    }
-  },
-  "pick-yuzu-salmon": {
-    "vi": {
-      "name": "Bento Cá Hồi Yuzu",
-      "tagline": "Cá hồi áp chảo, cơm donburi, rong biển wakame, cà chua bi & sốt yuzu ponzu"
-    },
-    "ja": {
-      "name": "柚子サーモン弁当",
-      "tagline": "サーモンソテー、どんぶりごはん、わかめ、プチトマト、柚子ポン酢"
-    },
-    "ko": {
-      "name": "유자 연어 벤토",
-      "tagline": "시어링 연어, 돈부리밥, 미역, 방울토마토 & 유자 폰즈"
-    },
-    "zh": {
-      "name": "柚子三文鱼便当",
-      "tagline": "香煎三文鱼、丼饭、裙带菜、圣女果和柚子橙醋"
-    }
-  },
-  "pick-miso-basa": {
-    "vi": {
-      "name": "Bento Cá Basa Sốt Miso",
-      "tagline": "Cá basa sốt miso, cơm trắng, nấm shiitake, bắp cải tím & sốt miso mật ong"
-    },
-    "ja": {
-      "name": "味噌バサ魚弁当",
-      "tagline": "味噌バサ魚、白ごはん、しいたけ、紫キャベツ、味噌はちみつ"
-    },
-    "ko": {
-      "name": "미소 바사 생선 벤토",
-      "tagline": "미소 바사 생선, 백미밥, 표고버섯, 자색 양배추 & 미소 꿀 소스"
-    },
-    "zh": {
-      "name": "味噌巴沙鱼便当",
-      "tagline": "味噌巴沙鱼、白米饭、香菇、紫甘蓝和味噌蜂蜜酱"
-    }
-  },
-  "pick-tofu-garden": {
-    "vi": {
-      "name": "Bento Đậu Hũ Giòn",
-      "tagline": "Đậu hũ giòn sốt mật ong miso, cơm gạo lứt, đậu edamame, bông cải xanh & sốt mè cay goma"
-    },
-    "ja": {
-      "name": "揚げ豆腐ガーデン弁当",
-      "tagline": "はちみつ味噌豆腐、玄米、枝豆、ブロッコリー、辛味胡麻だれ"
-    },
-    "ko": {
-      "name": "바삭 두부 가든 벤토",
-      "tagline": "꿀 미소 두부, 현미밥, 에다마메, 브로콜리 & 스파이시 고마 소스"
-    },
-    "zh": {
-      "name": "香脆豆腐花园便当",
-      "tagline": "蜂蜜味噌豆腐、糙米饭、毛豆、西兰花和辣味芝麻酱"
-    }
-  },
-  "pick-veggie-power": {
-    "vi": {
-      "name": "Bento Rau Củ Năng Lượng",
-      "tagline": "Khoai lang nướng, bơ, đậu edamame, bông cải xanh & sốt dầu olive thảo mộc"
-    },
-    "ja": {
-      "name": "ベジパワー弁当",
-      "tagline": "焼きさつまいも、アボカド、枝豆、ブロッコリー、オリーブオイル＆ハーブ"
-    },
-    "ko": {
-      "name": "베지 파워 벤토",
-      "tagline": "구운 고구마, 아보카도, 에다마메, 브로콜리 & 올리브 오일 허브 드레싱"
-    },
-    "zh": {
-      "name": "蔬菜能量便当",
-      "tagline": "烤红薯、牛油果、毛豆、西兰花和橄榄油香草酱"
-    }
-  }
-};
-const GROUP_I18N = {
-  "high-protein": {
-    "vi": {
-      "label": "Giàu Đạm",
-      "desc": "Xây dựng quanh khẩu phần đạm dồi dào giúp phục hồi và no lâu."
-    },
-    "ja": {
-      "label": "高タンパク",
-      "desc": "しっかりタンパク質を摂れる、回復と満足感を重視した組み合わせ。"
-    },
-    "ko": {
-      "label": "고단백",
-      "desc": "회복을 돕고 든든하게 채워주는 넉넉한 단백질 구성입니다."
-    },
-    "zh": {
-      "label": "高蛋白",
-      "desc": "以充足的蛋白质为核心，帮助恢复体力并保持饱腹感。"
-    }
-  },
-  "low-calories": {
-    "vi": {
-      "label": "Ít Calo",
-      "desc": "Sự kết hợp nhẹ nhàng hơn nhưng vẫn đầy đủ hương vị."
-    },
-    "ja": {
-      "label": "低カロリー",
-      "desc": "軽やかながら味わいはそのまま楽しめる組み合わせ。"
-    },
-    "ko": {
-      "label": "저칼로리",
-      "desc": "맛은 그대로, 더 가벼운 조합입니다."
-    },
-    "zh": {
-      "label": "低卡路里",
-      "desc": "更轻盈的搭配，风味丝毫不减。"
-    }
-  },
-  "balanced": {
-    "vi": {
-      "label": "Cân Bằng",
-      "desc": "Tỷ lệ đều giữa đạm, tinh bột và chất béo lành mạnh — lựa chọn mỗi ngày."
-    },
-    "ja": {
-      "label": "バランス",
-      "desc": "タンパク質・炭水化物・良質な脂質を均等に — 毎日の定番。"
-    },
-    "ko": {
-      "label": "밸런스",
-      "desc": "단백질, 탄수화물, 건강한 지방을 고르게 — 매일 먹기 좋은 구성."
-    },
-    "zh": {
-      "label": "均衡",
-      "desc": "蛋白质、碳水与健康脂肪均衡搭配 —— 日常首选。"
-    }
-  },
-  "vegan": {
-    "vi": {
-      "label": "Thuần Chay",
-      "desc": "100% từ thực vật, không có sản phẩm từ động vật."
-    },
-    "ja": {
-      "label": "ヴィーガン",
-      "desc": "100%植物性、動物性食品は使用していません。"
-    },
-    "ko": {
-      "label": "비건",
-      "desc": "100% 식물성 재료로만 구성, 동물성 재료 없음."
-    },
-    "zh": {
-      "label": "纯素",
-      "desc": "100%植物基，不含任何动物成分。"
-    }
+  "sesame-honey": {
+    "vi": "Sốt mè rang mật ong",
+    "ja": "ごまはちみつドレッシング",
+    "ko": "참깨 꿀 드레싱",
+    "zh": "芝麻蜂蜜酱汁"
   }
 };
 
@@ -1939,22 +1505,6 @@ function itemName(item){
   const tr = ITEM_I18N[item.id];
   return (LANG!=='en' && tr && tr[LANG]) || item.name;
 }
-function pickName(pick){
-  const tr = PICK_I18N[pick.id];
-  return (LANG!=='en' && tr && tr[LANG] && tr[LANG].name) || pick.name;
-}
-function pickTagline(pick){
-  const tr = PICK_I18N[pick.id];
-  return (LANG!=='en' && tr && tr[LANG] && tr[LANG].tagline) || pick.tagline;
-}
-function groupLabel(group){
-  const tr = GROUP_I18N[group];
-  return (LANG!=='en' && tr && tr[LANG] && tr[LANG].label) || GROUP_META[group].label;
-}
-function groupDesc(group){
-  const tr = GROUP_I18N[group];
-  return (LANG!=='en' && tr && tr[LANG] && tr[LANG].desc) || GROUP_META[group].desc;
-}
 function catLabel(cat){ return tr_('tab_'+cat); }
 
 function applyStaticTranslations(){
@@ -1976,7 +1526,6 @@ function setLanguage(lang){
   try{ localStorage.setItem('rokusho_lang', lang); }catch(e){}
   applyStaticTranslations();
   renderAll();
-  renderPicks();
   renderCartPanel();
 }
 
@@ -1986,59 +1535,38 @@ function setLanguage(lang){
    ============================================================ */
 const DATA = {
   protein:[
-    {id:'beef-full', icon:'beef', kcal:280, protein:32, carbs:8, fat:12, price:45000, name:'Sous-vide beef teriyaki — full'},
-    {id:'beef-half', icon:'beef', kcal:140, protein:16, carbs:4, fat:6, price:25000, name:'Sous-vide beef teriyaki — half'},
-    {id:'chicken-o-full', icon:'chicken', kcal:165, protein:31, carbs:0, fat:4, price:35000, name:'Sous-vide original chicken — full'},
-    {id:'chicken-o-half', icon:'chicken', kcal:83, protein:16, carbs:0, fat:2, price:19000, name:'Sous-vide original chicken — half'},
-    {id:'chicken-yuzu-full', icon:'chicken', kcal:175, protein:30, carbs:3, fat:5, price:38000, name:'Sous-vide yuzu-shichimi chicken — full'},
-    {id:'chicken-yuzu-half', icon:'chicken', kcal:88, protein:15, carbs:2, fat:3, price:21000, name:'Sous-vide yuzu-shichimi chicken — half'},
-    {id:'prawn', icon:'shrimp', kcal:140, protein:24, carbs:2, fat:3, price:32000, name:'Sous-vide yuzu kosho prawn'},
-    {id:'salmon', icon:'fish', kcal:230, protein:25, carbs:0, fat:14, price:49000, name:'Seared Norwegian salmon'},
-    {id:'basa', icon:'fish', kcal:190, protein:22, carbs:4, fat:8, price:36000, name:'Sous-vide miso basa fish'},
-    {id:'duck', icon:'duck', kcal:220, protein:27, carbs:0, fat:11, price:47000, name:'Sous-vide duck breast'},
-    {id:'tuna', icon:'fish', kcal:150, protein:28, carbs:0, fat:3, price:39000, name:'Sous-vide tuna'},
-    {id:'tofu', icon:'tofu', kcal:210, protein:14, carbs:16, fat:11, price:28000, name:'Crispy tofu, honey-miso glaze'}
+    {id:'chicken-drumstick', icon:'chicken', kcal:180, protein:30, carbs:0, fat:6, price:85000, name:'Grilled chicken drumstick'},
+    {id:'chicken-breast', icon:'chicken', kcal:180, protein:34.5, carbs:0, fat:3.9, price:70000, name:'Grilled chicken breast'},
+    {id:'salmon', icon:'fish', kcal:250, protein:24, carbs:0, fat:16.8, price:180000, name:'Grilled salmon'},
+    {id:'beef-belly', icon:'beef', kcal:494, protein:22.4, carbs:0, fat:44.8, price:120000, name:'Grilled beef belly'},
+    {id:'saba', icon:'fish', kcal:170, protein:24.7, carbs:0, fat:18.6, price:85000, name:'Grilled saba mackerel'},
+    {id:'cod-fish', icon:'fish', kcal:98, protein:21.6, carbs:0, fat:0.8, price:480000, name:'Grilled cod fish'}
   ],
   carbs:[
-    {id:'rice-white', icon:'rice', kcal:200, protein:4, carbs:44, fat:0.5, price:12000, name:'Japanese white rice'},
-    {id:'rice-brown', icon:'rice', kcal:215, protein:5, carbs:45, fat:1.8, price:14000, name:'Brown rice'},
-    {id:'don-white', icon:'rice', kcal:240, protein:5, carbs:53, fat:0.5, price:16000, name:'Donburi white rice'},
-    {id:'don-brown', icon:'rice', kcal:250, protein:6, carbs:52, fat:2, price:18000, name:'Donburi brown rice'},
-    {id:'sweet-potato', icon:'potato', kcal:180, protein:2, carbs:41, fat:0.3, price:15000, name:'Honey-roasted Japanese sweet potato'},
-    {id:'baby-potato', icon:'potato', kcal:150, protein:3, carbs:32, fat:1, price:14000, name:'Baked baby potato'},
-    {id:'soba', icon:'noodle', kcal:190, protein:7, carbs:40, fat:1, price:18000, name:'Cold soba'},
-    {id:'udon', icon:'noodle', kcal:210, protein:6, carbs:42, fat:2.5, price:18000, name:'Cold sesame udon'}
+    {id:'rice-white', icon:'rice', kcal:168, protein:2.5, carbs:37.1, fat:0.3, price:10000, name:'Japanese white rice'},
+    {id:'rice-brown', icon:'rice', kcal:123, protein:2.7, carbs:25.6, fat:1, price:20000, name:'Brown rice'},
+    {id:'soba', icon:'noodle', kcal:99, protein:5.1, carbs:21.4, fat:0.1, price:45000, name:'Soba noodles'},
+    {id:'sweet-corn', icon:'corn', kcal:96, protein:3.4, carbs:21, fat:1.5, price:40000, name:'Steamed corn'},
+    {id:'sweet-potato', icon:'potato', kcal:776, protein:1.4, carbs:17.7, fat:0.1, price:20000, name:'Steamed sweet potato'}
   ],
   side:[
-    {id:'purple-cabbage', icon:'leaf', kcal:25, protein:1, carbs:5, fat:0.1, price:8000, name:'Purple cabbage'},
-    {id:'onsen-egg', icon:'egg', kcal:90, protein:7, carbs:0.5, fat:6, price:12000, name:'Onsen egg'},
-    {id:'pak-choi', icon:'leaf', kcal:35, protein:2, carbs:4, fat:1.5, price:9000, name:'Sautéed pak choi'},
-    {id:'tsukemono', icon:'wave', kcal:15, protein:0.5, carbs:3, fat:0, price:8000, name:'Tsukemono pickles'},
-    {id:'wakame', icon:'wave', kcal:45, protein:1.5, carbs:5, fat:2, price:12000, name:'Wakame seaweed salad'},
-    {id:'mixed-veg', icon:'leaf', kcal:60, protein:2, carbs:8, fat:2, price:10000, name:'Sautéed mixed vegetables'},
-    {id:'sesame-spinach', icon:'leaf', kcal:50, protein:3, carbs:4, fat:2.5, price:10000, name:'Sesame spinach'},
-    {id:'shiitake', icon:'mushroom', kcal:40, protein:2, carbs:5, fat:1.5, price:12000, name:'Sautéed shiitake mushroom'},
-    {id:'french-bean', icon:'bean', kcal:35, protein:2, carbs:6, fat:1, price:9000, name:'Sautéed French beans'},
-    {id:'pumpkin', icon:'root', kcal:70, protein:1, carbs:16, fat:0.3, price:10000, name:'Roasted honey pumpkin'},
-    {id:'cauliflower', icon:'leaf', kcal:45, protein:2, carbs:7, fat:1, price:10000, name:'Roasted cauliflower'},
-    {id:'sweet-corn', icon:'corn', kcal:90, protein:3, carbs:19, fat:1, price:9000, name:'Steamed sweet corn'},
-    {id:'avocado', icon:'avocado', kcal:120, protein:1.5, carbs:6, fat:11, price:18000, name:'Fresh avocado'},
-    {id:'edamame', icon:'bean', kcal:95, protein:9, carbs:7, fat:4, price:12000, name:'Edamame'},
-    {id:'broccoli', icon:'leaf', kcal:35, protein:3, carbs:6, fat:0.4, price:9000, name:'Steamed broccoli'},
-    {id:'lotus-root', icon:'root', kcal:80, protein:1.5, carbs:17, fat:1, price:13000, name:'Crispy lotus root'},
-    {id:'cherry-tomato', icon:'tomato', kcal:25, protein:1, carbs:5, fat:0.3, price:8000, name:'Baked cherry tomato'},
-    {id:'beetroot', icon:'root', kcal:45, protein:1.5, carbs:10, fat:0.2, price:10000, name:'Roasted beetroot'}
+    {id:'mushroom-simmered', icon:'mushroom', kcal:86, protein:3, carbs:10, fat:0.2, price:30000, name:'Simmered mushrooms'},
+    {id:'tomato-grilled', icon:'tomato', kcal:82, protein:1.3, carbs:5.5, fat:6.8, price:25000, name:'Grilled tomato'},
+    {id:'mixed-salad', icon:'leaf', kcal:45, protein:1.5, carbs:6, fat:2, price:14000, name:'Mixed salad'},
+    {id:'stir-fried-veg', icon:'leaf', kcal:70, protein:2.5, carbs:7, fat:3.5, price:20000, name:'Stir-fried vegetables'},
+    {id:'broccoli', icon:'leaf', kcal:35, protein:2.4, carbs:7.2, fat:0.4, price:30000, name:'Steamed broccoli'},
+    {id:'spinach', icon:'leaf', kcal:23, protein:3, carbs:3.8, fat:0.3, price:20000, name:'Steamed spinach'},
+    {id:'carrot', icon:'root', kcal:35, protein:0.8, carbs:8.2, fat:0.2, price:6000, name:'Steamed carrot'},
+    {id:'potato-grilled', icon:'potato', kcal:214, protein:3.5, carbs:30.2, fat:9.1, price:25000, name:'Grilled potato'},
+    {id:'pumpkin-grilled', icon:'root', kcal:246, protein:2.7, carbs:17.7, fat:15.3, price:25000, name:'Grilled paprika pumpkin'}
   ],
   sauce:[
-    {id:'wafu', icon:'droplet', kcal:35, protein:0.5, carbs:4, fat:2, price:5000, name:'Classic Japanese (wafu) dressing'},
-    {id:'goma', icon:'sesame', kcal:70, protein:1.5, carbs:3, fat:6, price:7000, name:'Spicy goma'},
-    {id:'wasabi-mayo', icon:'droplet', kcal:90, protein:0.3, carbs:1, fat:9.5, price:7000, name:'Wasabi mayo'},
-    {id:'wasabi-soy', icon:'droplet', kcal:20, protein:1, carbs:3, fat:0.2, price:5000, name:'Wasabi soy'},
-    {id:'honey-soy', icon:'droplet', kcal:45, protein:1, carbs:9, fat:0.3, price:5000, name:'Honey & soy'},
-    {id:'yuzu-ponzu', icon:'citrus', kcal:15, protein:0.5, carbs:3, fat:0, price:6000, name:'Yuzu ponzu'},
-    {id:'ume', icon:'citrus', kcal:25, protein:0.2, carbs:6, fat:0, price:6000, name:'Ume plum dressing'},
-    {id:'miso-honey', icon:'droplet', kcal:55, protein:1, carbs:9, fat:1.5, price:6000, name:'Miso honey'},
-    {id:'olive-herb', icon:'leaf', kcal:80, protein:0, carbs:0, fat:9, price:7000, name:'Olive oil & herb'}
+    {id:'sesame-mayo', icon:'sesame', kcal:146, protein:1.3, carbs:3.8, fat:14.3, price:12000, name:'Sesame mayo'},
+    {id:'shoyu-dressing', icon:'droplet', kcal:40, protein:0.5, carbs:8, fat:0.5, price:12000, name:'Shoyu fruit dressing'},
+    {id:'mentsuyu', icon:'droplet', kcal:25, protein:1, carbs:4, fat:0.3, price:12000, name:'Mentsuyu (cold noodle sauce)'},
+    {id:'soy-sauce', icon:'droplet', kcal:20, protein:2, carbs:2, fat:0, price:12000, name:'Soy sauce'},
+    {id:'teriyaki', icon:'droplet', kcal:45, protein:1, carbs:9, fat:0.2, price:12000, name:'Teriyaki sauce'},
+    {id:'sesame-honey', icon:'sesame', kcal:85, protein:1, carbs:10, fat:4.5, price:12000, name:'Sesame honey dressing'}
   ]
 };
 
@@ -2075,8 +1603,10 @@ function categoryCount(cat){
   return DATA[cat].reduce((sum,it)=>sum+qty[it.id],0);
 }
 
-function setQty(id, next){
-  qty[id] = Math.max(0, next);
+function selectItem(cat, id){
+  const wasSelected = qty[id] > 0;
+  DATA[cat].forEach(it=>{ qty[it.id] = 0; });
+  if(!wasSelected) qty[id] = 1;
   renderAll();
 }
 
@@ -2091,11 +1621,11 @@ function showToast(msg){
 
 /* ---------- rendering ---------- */
 function cardTemplate(item,cat){
-  const q = qty[item.id];
+  const selected = qty[item.id] > 0;
   const name = itemName(item);
-  return `<div class="ing-card${q>0?' has-qty':''}" data-cat="${cat}" data-id="${item.id}">
+  return `<div class="ing-card${selected?' has-qty':''}" data-cat="${cat}" data-id="${item.id}" data-select="${item.id}" data-select-cat="${cat}">
     <span class="ing-media">
-      <span class="qty-flag">${q}</span>
+      <span class="qty-flag">✓</span>
       <img class="ing-illustration" src="${LOGO_SRC}" alt="${name}">
     </span>
     <span class="ing-name">${name}</span>
@@ -2105,11 +1635,7 @@ function cardTemplate(item,cat){
       <span class="ing-macro"><b>${item.carbs}g</b><small>${tr_('label_carbs')}</small></span>
       <span class="ing-macro"><b>${item.fat}g</b><small>${tr_('label_fat')}</small></span>
     </span>
-    <span class="stepper">
-      <button type="button" class="step-btn minus" data-id="${item.id}" data-dir="-1" ${q===0?'disabled':''} aria-label="Remove one">–</button>
-      <span class="step-count">${q}</span>
-      <button type="button" class="step-btn plus" data-id="${item.id}" data-dir="1" aria-label="Add one">+</button>
-    </span>
+    <button type="button" class="select-btn${selected?' is-selected':''}" data-select="${item.id}" data-select-cat="${cat}">${selected?tr_('btn_selected'):tr_('btn_select')}</button>
   </div>`;
 }
 
@@ -2145,13 +1671,9 @@ function lineRow(item, cat){
     <span class="line-badge" style="background:${pastel.bg};color:${pastel.text}">${iconSvg(item.icon)}</span>
     <span class="line-info">
       <span class="line-name">${itemName(item)}</span>
-      <span class="line-kcal">${item.kcal * qty[item.id]} kcal</span>
+      <span class="line-kcal">${item.kcal} kcal</span>
     </span>
-    <span class="line-stepper">
-      <button type="button" class="step-btn minus" data-id="${item.id}" data-dir="-1" aria-label="Remove one">–</button>
-      <span class="step-count">${qty[item.id]}</span>
-      <button type="button" class="step-btn plus" data-id="${item.id}" data-dir="1" aria-label="Add one">+</button>
-    </span>
+    <button type="button" class="line-remove" data-select="${item.id}" data-select-cat="${cat}">${tr_('cart_remove')}</button>
   </div>`;
 }
 
@@ -2293,9 +1815,18 @@ function downloadRecipe(){
 /* ---------- order confirmation email (rendered receipt -> JPEG -> Apps Script) ---------- */
 // Deploy Order-Email.gs as its own Apps Script Web App, then paste the /exec URL here.
 const ORDER_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxEUDzjOj0oe-IYKViai4ItRB_UGE-xNoRn_z9m_m1Fxxt7OFfRHKMAXPvR44gRcpH5wg/exec';
+// Shared token checked by Order-Email.gs — blocks generic bots/scanners that hit the
+// public /exec URL directly without going through this page. Must match WEBHOOK_SECRET
+// in Order-Email.gs exactly.
+const ORDER_WEBHOOK_SECRET = 'd03c11778b23f17c2581ef397955ca87';
+
+// Simple client-side throttle so repeated confirms (double-tap, fast re-submits)
+// can't fire multiple webhook calls in quick succession.
+const ORDER_SUBMIT_COOLDOWN_MS = 8000;
+let lastOrderSubmitAt = 0;
 
 function buildOrderReceiptHtml(order){
-  const titleKey = {Mr:'title_mr', Ms:'title_ms', Mx:'title_mx'}[order.contact.title];
+  const titleKey = {Mr:'title_mr', Ms:'title_ms'}[order.contact.title];
   const displayTitle = titleKey ? tr_(titleKey) : order.contact.title;
   let groups = '';
   order.lines.forEach(line=>{
@@ -2322,9 +1853,7 @@ function buildOrderReceiptHtml(order){
       <div class="r-stat"><b>${order.nutrition.fat.toFixed(1)}g</b><span>${tr_('label_fat').toUpperCase()}</span></div>
     </div>
     <div style="font-size:12.5px;color:var(--rk-ink-soft);line-height:1.6;">
-      <div>${tr_('order_delivery')}: ${order.dateLabel}, ${order.slotLabel}</div>
       <div>${tr_('order_contact')}: ${displayTitle} ${order.contact.name}, ${order.contact.phone}</div>
-      <div>${tr_('order_address')}: ${order.contact.address}</div>
     </div>
     <div class="r-footer"><span>rokusho.vn</span><span>@rokusho</span></div>
   </div>`;
@@ -2340,6 +1869,18 @@ function sendOrderConfirmationEmail(order){
   const receipt = document.getElementById('receipt');
   receipt.innerHTML = buildOrderReceiptHtml(order);
 
+  const categoryItems = {protein:[], carbs:[], side:[], sauce:[]};
+  order.lines.forEach(line=>{
+    (line.ingredients||[]).forEach(ing=>{
+      if(!categoryItems[ing.cat]) return;
+      categoryItems[ing.cat].push(line.qty>1 ? `${ing.name} x${line.qty}` : ing.name);
+    });
+  });
+  const proteinItem = categoryItems.protein.join(' | ');
+  const carbsItem = categoryItems.carbs.join(' | ');
+  const sideItem = categoryItems.side.join(' | ');
+  const sauceItem = categoryItems.sauce.join(' | ');
+
   html2canvas(receipt, {scale:2, backgroundColor:'#FFFFFF'}).then(canvas=>{
     const imageBase64 = canvas.toDataURL('image/jpeg', 0.92);
     fetch(ORDER_WEBHOOK_URL, {
@@ -2348,8 +1889,21 @@ function sendOrderConfirmationEmail(order){
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({
         type: 'order_email',
+        secret: ORDER_WEBHOOK_SECRET,
         orderCode: order.code,
+        contactTitle: order.contact.title || '',
+        contactName: order.contact.name || '',
+        contactPhone: order.contact.phone || '',
         customerEmail: order.contact.email || '',
+        itemCount: order.itemCount,
+        proteinItem: proteinItem,
+        carbsItem: carbsItem,
+        sideItem: sideItem,
+        sauceItem: sauceItem,
+        kcal: Math.round(order.nutrition.kcal),
+        protein: Number(order.nutrition.protein.toFixed(1)),
+        carbs: Number(order.nutrition.carbs.toFixed(1)),
+        fat: Number(order.nutrition.fat.toFixed(1)),
         imageBase64: imageBase64
       })
     }).catch(err => console.error('Order confirmation email error:', err));
@@ -2357,87 +1911,7 @@ function sendOrderConfirmationEmail(order){
 }
 
 /* ============================================================
-   CHEF'S PICKS — preset bento combinations (placeholder catalogue;
-   swap names/prices once real menu data is available)
-   ============================================================ */
-const PICKS = [
-  {id:'pick-teriyaki-beef', group:'high-protein', name:"Teriyaki Beef Bento", tagline:'Sous-vide beef teriyaki, Japanese white rice, edamame & sesame spinach', price:119000, items:['beef-full','rice-white','edamame','sesame-spinach','wafu']},
-  {id:'pick-duck-soba', group:'high-protein', name:"Duck & Soba Bento", tagline:'Sous-vide duck breast, cold soba, lotus root, cherry tomato & ume', price:135000, items:['duck','soba','lotus-root','cherry-tomato','ume']},
-  {id:'pick-original-chicken', group:'low-calories', name:"Original Chicken Bento", tagline:'Lean sous-vide chicken, brown rice, broccoli, cherry tomato & wasabi soy', price:89000, items:['chicken-o-full','rice-brown','broccoli','cherry-tomato','wasabi-soy']},
-  {id:'pick-seared-tuna', group:'low-calories', name:"Seared Tuna Bento", tagline:'Lean sous-vide tuna, baby potato, broccoli, purple cabbage & yuzu ponzu', price:99000, items:['tuna','baby-potato','broccoli','purple-cabbage','yuzu-ponzu']},
-  {id:'pick-yuzu-salmon', group:'balanced', name:"Yuzu Salmon Bento", tagline:'Seared salmon, donburi rice, wakame, cherry tomato & yuzu ponzu', price:129000, items:['salmon','don-white','wakame','cherry-tomato','yuzu-ponzu']},
-  {id:'pick-miso-basa', group:'balanced', name:"Miso Basa Bento", tagline:'Miso basa fish, white rice, shiitake, purple cabbage & miso honey', price:109000, items:['basa','rice-white','shiitake','purple-cabbage','miso-honey']},
-  {id:'pick-tofu-garden', group:'vegan', name:"Crispy Tofu Garden Bento", tagline:'Honey-miso tofu, brown rice, edamame, broccoli & spicy goma', price:95000, items:['tofu','rice-brown','edamame','broccoli','goma']},
-  {id:'pick-veggie-power', group:'vegan', name:"Veggie Power Bento", tagline:'Roasted sweet potato, avocado, edamame, broccoli & olive oil herb dressing', price:89000, items:['sweet-potato','avocado','edamame','broccoli','olive-herb']}
-];
-
-const GROUP_ORDER = ['high-protein','low-calories','balanced','vegan'];
-const GROUP_META = {
-  'high-protein':{label:'High-Protein', desc:'Built around a generous protein portion to fuel recovery and keep you full.', color:'#9F2F2D', pastelBg:'#FDEBEC'},
-  'low-calories':{label:'Low-Calories', desc:'Lighter combinations, without skimping on flavour.', color:'#346538', pastelBg:'#EDF3EC'},
-  'balanced':{label:'Balanced', desc:'An even split of protein, carbs and healthy fats — an everyday go-to.', color:'#956400', pastelBg:'#FBF3DB'},
-  'vegan':{label:'Vegan', desc:'100% plant-based, no animal products.', color:'#1F6C9F', pastelBg:'#E1F3FE'}
-};
-
-const pickQty = {};
-PICKS.forEach(p=>{ pickQty[p.id] = 1; });
-
-function pickNutrition(pick){
-  const t={kcal:0,protein:0,carbs:0,fat:0};
-  pick.items.forEach(id=>{
-    const found = findItem(id);
-    if(found){ t.kcal+=found.item.kcal; t.protein+=found.item.protein; t.carbs+=found.item.carbs; t.fat+=found.item.fat; }
-  });
-  return t;
-}
-
-
-function pickCardTemplate(pick){
-  const nutri = pickNutrition(pick);
-  const meta = GROUP_META[pick.group];
-  const name = pickName(pick);
-  const q = pickQty[pick.id];
-  return `<div class="pick-card">
-    <div class="pick-media" style="background:${meta.pastelBg}">
-      <img class="pick-illustration" src="${LOGO_SRC}" alt="${name}">
-    </div>
-    <div class="pick-body">
-      <div class="pick-name">${name}</div>
-      <div class="pick-tagline">${pickTagline(pick)}</div>
-      <div class="pick-nutrition">
-        <span class="pick-macro"><b>${Math.round(nutri.kcal)}</b><small>${tr_('label_kcal')}</small></span>
-        <span class="pick-macro"><b>${nutri.protein.toFixed(1)}g</b><small>${tr_('label_protein')}</small></span>
-        <span class="pick-macro"><b>${nutri.carbs.toFixed(1)}g</b><small>${tr_('label_carbs')}</small></span>
-        <span class="pick-macro"><b>${nutri.fat.toFixed(1)}g</b><small>${tr_('label_fat')}</small></span>
-      </div>
-      <div class="pick-actions">
-        <span class="stepper">
-          <button type="button" class="step-btn minus" data-pick="${pick.id}" data-dir="-1" ${q<=1?'disabled':''} aria-label="Decrease quantity">\u2013</button>
-          <span class="step-count">${q}</span>
-          <button type="button" class="step-btn plus" data-pick="${pick.id}" data-dir="1" aria-label="Increase quantity">+</button>
-        </span>
-        <button type="button" class="btn btn-solid" data-pick-add="${pick.id}">${tr_('add_to_cart_short')}</button>
-      </div>
-    </div>
-  </div>`;
-}
-
-function renderPicks(){
-  document.getElementById('picksGrid').innerHTML = GROUP_ORDER.map(g=>{
-    const meta = GROUP_META[g];
-    const items = PICKS.filter(p=>p.group===g);
-    return `<div class="picks-group">
-      <div class="picks-group-head">
-        <span class="picks-group-dot" style="background:${meta.color}"></span>
-        <div><h3>${groupLabel(g)}</h3><p>${groupDesc(g)}</p></div>
-      </div>
-      <div class="card-grid picks-grid">${items.map(pickCardTemplate).join('')}</div>
-    </div>`;
-  }).join('');
-}
-
-/* ============================================================
-   CART — holds ordered custom bentos + chef's picks
+   CART — holds ordered custom bentos
    (no pricing/payment math — this tracks nutrition only)
    ============================================================ */
 const cart = [];
@@ -2445,9 +1919,7 @@ const cart = [];
 function cartItemCount(){ return cart.reduce((s,l)=>s+l.qty,0); }
 
 function lineNutrition(line){
-  if(line.type==='custom') return line.nutrition;
-  const pick = PICKS.find(p=>p.id===line.pickId);
-  return pick ? pickNutrition(pick) : {kcal:0,protein:0,carbs:0,fat:0};
+  return line.nutrition;
 }
 
 function cartNutritionTotals(){
@@ -2506,21 +1978,6 @@ function addCustomBentoToCart(){
   closePanel();
 }
 
-function addPickToCart(pickId){
-  const pick = PICKS.find(p=>p.id===pickId);
-  if(!pick) return;
-  const q = pickQty[pickId] || 1;
-  const existing = cart.find(c=>c.type==='pick' && c.pickId===pickId);
-  if(existing){ existing.qty += q; }
-  else{
-    cart.push({cartId:'p'+Date.now()+Math.floor(Math.random()*1000), type:'pick', pickId:pick.id, label:pick.name, qty:q, items:pick.items, expanded:false});
-  }
-  pickQty[pickId] = 1;
-  renderPicks();
-  renderCartBadge();
-  showToast(tr_('toast_added'));
-}
-
 function adjustCartLineQty(cartId, dir){
   const line = cart.find(c=>c.cartId===cartId);
   if(!line) return;
@@ -2540,71 +1997,12 @@ function removeCartLine(cartId){
 }
 
 /* ============================================================
-   CHECKOUT — delivery time + contact + confirmation
+   CHECKOUT — contact info + confirmation
    ============================================================ */
-let cartStep = 'review'; // review | datetime | contact | done
-let checkoutData = {date:'', dateLabel:'', slot:'', slotLabel:'', phone:'', name:'', title:'Mr', address:'', email:''};
+let cartStep = 'review'; // review | contact | done
+let checkoutData = {phone:'', name:'', title:'Mr'};
 let lastOrder = null;
-let calendarViewDate = null;
 
-// Simulated lookup — in production this would call the order/CRM API
-const CUSTOMER_DB = {
-  '0900000001':{name:'Linh Tran', title:'Ms', address:'12 Nguyen Hue St, District 1, Ho Chi Minh City', email:'linh.tran@email.com'},
-  '0900000002':{name:'Minh Pham', title:'Mr', address:'88 Le Loi St, District 1, Ho Chi Minh City', email:''}
-};
-
-// Delivery window is always 11:00 AM \u2013 1:30 PM, split into 30-minute estimate slots
-const DELIVERY_SLOTS = [
-  {id:'11:00', label:'11:00 \u2013 11:30 AM'},
-  {id:'11:30', label:'11:30 AM \u2013 12:00 PM'},
-  {id:'12:00', label:'12:00 \u2013 12:30 PM'},
-  {id:'12:30', label:'12:30 \u2013 1:00 PM'},
-  {id:'13:00', label:'1:00 \u2013 1:30 PM'}
-];
-
-function earliestAllowedDate(){
-  const now = new Date();
-  const cutoffPassed = now.getHours() >= 18;
-  const offset = cutoffPassed ? 2 : 1;
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate()+offset);
-}
-function isoDate(d){
-  const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${day}`;
-}
-function calendarHtml(){
-  const earliest = earliestAllowedDate();
-  if(!calendarViewDate) calendarViewDate = new Date(earliest.getFullYear(), earliest.getMonth(), 1);
-  const year = calendarViewDate.getFullYear();
-  const month = calendarViewDate.getMonth();
-  const firstDay = new Date(year, month, 1);
-  const startWeekday = firstDay.getDay();
-  const daysInMonth = new Date(year, month+1, 0).getDate();
-  const monthLabel = firstDay.toLocaleDateString(currentLocale(),{month:'long', year:'numeric'});
-  const isPrevDisabled = (year===earliest.getFullYear() && month===earliest.getMonth());
-
-  let cells = '';
-  for(let i=0;i<startWeekday;i++){ cells += `<span class="cal-cell cal-empty"></span>`; }
-  for(let d=1; d<=daysInMonth; d++){
-    const cellDate = new Date(year, month, d);
-    const iso = isoDate(cellDate);
-    const isPast = cellDate < new Date(earliest.getFullYear(), earliest.getMonth(), earliest.getDate());
-    const isSelected = checkoutData.date === iso;
-    const cls = ['cal-cell','cal-day'];
-    if(isPast) cls.push('is-disabled');
-    if(isSelected) cls.push('is-selected');
-    const label = cellDate.toLocaleDateString(currentLocale(),{weekday:'short',month:'short',day:'numeric'});
-    cells += `<button type="button" class="${cls.join(' ')}" ${isPast?'disabled':''} data-cal-date="${iso}" data-cal-label="${label}">${d}</button>`;
-  }
-
-  return `<div class="cal-head">
-    <button type="button" class="cal-nav" id="calPrev" ${isPrevDisabled?'disabled':''} aria-label="Previous month">\u2039</button>
-    <span class="cal-month-label">${monthLabel}</span>
-    <button type="button" class="cal-nav" id="calNext" aria-label="Next month">\u203a</button>
-  </div>
-  <div class="cal-weekdays">${(WEEKDAY_INITIALS[LANG]||WEEKDAY_INITIALS.en).map(w=>`<span>${w}</span>`).join('')}</div>
-  <div class="cal-grid">${cells}</div>`;
-}
 function generateOrderCode(){
   const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code='';
@@ -2629,32 +2027,30 @@ function closeCartPanel(){
 function goToCartStep(step){ cartStep = step; renderCartPanel(); }
 
 function cartLineTemplate(line){
-  const displayLabel = line.type==='pick'
-    ? (PICKS.find(p=>p.id===line.pickId) ? pickName(PICKS.find(p=>p.id===line.pickId)) : line.label)
-    : tr_('custom_bento_label');
-  const sub = line.type==='custom' ? `${line.lines.length} ${tr_(line.lines.length>1?'ingredient_plural':'ingredient_singular')}` : tr_('chefs_pick_label');
+  const displayLabel = tr_('custom_bento_label');
+  const sub = `${line.lines.length} ${tr_(line.lines.length>1?'ingredient_plural':'ingredient_singular')}`;
   const n = lineNutrition(line);
   let breakdown = '';
-  if(line.type==='custom' && line.expanded){
+  if(line.expanded){
     breakdown = `<div class="cart-line-breakdown">${line.lines.map(l=>{
       const found = findItem(l.id);
       const dName = found ? itemName(found.item) : l.name;
       return `<div><span>${dName} x${l.qty}</span><span>${l.kcal*l.qty} kcal</span></div>`;
     }).join('')}</div>`;
   }
-  const toggle = line.type==='custom' ? `<span class="cart-line-toggle" data-toggle-line="${line.cartId}">${line.expanded?tr_('cart_hide_ing'):tr_('cart_show_ing')}</span>` : '';
+  const toggle = `<span class="cart-line-toggle" data-toggle-line="${line.cartId}">${line.expanded?tr_('cart_hide_ing'):tr_('cart_show_ing')}</span>`;
   return `<div class="cart-line">
     <span class="cart-line-thumb"><img src="${LOGO_MARK_SRC}" alt="${displayLabel}"></span>
     <div class="cart-line-main">
       <div class="cart-line-label">${displayLabel}</div>
-      <div class="cart-line-sub">${sub} \u00b7 ${Math.round(n.kcal)} kcal</div>
+      <div class="cart-line-sub">${sub} · ${Math.round(n.kcal)} kcal</div>
       ${toggle}
       ${breakdown}
     </div>
     <div class="cart-line-right">
       <div class="cart-line-kcal">${Math.round(n.kcal*line.qty)} kcal</div>
       <span class="stepper">
-        <button type="button" class="step-btn minus" data-cartline="${line.cartId}" data-dir="-1" aria-label="Decrease quantity">\u2013</button>
+        <button type="button" class="step-btn minus" data-cartline="${line.cartId}" data-dir="-1" aria-label="Decrease quantity">–</button>
         <span class="step-count">${line.qty}</span>
         <button type="button" class="step-btn plus" data-cartline="${line.cartId}" data-dir="1" aria-label="Increase quantity">+</button>
       </span>
@@ -2668,7 +2064,7 @@ function renderCartReview(body, footer){
   document.getElementById('cartStepLabel').textContent = '';
   if(!cart.length){
     body.innerHTML = `<p class="panel-empty">${tr_('cart_empty')}</p>`;
-    footer.innerHTML = `<button class="btn btn-solid" disabled>${tr_('cart_continue_delivery')}</button>`;
+    footer.innerHTML = `<button class="btn btn-solid" disabled>${tr_('cart_continue_contact')}</button>`;
     return;
   }
   body.innerHTML = cart.map(cartLineTemplate).join('') +
@@ -2679,56 +2075,19 @@ function renderCartReview(body, footer){
        <div class="stat-box"><b>${n.carbs.toFixed(1)}g</b><span>${tr_('label_carbs')}</span></div>
        <div class="stat-box"><b>${n.fat.toFixed(1)}g</b><span>${tr_('label_fat')}</span></div>
      </div>`; })();
-  footer.innerHTML = `<button class="btn btn-solid" id="cartContinueBtn">${tr_('cart_continue_delivery')}</button>`;
-}
-
-function renderCartDatetime(body, footer){
-  document.getElementById('cartPanelTitle').textContent = tr_('delivery_time_title');
-  document.getElementById('cartStepLabel').textContent = tr_('step2of3');
-  if(!checkoutData.date){
-    const d = earliestAllowedDate();
-    checkoutData.date = isoDate(d);
-    checkoutData.dateLabel = d.toLocaleDateString(currentLocale(),{weekday:'short',month:'short',day:'numeric'});
-  }
-  if(!checkoutData.slot){
-    checkoutData.slot = DELIVERY_SLOTS[0].id;
-    checkoutData.slotLabel = DELIVERY_SLOTS[0].label;
-  }
-  const cutoffPassed = new Date().getHours() >= 18;
-  const note = cutoffPassed ? tr_('checkout_note_late') : tr_('checkout_note_ontime');
-
-  body.innerHTML = `
-    <div class="checkout-note">${note}</div>
-    <div class="form-field"><label>${tr_('delivery_date_label')}</label></div>
-    <div class="calendar">${calendarHtml()}</div>
-    <div class="form-field"><label>${tr_('delivery_slot_label')}</label></div>
-    <div class="slot-grid">
-      ${DELIVERY_SLOTS.map(s=>`<button type="button" class="date-chip${checkoutData.slot===s.id?' is-selected':''}" data-slot="${s.id}" data-slot-label="${s.label}">${s.label}</button>`).join('')}
-    </div>
-    <p class="checkout-note">${tr_('checkout_slot_note')}</p>
-  `;
-  footer.innerHTML = `<div style="display:flex;gap:10px;width:100%">
-      <button class="btn btn-ghost" id="cartBackBtn" style="flex:1">${tr_('back_btn')}</button>
-      <button class="btn btn-solid" id="cartContinueBtn" style="flex:2">${tr_('continue_details')}</button>
-    </div>`;
+  footer.innerHTML = `<button class="btn btn-solid" id="cartContinueBtn">${tr_('cart_continue_contact')}</button>`;
 }
 
 function renderCartContact(body, footer){
   document.getElementById('cartPanelTitle').textContent = tr_('contact_title');
-  document.getElementById('cartStepLabel').textContent = tr_('step3of3');
+  document.getElementById('cartStepLabel').textContent = tr_('step2of2');
   body.innerHTML = `
-    <div class="form-field">
-      <label>${tr_('label_phone')}</label>
-      <input type="tel" id="ckPhone" placeholder="${tr_('phone_placeholder')}" value="${checkoutData.phone}">
-    </div>
-    <p class="autofill-note" id="ckAutofillNote" style="display:none">${tr_('autofill_note')}</p>
     <div class="form-row" style="margin-bottom:14px">
       <div class="form-field" style="margin-bottom:0">
         <label>${tr_('label_title_field')}</label>
         <select id="ckTitle">
           <option value="Mr" ${checkoutData.title==='Mr'?'selected':''}>${tr_('title_mr')}</option>
           <option value="Ms" ${checkoutData.title==='Ms'?'selected':''}>${tr_('title_ms')}</option>
-          <option value="Mx" ${checkoutData.title==='Mx'?'selected':''}>${tr_('title_mx')}</option>
         </select>
       </div>
       <div class="form-field" style="margin-bottom:0">
@@ -2737,17 +2096,13 @@ function renderCartContact(body, footer){
       </div>
     </div>
     <div class="form-field">
-      <label>${tr_('label_address')}</label>
-      <textarea id="ckAddress" rows="2" placeholder="${tr_('address_placeholder')}">${checkoutData.address}</textarea>
-    </div>
-    <div class="form-field">
-      <label>${tr_('label_email')}</label>
-      <input type="email" id="ckEmail" placeholder="${tr_('email_placeholder')}" value="${checkoutData.email}">
+      <label>${tr_('label_phone')}</label>
+      <input type="tel" id="ckPhone" placeholder="${tr_('phone_placeholder')}" value="${checkoutData.phone}">
     </div>
   `;
   footer.innerHTML = `<div style="display:flex;gap:10px;width:100%">
       <button class="btn btn-ghost" id="cartBackBtn" style="flex:1">${tr_('back_btn')}</button>
-      <button class="btn btn-solid" id="cartConfirmBtn" style="flex:2">${tr_('confirm_order')}</button>
+      <button class="btn btn-solid" id="cartConfirmBtn" style="flex:2">${tr_('confirm_request')}</button>
     </div>`;
 }
 
@@ -2755,11 +2110,12 @@ function renderCartDone(body, footer){
   document.getElementById('cartPanelTitle').textContent = tr_('order_confirmed_title');
   document.getElementById('cartStepLabel').textContent = '';
   if(!lastOrder){ body.innerHTML=''; footer.innerHTML=''; return; }
-  const titleKey = {Mr:'title_mr', Ms:'title_ms', Mx:'title_mx'}[lastOrder.contact.title];
-  const displayTitle = titleKey ? tr_(titleKey) : lastOrder.contact.title;
+  const doneTitleKey = {Mr:'title_mr', Ms:'title_ms'}[lastOrder.contact.title];
+  const doneDisplayTitle = doneTitleKey ? tr_(doneTitleKey) : lastOrder.contact.title;
+  const doneGreetName = lastOrder.contact.name ? `${doneDisplayTitle} ${lastOrder.contact.name}` : tr_('order_default_name');
   body.innerHTML = `<div class="order-done">
       <div class="order-done-check"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L19 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h4>${tr_('order_done_title')}, ${lastOrder.contact.name||tr_('order_default_name')}!</h4>
+      <h4>${tr_('order_done_title')}, ${doneGreetName}!</h4>
       <p>${tr_('order_done_desc')}</p>
       <div class="order-code">${lastOrder.code}</div>
       <p class="order-screenshot-note">${tr_('screenshot_note')}</p>
@@ -2773,7 +2129,7 @@ function renderCartDone(body, footer){
           return `<div class="order-item-row">
             <span class="order-item-thumb"><img src="${LOGO_MARK_SRC}" alt="${line.label}"></span>
             <div class="order-item-body">
-              <div class="order-item-main"><span>${line.label} \u00d7 ${line.qty}</span><b>${lineKcal} kcal</b></div>
+              <div class="order-item-main"><span>${line.label} × ${line.qty}</span><b>${lineKcal} kcal</b></div>
               ${sub}
             </div>
           </div>`;
@@ -2781,10 +2137,8 @@ function renderCartDone(body, footer){
       </div>
       <div class="order-summary">
         <div><span>${tr_('order_items')}</span><b>${lastOrder.itemCount}</b></div>
-        <div><span>${tr_('order_delivery')}</span><b>${lastOrder.dateLabel}, ${lastOrder.slotLabel}</b></div>
-        <div><span>${tr_('order_contact')}</span><b>${displayTitle} ${lastOrder.contact.name}, ${lastOrder.contact.phone}</b></div>
-        <div><span>${tr_('order_address')}</span><b>${lastOrder.contact.address}</b></div>
-        <div><span>${tr_('order_nutrition_total')}</span><b>${Math.round(lastOrder.nutrition.kcal)} kcal \u00b7 ${lastOrder.nutrition.protein.toFixed(1)}g ${tr_('label_protein')} \u00b7 ${lastOrder.nutrition.carbs.toFixed(1)}g ${tr_('label_carbs')} \u00b7 ${lastOrder.nutrition.fat.toFixed(1)}g ${tr_('label_fat')}</b></div>
+        <div><span>${tr_('order_contact')}</span><b>${doneDisplayTitle} ${lastOrder.contact.name}, ${lastOrder.contact.phone}</b></div>
+        <div><span>${tr_('order_nutrition_total')}</span><b>${Math.round(lastOrder.nutrition.kcal)} kcal · ${lastOrder.nutrition.protein.toFixed(1)}g ${tr_('label_protein')} · ${lastOrder.nutrition.carbs.toFixed(1)}g ${tr_('label_carbs')} · ${lastOrder.nutrition.fat.toFixed(1)}g ${tr_('label_fat')}</b></div>
       </div>
     </div>`;
   footer.innerHTML = `<button class="btn btn-solid" id="cartNewOrderBtn">${tr_('new_order_btn')}</button>`;
@@ -2794,26 +2148,8 @@ function renderCartPanel(){
   const body = document.getElementById('cartPanelBody');
   const footer = document.getElementById('cartPanelFooter');
   if(cartStep==='review') renderCartReview(body,footer);
-  else if(cartStep==='datetime') renderCartDatetime(body,footer);
   else if(cartStep==='contact') renderCartContact(body,footer);
   else if(cartStep==='done') renderCartDone(body,footer);
-}
-
-function lookupCustomer(phone){
-  const clean = phone.replace(/\s+/g,'');
-  const hit = CUSTOMER_DB[clean];
-  const note = document.getElementById('ckAutofillNote');
-  if(hit){
-    checkoutData.name = hit.name; checkoutData.title = hit.title;
-    checkoutData.address = hit.address; checkoutData.email = hit.email;
-    if(document.getElementById('ckName')) document.getElementById('ckName').value = hit.name;
-    if(document.getElementById('ckTitle')) document.getElementById('ckTitle').value = hit.title;
-    if(document.getElementById('ckAddress')) document.getElementById('ckAddress').value = hit.address;
-    if(document.getElementById('ckEmail')) document.getElementById('ckEmail').value = hit.email;
-    if(note) note.style.display = 'block';
-  } else if(note){
-    note.style.display = 'none';
-  }
 }
 
 function syncContactFields(){
@@ -2821,42 +2157,39 @@ function syncContactFields(){
   if(document.getElementById('ckPhone')) checkoutData.phone = get('ckPhone');
   if(document.getElementById('ckName')) checkoutData.name = get('ckName');
   if(document.getElementById('ckTitle')) checkoutData.title = get('ckTitle') || 'Mr';
-  if(document.getElementById('ckAddress')) checkoutData.address = get('ckAddress');
-  if(document.getElementById('ckEmail')) checkoutData.email = get('ckEmail');
 }
 
 function snapshotCartLines(){
   return cart.map(line=>{
-    const label = line.type==='pick'
-      ? (PICKS.find(p=>p.id===line.pickId) ? pickName(PICKS.find(p=>p.id===line.pickId)) : line.label)
-      : tr_('custom_bento_label');
-    const ingredients = line.type==='custom' ? line.lines.map(l=>{
+    const ingredients = line.lines.map(l=>{
       const found = findItem(l.id);
-      return {name: found ? itemName(found.item) : l.name, qty: l.qty};
-    }) : null;
-    return {type: line.type, label, qty: line.qty, nutrition: lineNutrition(line), ingredients};
+      return {name: found ? itemName(found.item) : l.name, qty: l.qty, cat: found ? found.cat : l.cat};
+    });
+    return {type: line.type, label: tr_('custom_bento_label'), qty: line.qty, nutrition: lineNutrition(line), ingredients};
   });
 }
 
 function confirmOrder(){
   syncContactFields();
-  if(!checkoutData.phone || !checkoutData.name || !checkoutData.address){
+  if(!checkoutData.phone || !checkoutData.name){
     showToast(tr_('toast_fill_fields'));
     return;
   }
+  const now = Date.now();
+  if(now - lastOrderSubmitAt < ORDER_SUBMIT_COOLDOWN_MS){
+    showToast(tr_('toast_slow_down'));
+    return;
+  }
+  lastOrderSubmitAt = now;
   lastOrder = {
     code: generateOrderCode(),
     itemCount: cartItemCount(),
     nutrition: cartNutritionTotals(),
-    dateLabel: checkoutData.dateLabel,
-    slotLabel: checkoutData.slotLabel,
     contact: {...checkoutData},
     lines: snapshotCartLines()
   };
   cart.length = 0;
   renderCartBadge();
-  checkoutData.date=''; checkoutData.dateLabel=''; checkoutData.slot=''; checkoutData.slotLabel='';
-  calendarViewDate = null;
   cartStep = 'done';
   renderCartPanel();
   sendOrderConfirmationEmail(lastOrder);
@@ -2867,27 +2200,17 @@ function startNewOrder(){
   closeCartPanel();
 }
 
-/* ---------- view switching (Build your own / Chef's picks) ---------- */
-function switchView(view){
-  document.querySelectorAll('.mode-pill').forEach(p=>p.classList.toggle('is-active', p.getAttribute('data-view')===view));
-  document.getElementById('byoView').style.display = view==='byo' ? '' : 'none';
-  document.getElementById('picksView').style.display = view==='picks' ? '' : 'none';
-  document.getElementById('bentoBar').style.display = view==='byo' ? '' : 'none';
-}
-
 /* ---------- events ---------- */
 document.addEventListener('click', e=>{
+  const selectBtn = e.target.closest('[data-select]');
+  if(selectBtn){
+    selectItem(selectBtn.getAttribute('data-select-cat'), selectBtn.getAttribute('data-select'));
+    return;
+  }
   const stepBtn = e.target.closest('.step-btn');
   if(stepBtn){
     const dir = parseInt(stepBtn.getAttribute('data-dir'),10);
-    if(stepBtn.hasAttribute('data-id')){
-      const id = stepBtn.getAttribute('data-id');
-      setQty(id, qty[id] + dir);
-    } else if(stepBtn.hasAttribute('data-pick')){
-      const pid = stepBtn.getAttribute('data-pick');
-      pickQty[pid] = Math.max(1, (pickQty[pid]||1) + dir);
-      renderPicks();
-    } else if(stepBtn.hasAttribute('data-cartline')){
+    if(stepBtn.hasAttribute('data-cartline')){
       adjustCartLineQty(stepBtn.getAttribute('data-cartline'), dir);
     }
     return;
@@ -2909,33 +2232,8 @@ document.addEventListener('click', e=>{
     return;
   }
 
-  const pickAddBtn = e.target.closest('[data-pick-add]');
-  if(pickAddBtn){ addPickToCart(pickAddBtn.getAttribute('data-pick-add')); return; }
-
-  const modePill = e.target.closest('.mode-pill');
-  if(modePill){ switchView(modePill.getAttribute('data-view')); return; }
-
   if(e.target.id==='cartBtn' || e.target.closest('#cartBtn') || e.target.id==='bentoBarCartBtn' || e.target.closest('#bentoBarCartBtn')){ openCartPanel(); return; }
   if(e.target.id==='cartPanelClose' || e.target.id==='cartOverlay'){ closeCartPanel(); return; }
-
-  if(e.target.id==='calPrev'){ calendarViewDate.setMonth(calendarViewDate.getMonth()-1); renderCartPanel(); return; }
-  if(e.target.id==='calNext'){ calendarViewDate.setMonth(calendarViewDate.getMonth()+1); renderCartPanel(); return; }
-
-  const calDay = e.target.closest('[data-cal-date]');
-  if(calDay && !calDay.disabled){
-    checkoutData.date = calDay.getAttribute('data-cal-date');
-    checkoutData.dateLabel = calDay.getAttribute('data-cal-label');
-    renderCartPanel();
-    return;
-  }
-
-  const slotChip = e.target.closest('[data-slot]');
-  if(slotChip){
-    checkoutData.slot = slotChip.getAttribute('data-slot');
-    checkoutData.slotLabel = slotChip.getAttribute('data-slot-label');
-    renderCartPanel();
-    return;
-  }
 
   const lineToggle = e.target.closest('[data-toggle-line]');
   if(lineToggle){
@@ -2948,21 +2246,15 @@ document.addEventListener('click', e=>{
   if(removeBtn){ removeCartLine(removeBtn.getAttribute('data-remove')); return; }
 
   if(e.target.id==='cartContinueBtn'){
-    if(cartStep==='review') goToCartStep('datetime');
-    else if(cartStep==='datetime') goToCartStep('contact');
+    if(cartStep==='review') goToCartStep('contact');
     return;
   }
   if(e.target.id==='cartBackBtn'){
-    if(cartStep==='datetime') goToCartStep('review');
-    else if(cartStep==='contact'){ syncContactFields(); goToCartStep('datetime'); }
+    if(cartStep==='contact') goToCartStep('review');
     return;
   }
   if(e.target.id==='cartConfirmBtn'){ confirmOrder(); return; }
   if(e.target.id==='cartNewOrderBtn'){ startNewOrder(); return; }
-});
-
-document.addEventListener('focusout', e=>{
-  if(e.target && e.target.id==='ckPhone') lookupCustomer(e.target.value);
 });
 
 document.addEventListener('keydown', e=>{
@@ -2989,8 +2281,24 @@ sections.forEach(s=>observer.observe(s));
 document.getElementById('langSelect').value = LANG;
 applyStaticTranslations();
 renderAll();
-renderPicks();
 renderCartBadge();
+
+/* ---------- page loader ---------- */
+(function(){
+  const loader = document.getElementById('pageLoader');
+  if(!loader) return;
+  const shownAt = Date.now();
+  const MIN_VISIBLE_MS = 550;
+  function hideLoader(){
+    const wait = Math.max(0, MIN_VISIBLE_MS - (Date.now() - shownAt));
+    setTimeout(()=>{
+      loader.classList.add('is-hidden');
+      loader.addEventListener('transitionend', ()=>loader.remove(), {once:true});
+    }, wait);
+  }
+  if(document.readyState==='complete') hideLoader();
+  else window.addEventListener('load', hideLoader, {once:true});
+})();
 
 </script>
 </body>
