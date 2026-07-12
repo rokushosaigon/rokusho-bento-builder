@@ -230,11 +230,13 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
   position:relative;aspect-ratio:1/1;border-radius:var(--radius-s);overflow:hidden;
   display:flex;align-items:center;justify-content:center;padding:18%;
 }
-.ing-card[data-cat="protein"] .ing-media{background:var(--pastel-red);}
-.ing-card[data-cat="carbs"] .ing-media{background:var(--pastel-yellow);}
-.ing-card[data-cat="side"] .ing-media{background:var(--pastel-green);}
-.ing-card[data-cat="sauce"] .ing-media{background:var(--pastel-blue);}
-.ing-illustration{width:100%;height:100%;object-fit:contain;opacity:.82;}
+.ing-card[data-cat="protein"] .ing-media{background:var(--pastel-red);color:var(--pastel-red-text);}
+.ing-card[data-cat="carbs"] .ing-media{background:var(--pastel-yellow);color:var(--pastel-yellow-text);}
+.ing-card[data-cat="side"] .ing-media{background:var(--pastel-green);color:var(--pastel-green-text);}
+.ing-card[data-cat="sauce"] .ing-media{background:var(--pastel-blue);color:var(--pastel-blue-text);}
+.ing-illustration{width:64%;height:64%;display:flex;align-items:center;justify-content:center;}
+.ing-illustration .icon-svg{width:100%;height:100%;}
+.ing-illustration .icon-svg path,.ing-illustration .icon-svg circle,.ing-illustration .icon-svg rect,.ing-illustration .icon-svg ellipse{stroke-width:1.6;}
 .ing-badge{
   position:relative;width:32px;height:32px;border-radius:50%;flex:none;
   display:flex;align-items:center;justify-content:center;
@@ -340,6 +342,10 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 .panel-body{flex:1;overflow-y:auto;padding:18px 24px;}
 .panel-group{margin-bottom:20px;}
 .panel-group-label{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--rk-ink-soft);margin-bottom:8px;}
+.panel-group-empty{
+  font-size:13px;color:var(--rk-ink-soft);font-style:italic;
+  border:1px dashed var(--rk-line);border-radius:12px;padding:9px 10px;margin:0;
+}
 .line-row{
   display:flex;align-items:center;gap:10px;background:var(--rk-white);border:1px solid var(--rk-line);
   border-radius:12px;padding:8px 10px;margin-bottom:8px;
@@ -403,7 +409,12 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   width:100%;aspect-ratio:16/10;border:1px solid var(--rk-line);border-radius:var(--radius-m);
   overflow:hidden;background:var(--rk-paper-deep);
 }
-.footer-map iframe{width:100%;height:100%;border:0;display:block;}
+.footer-map iframe{
+  width:100%;height:100%;border:0;display:block;
+  /* mutes Google's default blue/green palette toward the site's warm paper tones —
+     the free Maps embed has no styling API, so this is a CSS-filter approximation */
+  filter:grayscale(.5) sepia(.35) saturate(1.15) hue-rotate(-8deg) contrast(.92) brightness(1.03);
+}
 .footer-map-rating{
   display:flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;color:var(--rk-ink);
 }
@@ -603,7 +614,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
     </div>
     <nav class="main-nav">
       <a href="#" class="nav-cta" data-i18n="nav_menu">Bento</a>
-      <a href="https://linktr.ee/rokusho.vn" target="_blank" rel="noopener" class="nav-link" data-i18n="nav_about">More</a>
+      <a href="#footerContact" class="nav-link" data-i18n="nav_about">More</a>
     </nav>
     <div class="header-right">
       <select class="lang-select" id="langSelect" aria-label="Language">
@@ -634,6 +645,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   </div>
 </section>
 
+<div class="builder-wrap">
 <nav class="step-nav" id="stepNav">
   <div class="step-nav-inner">
     <div class="step-tabs" id="stepTabs">
@@ -712,6 +724,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
     <div class="card-grid" id="grid-sauce"></div>
   </section>
 </main>
+</div>
 
 <div class="bento-bar" id="bentoBar">
   <button class="bento-bar-main" id="bentoFab" type="button">
@@ -782,7 +795,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
       <div class="logo"><img class="logo-img" src="data:image/png;base64,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" alt="Rokusho"></div>
       <p class="footer-tagline" data-i18n="footer_tagline">Your Japanese-style healthy food companion.</p>
     </div>
-    <div class="footer-col">
+    <div class="footer-col" id="footerContact" style="scroll-margin-top:20px">
       <h4 data-i18n="footer_contact">Contact</h4>
       <a href="tel:0783888802">078 388 8802</a>
       <a href="mailto:info@rokusho.vn">info@rokusho.vn</a>
@@ -819,6 +832,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
       <a href="https://www.facebook.com/rokusho.sg/" target="_blank" rel="noopener">Facebook</a>
       <a href="https://www.instagram.com/rokusho.sgn/" target="_blank" rel="noopener">Instagram</a>
       <a href="https://www.tiktok.com/@rokusho.sgn" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://linktr.ee/rokusho.vn" target="_blank" rel="noopener">Linktree</a>
       <div class="delivery-row">
         <a class="delivery-pill" href="https://food.grab.com/vn/vi/restaurant/online-delivery/5-C7N1KCBBTNTJAT?sourceID=20260708_181039_41FB9445298E455E841079FAC2DD8414_MEXMPS" target="_blank" rel="noopener">GrabFood</a>
         <!-- ShopeeFood temporarily removed -->
@@ -836,8 +850,11 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
    ICONS — minimal kamon-style line icons, reused across items
    ============================================================ */
 const ICONS = {
-  beef:`<path d="M10 30c-2-6 2-12 8-14 5-2 11 0 13 5 2 5-1 10-6 12-3 1-5 3-6 6-3-1-7-4-9-9z"/><circle cx="17" cy="20" r="1.1" fill="currentColor" stroke="none"/>`,
-  chicken:`<path d="M18 10c6 0 10 4 10 10 0 8-6 16-10 18-2-4-2-9 0-12-4 0-8-3-9-7-1-5 3-9 9-9z"/>`,
+  beef:`<rect x="9" y="9" width="30" height="30" rx="9"/>
+    <path d="M11 22l11-11M11 32l21-21M18 36l18-18M28 36l8-8"/>`,
+  chicken:`<path d="M13 17c0-6 5-11 12-11 8 0 14 6 14 13 0 6-4 12-10 14l3 3.5c1 1.2.9 3-.4 4l-1 .8c-1.2.9-2.9.5-3.6-.8l-2-3.7c-.7.1-1.4.1-2 0-6-1-10-8-10-16z"/>
+    <path d="M32 30.5l5 5.5c1 1.1.9 2.8-.3 3.7l-.8.6c-1.2.9-2.9.5-3.5-.8l-3-6"/>
+    <path d="M16 18c3 1 6 1 9 0M15 23c3.5 1.5 8 1.5 12 0"/>`,
   duck:`<path d="M10 28c0-8 7-14 15-14 7 0 12 5 13 11-3 1-5-1-7-3 1 4-1 8-5 10-6 3-13 1-16-4z"/><circle cx="16" cy="20" r="1.1" fill="currentColor" stroke="none"/>`,
   fish:`<path d="M6 24c7-9 19-12 28-6-2 4-2 8 0 12-9 6-21 3-28-6z"/><path d="M34 18l8-5M34 30l8 5"/><circle cx="13" cy="22" r="1.1" fill="currentColor" stroke="none"/>`,
   shrimp:`<path d="M32 10c6 3 7 13 0 19-6 5-16 5-20-1 8 1 13-3 15-9 1-4 0-7 5-9z"/><path d="M22 10l-2-4M28 9l1-4"/>`,
@@ -849,7 +866,12 @@ const ICONS = {
   egg:`<path d="M24 10c8 0 14 10 14 18a14 10 0 0 1-28 0c0-8 6-18 14-18z"/><circle cx="24" cy="26" r="4" fill="currentColor" stroke="none"/>`,
   mushroom:`<path d="M10 22c0-7 6-12 14-12s14 5 14 12H10z"/><path d="M19 22v10a5 5 0 0 0 10 0V22"/>`,
   bean:`<path d="M14 34c-6-6-6-16 2-22 4 4 4 10 0 14-3 3-2 6 0 8z"/><path d="M22 38c-6-6-6-16 2-22 4 4 4 10 0 14-3 3-2 6 0 8z"/>`,
-  root:`<path d="M24 8c4 6 4 12 0 16-4-4-4-10 0-16z"/><path d="M24 24c6 0 9 6 8 14-7 2-13-2-14-8-1-4 1-6 6-6z"/>`,
+  root:`<path d="M20 6c1 3 1 6-1 8M28 6c-1 3-1 6 1 8"/>
+    <path d="M24 12c7 1 11 8 9 17-1 6-5 11-9 13-4-2-8-7-9-13-2-9 2-16 9-17z"/>
+    <path d="M24 18v18M19 22c1 3 1 8 3 11M29 22c-1 3-1 8-3 11"/>`,
+  pumpkin:`<path d="M17 12c1-2 1-4 0-5M24 11V6M31 12c-1-2-1-4 0-5"/>
+    <path d="M24 12c8 0 14 7 14 15s-6 15-14 15-14-7-14-15 6-15 14-15z"/>
+    <path d="M24 12v30M18 14c-2 5-2 21 0 26M30 14c2 5 2 21 0 26"/>`,
   corn:`<path d="M24 8c6 4 10 14 8 26-6 2-12 2-16-2-4-10-1-20 8-24z"/><path d="M19 16h10M18 22h12M18 28h12"/>`,
   avocado:`<path d="M24 8c8 2 12 12 10 20-2 7-9 11-15 8-6-3-8-11-5-18 2-6 5-9 10-10z"/><circle cx="25" cy="26" r="5"/>`,
   tomato:`<path d="M24 14c8 0 13 6 13 14a13 13 0 0 1-26 0c0-8 5-14 13-14z"/><path d="M19 12c2 2 8 2 10 0"/>`,
@@ -860,12 +882,6 @@ const ICONS = {
 };
 function iconSvg(key){ return `<svg viewBox="0 0 48 48" class="icon-svg">${ICONS[key]||ICONS.leaf}</svg>`; }
 
-/* ============================================================
-   ILLUSTRATION PLACEHOLDER — every ingredient/pick photo below is
-   a stand-in using the Rokusho logo until real food photography
-   is shot. Swap LOGO_SRC references for real image URLs later.
-   ============================================================ */
-const LOGO_SRC = document.querySelector('.logo-img').src;
 // Cropped kamon mark (left glyph only) — used for small square thumbnails where
 // the full wide wordmark would be squeezed unreadably thin.
 const LOGO_MARK_SRC = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE4AAABcCAYAAADAtIONAAAACXBIWXMAAAsSAAALEgHS3X78AAAC9UlEQVR42u2cy63kIBBFncRIs5gcKiyyIAnnQArE4AjIwRmw8nuLfpoehoICf9qm7qIW3bYs+ejWF/D05/evCdZugABwAAdwAAcDOIADOIADOBjAARzAAdxptnzblpgBuLLFDLQfswAngxa+zb39XgHufwsZhf1cy/2nEtycgbABXNk8AyEHjjJqVAkuFtQTCklBreIoA8Bn7lsBrlyThYoLv2dQleBS15yZ+xyjRqcRnG2o/LkiN2oENzMxKmaU937dFdSmAlwtS5pKKaI2OSxJzDKVAje+qY2DHrQkBypk1yBMFCrBcYkiTQKGKVs2YVYeEhwJAHCguBrwFvO5q6Etr3i2FNT4iCRxpXvmlOc6oK2jgmtRkW+E5pOkMwy4XtfjsqjNjJmGSw4ctFZ3XJjkUept56sTxlEPcgeqbCqAsw0dySPAtSqKmHHSUng2CZ5No4FbmeW9KFgKlCqVnuiqW2EaYjoHASRYa/1YMXwWuCh8IV+BPgmuT6OAmwszupWJZSWX3YRrFo8Et7ygUKMqa6473xHap9dVc/tB1oriVg3TEc+4pS2UH64yIXEjg7OCicZcCPDbXRPCkeDmTDIIwpf2zIioVrO5p4MzGTA2+d8JYxQ1bIMYZpBpBQPHUHnp2tzuo+3VmTGOBK0TvRQXGsFNd5wEX7GeandOV0wCKt4hWZzxUNMBzzSuNYQEHo1Ux9lEHa1tW801/Sdj3pXbV6XgVsH2Vs7FSeOu8/Tlpatb9hPw7nYwpDTADA0lkdV8JCkKxuqlkshqBec7QNBV+03uDI52FLvx7Pnd3U/p7ekS1jPh3R2c29kh+IYYOdx51b2bCt0ZynsCOH9AkLdHw9N0qpmOLFW0HQmnozoMjefp7RHzPK0fI7B7k47mLzkse+Kd9s9gdLusdnCmtzjGx1f+dhcEcBd0J4D2r+oMwPWpLgJc/+FkC3D943qA6+xlA8D1t2MEcH3KAzh86hHgAA7gYAAHcAAHcDCAAziAAzgN9gWLSggkkiYtrgAAAABJRU5ErkJggg==';
@@ -884,11 +900,12 @@ const CAT_PASTEL = {
    ============================================================ */
 const I18N = {
   "en": {
-    "nav_menu": "Bento",
-    "nav_about": "More",
+    "nav_menu": "Your Bento",
+    "nav_about": "About Us",
     "mode_byo": "Build your own",
     "order_confirmed_title": "Request confirmed",
     "cart_nutrition_total": "Nutrition total",
+    "cart_nutrition_note": "Nutrition values are estimates and may vary slightly in practice.",
     "order_nutrition_total": "Nutrition total",
     "hero_eyebrow": "Calorie calculator",
     "hero_title": "Build your own bento",
@@ -917,7 +934,7 @@ const I18N = {
     "panel_clear": "Clear",
     "panel_download": "Download",
     "panel_add_to_cart": "Add this bento to cart",
-    "panel_empty": "Your bento is empty — start adding ingredients in the steps above.",
+    "panel_cat_empty": "Not selected yet",
     "fab_view_bento": "View bento",
     "cart_your_cart": "Your cart",
     "cart_empty": "Your cart is empty — add a custom bento to get started.",
@@ -954,6 +971,7 @@ const I18N = {
     "toast_added": "Added to cart",
     "toast_fill_fields": "Please fill in your name and phone number.",
     "toast_slow_down": "Please wait a few seconds before submitting again.",
+    "toast_soba_sauce_lock": "Soba only pairs with mentsuyu sauce.",
     "footer_tagline": "Your Japanese-style healthy food companion.",
     "footer_contact": "Contact",
     "hours_dining_label": "Dining · Dine-in & Delivery",
@@ -969,14 +987,15 @@ const I18N = {
     "lang_switcher_label": "Language"
   },
   "vi": {
-  "nav_menu": "Bento",
-  "nav_about": "Khác",
+  "nav_menu": "Bento của bạn",
+  "nav_about": "Về chúng tôi",
 
   "mode_byo": "Tự tạo Bento",
 
   "order_confirmed_title": "Đã xác nhận yêu cầu",
 
   "cart_nutrition_total": "Tổng dinh dưỡng",
+  "cart_nutrition_note": "Giá trị dinh dưỡng là ước tính, có thể có sai số trong thực tế.",
   "order_nutrition_total": "Tổng dinh dưỡng",
 
   "hero_eyebrow": "Tính dinh dưỡng",
@@ -1014,7 +1033,7 @@ const I18N = {
   "panel_clear": "Xóa tất cả",
   "panel_download": "Tải xuống",
   "panel_add_to_cart": "Thêm Bento vào giỏ",
-  "panel_empty": "Chưa có món nào. Hãy bắt đầu chọn nguyên liệu.",
+  "panel_cat_empty": "Chưa chọn",
 
   "fab_view_bento": "Xem Bento",
 
@@ -1067,6 +1086,7 @@ const I18N = {
 
   "toast_added": "Đã thêm vào giỏ hàng",
   "toast_fill_fields": "Vui lòng nhập đầy đủ họ tên và số điện thoại.",
+  "toast_soba_sauce_lock": "Mì soba chỉ dùng kèm sốt Mentsuyu.",
   "toast_slow_down": "Vui lòng đợi vài giây trước khi gửi lại.",
 
   "footer_tagline": "Bento chuẩn Nhật mỗi ngày.",
@@ -1086,11 +1106,12 @@ const I18N = {
   "lang_switcher_label": "Ngôn ngữ"
 },
   "ja": {
-    "nav_menu": "Bento",
+    "nav_menu": "マイ弁当",
     "nav_about": "店舗情報",
     "mode_byo": "自分で作る",
     "order_confirmed_title": "リクエストを確定しました",
     "cart_nutrition_total": "栄養素の合計",
+    "cart_nutrition_note": "栄養価は目安であり、実際とは多少異なる場合があります。",
     "order_nutrition_total": "栄養素の合計",
     "hero_eyebrow": "カロリー計算",
     "hero_title": "あなただけの弁当を作ろう",
@@ -1119,7 +1140,7 @@ const I18N = {
     "panel_clear": "クリア",
     "panel_download": "ダウンロード",
     "panel_add_to_cart": "この弁当をカートに追加",
-    "panel_empty": "弁当はまだ空です — 上のステップで具材を選んでください。",
+    "panel_cat_empty": "まだ選択されていません",
     "fab_view_bento": "弁当を見る",
     "cart_your_cart": "カート",
     "cart_empty": "カートは空です — 自分で作った弁当を追加してください。",
@@ -1155,6 +1176,7 @@ const I18N = {
     "order_default_name": "お客様",
     "toast_added": "カートに追加しました",
     "toast_fill_fields": "お名前・電話番号をご入力ください。",
+    "toast_soba_sauce_lock": "そばはめんつゆのみと組み合わせられます。",
     "toast_slow_down": "数秒待ってから再度お試しください。",
     "footer_tagline": "あなたの和風ヘルシーフードパートナー。",
     "footer_contact": "お問い合わせ",
@@ -1171,11 +1193,12 @@ const I18N = {
     "lang_switcher_label": "言語"
   },
   "ko": {
-    "nav_menu": "Bento",
-    "nav_about": "소개",
+    "nav_menu": "내 벤토",
+    "nav_about": "매장 정보",
     "mode_byo": "직접 구성하기",
     "order_confirmed_title": "요청이 확정되었습니다",
     "cart_nutrition_total": "영양 합계",
+    "cart_nutrition_note": "영양 정보는 추정치이며 실제와 다소 차이가 있을 수 있습니다.",
     "order_nutrition_total": "영양 합계",
     "hero_eyebrow": "칼로리 계산기",
     "hero_title": "나만의 벤토 만들기",
@@ -1204,7 +1227,7 @@ const I18N = {
     "panel_clear": "초기화",
     "panel_download": "다운로드",
     "panel_add_to_cart": "이 벤토를 장바구니에 담기",
-    "panel_empty": "벤토가 비어 있습니다 — 위 단계에서 재료를 선택해 보세요.",
+    "panel_cat_empty": "아직 선택하지 않음",
     "fab_view_bento": "벤토 보기",
     "cart_your_cart": "장바구니",
     "cart_empty": "장바구니가 비어 있습니다 — 커스텀 벤토를 담아보세요.",
@@ -1240,6 +1263,7 @@ const I18N = {
     "order_default_name": "고객님",
     "toast_added": "장바구니에 담았습니다",
     "toast_fill_fields": "이름과 전화번호를 입력해 주세요.",
+    "toast_soba_sauce_lock": "소바는 멘츠유 소스와만 함께 제공됩니다.",
     "toast_slow_down": "몇 초 후에 다시 시도해 주세요.",
     "footer_tagline": "당신의 일본식 건강식 파트너.",
     "footer_contact": "문의",
@@ -1256,11 +1280,12 @@ const I18N = {
     "lang_switcher_label": "언어"
   },
   "zh": {
-    "nav_menu": "Bento",
+    "nav_menu": "我的便当",
     "nav_about": "关于我们",
     "mode_byo": "自选搭配",
     "order_confirmed_title": "请求已确认",
     "cart_nutrition_total": "营养总计",
+    "cart_nutrition_note": "营养数值仅供参考，实际情况可能略有差异。",
     "order_nutrition_total": "营养总计",
     "hero_eyebrow": "卡路里计算器",
     "hero_title": "打造专属便当",
@@ -1289,7 +1314,7 @@ const I18N = {
     "panel_clear": "清空",
     "panel_download": "下载",
     "panel_add_to_cart": "将此便当加入购物车",
-    "panel_empty": "便当还是空的 —— 请在上方步骤中选择食材。",
+    "panel_cat_empty": "尚未选择",
     "fab_view_bento": "查看便当",
     "cart_your_cart": "购物车",
     "cart_empty": "购物车是空的 —— 添加自选便当开始下单吧。",
@@ -1325,6 +1350,7 @@ const I18N = {
     "order_default_name": "您",
     "toast_added": "已加入购物车",
     "toast_fill_fields": "请填写姓名和电话号码。",
+    "toast_soba_sauce_lock": "荞麦面仅可搭配蘸面汁（Mentsuyu）。",
     "toast_slow_down": "请稍等几秒后再试。",
     "footer_tagline": "您的日式健康餐伙伴。",
     "footer_contact": "联系我们",
@@ -1574,7 +1600,7 @@ const DATA = {
     {id:'spinach', icon:'leaf', kcal:23, protein:3, carbs:3.8, fat:0.3, price:20000, name:'Steamed spinach'},
     {id:'carrot', icon:'root', kcal:35, protein:0.8, carbs:8.2, fat:0.2, price:6000, name:'Steamed carrot'},
     {id:'potato-grilled', icon:'potato', kcal:214, protein:3.5, carbs:30.2, fat:9.1, price:25000, name:'Grilled potato'},
-    {id:'pumpkin-grilled', icon:'root', kcal:246, protein:2.7, carbs:17.7, fat:15.3, price:25000, name:'Grilled paprika pumpkin'}
+    {id:'pumpkin-grilled', icon:'pumpkin', kcal:246, protein:2.7, carbs:17.7, fat:15.3, price:25000, name:'Grilled paprika pumpkin'}
   ],
   sauce:[
     {id:'sesame-mayo', icon:'sesame', kcal:146, protein:1.3, carbs:3.8, fat:14.3, price:12000, name:'Sesame mayo'},
@@ -1619,11 +1645,36 @@ function categoryCount(cat){
   return DATA[cat].reduce((sum,it)=>sum+qty[it.id],0);
 }
 
+// Soba is only served with mentsuyu (cold noodle dipping sauce) — picking soba
+// locks the sauce step to it, and switching sauce away is blocked while soba is selected.
+const SOBA_SAUCE_LOCK = 'mentsuyu';
 function selectItem(cat, id){
+  if(cat==='sauce' && qty['soba']>0 && id!==SOBA_SAUCE_LOCK){
+    showToast(tr_('toast_soba_sauce_lock'));
+    return;
+  }
   const wasSelected = qty[id] > 0;
   DATA[cat].forEach(it=>{ qty[it.id] = 0; });
   if(!wasSelected) qty[id] = 1;
+  if(cat==='carbs' && id==='soba' && !wasSelected){
+    DATA.sauce.forEach(it=>{ qty[it.id] = 0; });
+    qty[SOBA_SAUCE_LOCK] = 1;
+  }
   renderAll();
+  if(!wasSelected) scrollToNextCategory(cat);
+}
+
+// After picking a fresh item, guide the customer straight to the next step
+// instead of leaving them to scroll and find it themselves.
+function scrollToNextCategory(cat){
+  const next = CATS[CATS.indexOf(cat) + 1];
+  if(!next) return;
+  const target = document.getElementById(next);
+  const nav = document.getElementById('stepNav');
+  if(!target) return;
+  const offset = (nav ? nav.offsetHeight : 0) + 12;
+  const top = target.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({ top, behavior:'smooth' });
 }
 
 let toastTimer=null;
@@ -1642,7 +1693,7 @@ function cardTemplate(item,cat){
   return `<div class="ing-card${selected?' has-qty':''}" data-cat="${cat}" data-id="${item.id}" data-select="${item.id}" data-select-cat="${cat}">
     <span class="ing-media">
       <span class="qty-flag">✓</span>
-      <img class="ing-illustration" src="${LOGO_SRC}" alt="${name}">
+      <span class="ing-illustration" role="img" aria-label="${name}">${iconSvg(item.icon)}</span>
     </span>
     <span class="ing-name">${name}</span>
     <span class="ing-kcal">${item.kcal} kcal</span>
@@ -1695,19 +1746,16 @@ function lineRow(item, cat){
 
 function renderPanel(){
   const body = document.getElementById('panelBody');
-  let groupsHtml = '';
   let hasAny = false;
 
-  CATS.forEach(cat=>{
+  const groupsHtml = CATS.map(cat=>{
     const items = DATA[cat].filter(it=>qty[it.id]>0);
-    if(items.length){
-      hasAny = true;
-      groupsHtml += `<div class="panel-group">
-        <div class="panel-group-label">${catLabel(cat)}</div>
-        ${items.map(it=>lineRow(it,cat)).join('')}
-      </div>`;
-    }
-  });
+    if(items.length) hasAny = true;
+    return `<div class="panel-group">
+      <div class="panel-group-label">${catLabel(cat)}</div>
+      ${items.length ? items.map(it=>lineRow(it,cat)).join('') : `<p class="panel-group-empty">${tr_('panel_cat_empty')}</p>`}
+    </div>`;
+  }).join('');
 
   const t = computeTotals();
   const totalsHtml = `<div class="totals-grid">
@@ -1717,7 +1765,7 @@ function renderPanel(){
     <div class="stat-box"><b>${t.fat.toFixed(1)}g</b><span>${tr_('label_fat')}</span></div>
   </div>`;
 
-  body.innerHTML = hasAny ? (groupsHtml + totalsHtml) : `<p class="panel-empty">${tr_('panel_empty')}</p>`;
+  body.innerHTML = groupsHtml + totalsHtml;
 
   document.getElementById('clearBtn').disabled = !hasAny;
   document.getElementById('downloadBtn').disabled = !hasAny;
@@ -1993,7 +2041,8 @@ function addCustomBentoToCart(){
   renderAll();
   renderCartBadge();
   showToast(tr_('toast_added'));
-  closePanel();
+  cartStep = 'review';
+  openCartPanel();
 }
 
 function adjustCartLineQty(cartId, dir){
@@ -2092,7 +2141,8 @@ function renderCartReview(body, footer){
        <div class="stat-box"><b>${n.protein.toFixed(1)}g</b><span>${tr_('label_protein')}</span></div>
        <div class="stat-box"><b>${n.carbs.toFixed(1)}g</b><span>${tr_('label_carbs')}</span></div>
        <div class="stat-box"><b>${n.fat.toFixed(1)}g</b><span>${tr_('label_fat')}</span></div>
-     </div>`; })();
+     </div>
+     <p class="checkout-note">${tr_('cart_nutrition_note')}</p>`; })();
   footer.innerHTML = `<button class="btn btn-solid" id="cartContinueBtn">${tr_('cart_continue_contact')}</button>`;
 }
 
