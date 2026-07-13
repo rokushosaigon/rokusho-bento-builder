@@ -540,9 +540,16 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .pick-actions .btn{padding:10px 14px;font-size:13px;}
 
 /* ---------- delivery date + time slot picker ---------- */
-.date-chip{border:1.5px solid var(--rk-line);border-radius:12px;padding:10px 8px;font-size:13px;font-weight:600;background:var(--rk-white);color:var(--rk-ink);}
+.date-chip{
+  border:1.5px solid var(--rk-line);border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600;
+  background:var(--rk-white);color:var(--rk-ink);flex:0 0 auto;white-space:nowrap;
+}
 .date-chip.is-selected{border-color:var(--rk-primary);background:var(--rk-primary-pale);color:var(--rk-primary-deep);}
-.slot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px;margin-bottom:14px;}
+.slot-grid{
+  display:flex;flex-wrap:nowrap;gap:8px;margin-bottom:14px;
+  overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none;
+}
+.slot-grid::-webkit-scrollbar{display:none;}
 .calendar{border:1px solid var(--rk-line);border-radius:14px;padding:14px;margin-bottom:18px;}
 .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .cal-month-label{font-family:var(--font-display);font-size:16px;font-weight:400;}
