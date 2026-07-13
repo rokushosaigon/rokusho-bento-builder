@@ -134,14 +134,6 @@ a{color:inherit;text-decoration:none;}
   .main-nav{order:3;display:flex;flex:0 0 100%;justify-content:center;gap:22px;margin-top:12px;font-size:13.5px;}
 }
 
-/* ---------- mode pills ---------- */
-.mode-pills{display:flex;gap:10px;max-width:1180px;margin:0 auto;padding:22px 24px 8px;flex-wrap:wrap;}
-.mode-pill{
-  font-family:inherit;border:1.5px solid var(--rk-line);border-radius:999px;padding:8px 18px;
-  font-size:13.5px;font-weight:600;color:var(--rk-ink-soft);background:transparent;
-}
-.mode-pill.is-active{background:var(--rk-ink);border-color:var(--rk-ink);color:var(--rk-paper);}
-
 /* ---------- hero ---------- */
 .hero{
   position:relative;max-width:1180px;margin:0 auto;padding:30px 24px 36px;
@@ -497,67 +489,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .cart-nutrition-title{font-size:12.5px;font-weight:600;color:var(--rk-ink-soft);text-transform:uppercase;letter-spacing:.04em;margin:16px 0 10px;}
 .cart-summary-row.total{color:var(--rk-ink);font-weight:700;font-size:16px;border-top:1px solid var(--rk-line);margin-top:6px;padding-top:12px;}
 
-/* ---------- chef's picks ---------- */
-.picks-hero{grid-template-columns:1fr;text-align:left;padding-bottom:10px;}
-.picks-main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
-.picks-group{margin-bottom:42px;}
-.picks-group:last-child{margin-bottom:0;}
-.picks-group-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px;}
-.picks-group-dot{width:10px;height:10px;border-radius:50%;margin-top:9px;flex:none;}
-.picks-group-head h3{font-family:var(--font-display);font-size:20px;}
-.picks-group-head p{font-size:13.5px;color:var(--rk-ink-soft);margin-top:4px;max-width:480px;}
-.picks-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
-.pick-card{
-  background:var(--rk-white);border:1px solid var(--rk-line);border-radius:var(--radius-m);
-  overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-card);text-align:left;align-items:stretch;
-}
-@keyframes pick-card-added{
-  0%{border-color:var(--rk-primary);box-shadow:0 0 0 0 rgba(159,47,45,.4);}
-  70%{border-color:var(--rk-primary);box-shadow:0 0 0 8px rgba(159,47,45,0);}
-  100%{border-color:var(--rk-line);box-shadow:0 0 0 0 rgba(159,47,45,0);}
-}
-.pick-card.is-added{animation:pick-card-added .9s ease-out;}
-.pick-media{
-  aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;gap:10px;padding:14%;
-  border-bottom:1px solid var(--rk-line);
-}
-.pick-media .icon-svg{width:34px;height:34px;flex:none;}
-.pick-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1;}
-.pick-name{
-  font-family:var(--font-display);font-size:18px;letter-spacing:-0.01em;line-height:1.25;
-  min-height:2.5em;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-}
-.pick-tagline{
-  font-size:13px;color:var(--rk-ink-soft);line-height:1.4;
-  min-height:4.2em;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
-}
-.pick-nutrition{display:flex;gap:8px;padding:10px 0;border-top:1px solid var(--rk-line);border-bottom:1px solid var(--rk-line);margin-top:2px;}
-.pick-macro{display:flex;flex-direction:column;flex:1;min-width:0;font-family:var(--font-mono);}
-.pick-macro b{font-size:13px;font-weight:600;color:var(--rk-ink);line-height:1.3;}
-.pick-macro small{font-size:9.5px;color:var(--rk-ink-soft);text-transform:uppercase;letter-spacing:.03em;}
-.pick-actions{display:flex;align-items:center;gap:10px;margin-top:auto;}
-.pick-actions .stepper{flex:none;}
-.pick-actions .btn{padding:10px 14px;font-size:13px;}
-
-/* ---------- delivery date + time slot picker ---------- */
-.date-chip{border:1.5px solid var(--rk-line);border-radius:12px;padding:10px 8px;font-size:13px;font-weight:600;background:var(--rk-white);color:var(--rk-ink);}
-.date-chip.is-selected{border-color:var(--rk-primary);background:var(--rk-primary-pale);color:var(--rk-primary-deep);}
-.slot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px;margin-bottom:14px;}
-.calendar{border:1px solid var(--rk-line);border-radius:14px;padding:14px;margin-bottom:18px;}
-.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.cal-month-label{font-family:var(--font-display);font-size:16px;font-weight:400;}
-.cal-nav{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--rk-line);background:var(--rk-white);font-size:16px;line-height:1;color:var(--rk-ink);display:flex;align-items:center;justify-content:center;}
-.cal-nav:hover:not([disabled]){border-color:var(--rk-primary);color:var(--rk-primary);}
-.cal-nav[disabled]{opacity:.3;cursor:default;}
-.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:10.5px;color:var(--rk-ink-soft);margin-bottom:6px;}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
-.cal-cell{min-height:32px;display:flex;align-items:center;justify-content:center;font-size:13px;}
-.cal-day{border:1.5px solid transparent;border-radius:8px;background:var(--rk-white);color:var(--rk-ink);font-weight:600;}
-.cal-day:hover:not([disabled]){border-color:var(--rk-primary);}
-.cal-day.is-selected{background:var(--rk-primary);color:var(--rk-white);}
-.cal-day.is-disabled{color:var(--rk-line);cursor:default;}
-.autofill-note{font-size:12px;color:var(--rk-matcha);margin:-6px 0 14px;}
-
 .checkout-note{font-size:13px;color:var(--rk-ink-soft);background:var(--rk-paper-deep);border-radius:12px;padding:12px 14px;margin-bottom:16px;line-height:1.5;}
 .order-followup-note{font-size:12.5px;color:var(--rk-ink-soft);background:var(--rk-paper-deep);border-radius:10px;padding:10px 12px;margin-bottom:14px;line-height:1.5;}
 
@@ -612,9 +543,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   .cart-btn{padding:8px 12px;}
   .cart-icon{width:18px;height:18px;}
 
-  .mode-pills{padding:16px 16px 6px;gap:8px;}
-  .mode-pill{padding:8px 15px;font-size:13px;}
-
   .hero{padding:20px 16px 26px;gap:22px;}
   .hero h1{font-size:26px;}
   .hero p{font-size:14.5px;margin-top:10px;}
@@ -630,7 +558,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   .step-badge{font-size:11.5px;padding:4px 11px;}
 
   .card-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
-  .picks-grid{grid-template-columns:1fr;}
   .ing-card{padding:10px 10px 12px;gap:8px;}
   .ing-name{font-size:12.5px;min-height:30px;}
   .ing-macros{gap:6px;padding-top:6px;}
@@ -720,12 +647,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   </div>
 </header>
 
-<div class="mode-pills">
-  <button type="button" class="mode-pill is-active" data-view="byo" data-i18n="mode_byo">Build your own</button>
-  <button type="button" class="mode-pill" data-view="picks" data-i18n="mode_picks">Chef's picks</button>
-</div>
-
-<div id="byoView">
 <section class="hero">
   <div class="hero-text">
     <span class="eyebrow" data-i18n="hero_eyebrow">Calorie calculator</span>
@@ -852,21 +773,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   </div>
 </aside>
 
-</div><!-- /#byoView -->
-
-<div id="picksView" style="display:none">
-  <section class="hero picks-hero">
-    <div class="hero-text">
-      <span class="eyebrow" data-i18n="picks_eyebrow">Ready in one tap</span>
-      <h1 data-i18n="picks_title">Chef's picks</h1>
-      <p data-i18n="picks_desc">House bentos across four collections — pick a quantity and send it straight to your cart.</p>
-    </div>
-  </section>
-  <div class="picks-main">
-    <div id="picksGrid"></div>
-  </div>
-</div>
-1
 <div class="quick-actions">
   <a class="quick-action-btn quick-action-messenger" href="https://m.me/1041737169016337" target="_blank" rel="noopener" aria-label="Chat on Messenger" title="Messenger">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0C5.24 0 0 4.952 0 11.64c0 3.499 1.434 6.521 3.769 8.61a.96.96 0 0 1 .323.683l.065 2.135a.96.96 0 0 0 1.347.85l2.381-1.053a.96.96 0 0 1 .641-.046A13 13 0 0 0 12 23.28c6.76 0 12-4.952 12-11.64S18.76 0 12 0m6.806 7.44c.522-.03.971.567.63 1.094l-4.178 6.457a.707.707 0 0 1-.977.208l-3.87-2.504a.44.44 0 0 0-.49.007l-4.363 3.01c-.637.438-1.415-.317-.995-.966l4.179-6.457a.706.706 0 0 1 .977-.21l3.87 2.505c.15.097.344.094.491-.007l4.362-3.008a.7.7 0 0 1 .364-.13"/></svg>
@@ -1012,30 +918,6 @@ const I18N = {
     "nav_menu": "Your Bento",
     "nav_about": "About Us",
     "mode_byo": "Build your own",
-    "mode_picks": "Chef's picks",
-    "picks_eyebrow": "Ready in one tap",
-    "picks_title": "Chef's picks",
-    "picks_desc": "House bentos across four collections — pick a quantity and send it straight to your cart.",
-    "add_to_cart_short": "Add to cart",
-    "chefs_pick_label": "Chef's pick",
-    "cart_continue_delivery": "Continue to delivery time",
-    "delivery_time_title": "Delivery time",
-    "step2of3": "Step 2 of 3",
-    "step3of3": "Step 3 of 3",
-    "checkout_note_late": "It's past 6:00 PM, so the earliest available delivery date is in 2 days. Orders placed before 6:00 PM can get next-day delivery.",
-    "checkout_note_ontime": "Order before 6:00 PM today for tomorrow's delivery. Any date further out is always available, with no cutoff.",
-    "delivery_date_label": "Delivery date",
-    "delivery_slot_label": "Delivery time slot",
-    "checkout_slot_note": "Times are an estimate — our rider will arrive within the selected 30-minute window, every day from 11:00 AM to 1:30 PM.",
-    "continue_details": "Continue to your details",
-    "label_address": "Delivery address",
-    "address_placeholder": "Street, ward, district, city",
-    "label_email": "Email (optional)",
-    "email_placeholder": "you@email.com",
-    "autofill_note": "We found your saved details — feel free to edit them.",
-    "title_mx": "Mx",
-    "order_delivery": "Delivery",
-    "order_address": "Address",
     "order_confirmed_title": "Request confirmed",
     "cart_nutrition_total": "Nutrition total",
     "cart_nutrition_note": "Nutrition values are estimates and may vary slightly in practice.",
@@ -1071,6 +953,7 @@ const I18N = {
     "fab_view_bento": "View bento",
     "cart_your_cart": "Your cart",
     "cart_empty": "Your cart is empty — add a custom bento to get started.",
+    "cart_continue_contact": "Continue to your details",
     "cart_est_total": "Estimated total",
     "cart_show_ing": "Show ingredients",
     "cart_hide_ing": "Hide ingredients",
@@ -1080,6 +963,7 @@ const I18N = {
     "ingredient_plural": "ingredients",
     "back_btn": "Back",
     "contact_title": "Your details",
+    "step2of2": "Step 2 of 2",
     "label_phone": "Phone number",
     "phone_placeholder": "e.g. 0900000001",
     "label_title_field": "Title",
@@ -1100,7 +984,7 @@ const I18N = {
     "new_order_btn": "Start a new request",
     "order_default_name": "there",
     "toast_added": "Added to cart",
-    "toast_fill_fields": "Please fill in your name, phone number and delivery address.",
+    "toast_fill_fields": "Please fill in your name and phone number.",
     "toast_slow_down": "Please wait a few seconds before submitting again.",
     "toast_soba_sauce_lock": "Soba only pairs with mentsuyu sauce.",
     "footer_tagline": "Your Japanese-style healthy food companion.",
@@ -1122,30 +1006,6 @@ const I18N = {
   "nav_about": "Về chúng tôi",
 
   "mode_byo": "Tự tạo Bento",
-  "mode_picks": "Set nổi bật",
-  "picks_eyebrow": "Chọn nhanh",
-  "picks_title": "Bento nổi bật",
-  "picks_desc": "Các set Bento bán chạy do đầu bếp tuyển chọn. Chỉ cần chọn số lượng và thêm vào giỏ hàng.",
-  "add_to_cart_short": "Thêm vào giỏ",
-  "chefs_pick_label": "Bento có sẵn",
-  "cart_continue_delivery": "Tiếp tục",
-  "delivery_time_title": "Thời gian giao hàng",
-  "step2of3": "Bước 2/3",
-  "step3of3": "Bước 3/3",
-  "checkout_note_late": "Đã sau 18:00. Đơn sớm nhất sẽ được giao sau 2 ngày. Đặt trước 18:00 để được giao vào ngày hôm sau.",
-  "checkout_note_ontime": "Đặt trước 18:00 hôm nay để nhận hàng vào ngày mai. Bạn cũng có thể chọn bất kỳ ngày nào sau đó.",
-  "delivery_date_label": "Ngày giao",
-  "delivery_slot_label": "Khung giờ giao",
-  "checkout_slot_note": "Thời gian giao mang tính dự kiến trong khung giờ bạn đã chọn (11:00 - 13:30).",
-  "continue_details": "Tiếp tục",
-  "label_address": "Địa chỉ nhận hàng",
-  "address_placeholder": "Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố",
-  "label_email": "Email (không bắt buộc)",
-  "email_placeholder": "email@example.com",
-  "autofill_note": "Thông tin của bạn đã được điền sẵn. Bạn có thể chỉnh sửa nếu cần.",
-  "title_mx": "Khác",
-  "order_delivery": "Giao hàng",
-  "order_address": "Địa chỉ",
 
   "order_confirmed_title": "Đã xác nhận yêu cầu",
 
@@ -1194,6 +1054,7 @@ const I18N = {
 
   "cart_your_cart": "Giỏ hàng",
   "cart_empty": "Giỏ hàng đang trống.",
+  "cart_continue_contact": "Tiếp tục",
   "cart_est_total": "Tạm tính",
   "cart_show_ing": "Xem nguyên liệu",
   "cart_hide_ing": "Ẩn nguyên liệu",
@@ -1207,6 +1068,7 @@ const I18N = {
   "back_btn": "Quay lại",
 
   "contact_title": "Thông tin liên hệ",
+  "step2of2": "Bước 2/2",
 
   "label_phone": "Số điện thoại",
   "phone_placeholder": "Ví dụ: 0901234567",
@@ -1238,7 +1100,7 @@ const I18N = {
   "order_default_name": "bạn",
 
   "toast_added": "Đã thêm vào giỏ hàng",
-  "toast_fill_fields": "Vui lòng nhập đầy đủ họ tên, số điện thoại và địa chỉ nhận hàng.",
+  "toast_fill_fields": "Vui lòng nhập đầy đủ họ tên và số điện thoại.",
   "toast_soba_sauce_lock": "Mì soba chỉ dùng kèm sốt Mentsuyu.",
   "toast_slow_down": "Vui lòng đợi vài giây trước khi gửi lại.",
 
@@ -1262,30 +1124,6 @@ const I18N = {
     "nav_menu": "マイ弁当",
     "nav_about": "店舗情報",
     "mode_byo": "自分で作る",
-    "mode_picks": "シェフのおすすめ",
-    "picks_eyebrow": "ワンタップで注文完了",
-    "picks_title": "シェフのおすすめ",
-    "picks_desc": "4つのコレクションから選べる弁当 — 数量を選んでそのままカートへ。",
-    "add_to_cart_short": "カートに追加",
-    "chefs_pick_label": "おすすめセット",
-    "cart_continue_delivery": "配達時間の選択へ進む",
-    "delivery_time_title": "配達時間",
-    "step2of3": "ステップ 2/3",
-    "step3of3": "ステップ 3/3",
-    "checkout_note_late": "18時を過ぎているため、最短のお届け日は2日後です。18時前のご注文は翌日お届け可能です。",
-    "checkout_note_ontime": "本日18時までのご注文で翌日お届け可能です。それ以降の日付はいつでもお選びいただけます。",
-    "delivery_date_label": "お届け日",
-    "delivery_slot_label": "お届け時間帯",
-    "checkout_slot_note": "時間は目安です — 配達員は選択された30分の枠内（毎日11:00〜13:30）にお伺いします。",
-    "continue_details": "お客様情報の入力へ",
-    "label_address": "配達先住所",
-    "address_placeholder": "番地・町名・区・市",
-    "label_email": "メールアドレス（任意）",
-    "email_placeholder": "you@email.com",
-    "autofill_note": "保存済みの情報が見つかりました — 必要に応じて編集できます。",
-    "title_mx": "その他",
-    "order_delivery": "お届け",
-    "order_address": "住所",
     "order_confirmed_title": "リクエストを確定しました",
     "cart_nutrition_total": "栄養素の合計",
     "cart_nutrition_note": "栄養価は目安であり、実際とは多少異なる場合があります。",
@@ -1321,6 +1159,7 @@ const I18N = {
     "fab_view_bento": "弁当を見る",
     "cart_your_cart": "カート",
     "cart_empty": "カートは空です — 自分で作った弁当を追加してください。",
+    "cart_continue_contact": "お客様情報の入力へ進む",
     "cart_est_total": "合計金額(概算)",
     "cart_show_ing": "具材を見る",
     "cart_hide_ing": "具材を隠す",
@@ -1330,6 +1169,7 @@ const I18N = {
     "ingredient_plural": "具材",
     "back_btn": "戻る",
     "contact_title": "お客様情報",
+    "step2of2": "ステップ 2/2",
     "label_phone": "電話番号",
     "phone_placeholder": "例:0900000001",
     "label_title_field": "敬称",
@@ -1350,7 +1190,7 @@ const I18N = {
     "new_order_btn": "新しいリクエストを始める",
     "order_default_name": "お客様",
     "toast_added": "カートに追加しました",
-    "toast_fill_fields": "お名前・電話番号・配達先住所をご入力ください。",
+    "toast_fill_fields": "お名前・電話番号をご入力ください。",
     "toast_soba_sauce_lock": "そばはめんつゆのみと組み合わせられます。",
     "toast_slow_down": "数秒待ってから再度お試しください。",
     "footer_tagline": "あなたの和風ヘルシーフードパートナー。",
@@ -1371,30 +1211,6 @@ const I18N = {
     "nav_menu": "내 벤토",
     "nav_about": "매장 정보",
     "mode_byo": "직접 구성하기",
-    "mode_picks": "셰프 추천",
-    "picks_eyebrow": "한 번의 탭으로 완성",
-    "picks_title": "셰프 추천",
-    "picks_desc": "4가지 컬렉션으로 구성된 시그니처 벤토 — 수량을 선택하고 바로 장바구니에 담아보세요.",
-    "add_to_cart_short": "장바구니 담기",
-    "chefs_pick_label": "셰프 추천 세트",
-    "cart_continue_delivery": "배달 시간 선택으로 이동",
-    "delivery_time_title": "배달 시간",
-    "step2of3": "3단계 중 2단계",
-    "step3of3": "3단계 중 3단계",
-    "checkout_note_late": "오후 6시가 지나 가장 빠른 배달일은 2일 후입니다. 오후 6시 이전 주문 시 다음날 배달이 가능합니다.",
-    "checkout_note_ontime": "오늘 오후 6시 이전 주문 시 내일 배달이 가능합니다. 그 이후 날짜는 언제든 선택할 수 있습니다.",
-    "delivery_date_label": "배달 날짜",
-    "delivery_slot_label": "배달 시간대",
-    "checkout_slot_note": "시간은 예상 기준입니다 — 라이더는 매일 11:00~13:30 사이, 선택하신 30분 구간 내에 도착합니다.",
-    "continue_details": "상세 정보 입력으로 이동",
-    "label_address": "배달 주소",
-    "address_placeholder": "도로명, 동, 구, 시",
-    "label_email": "이메일 (선택 사항)",
-    "email_placeholder": "you@email.com",
-    "autofill_note": "저장된 정보를 찾았습니다 — 필요하면 자유롭게 수정하세요.",
-    "title_mx": "기타",
-    "order_delivery": "배달",
-    "order_address": "주소",
     "order_confirmed_title": "요청이 확정되었습니다",
     "cart_nutrition_total": "영양 합계",
     "cart_nutrition_note": "영양 정보는 추정치이며 실제와 다소 차이가 있을 수 있습니다.",
@@ -1430,6 +1246,7 @@ const I18N = {
     "fab_view_bento": "벤토 보기",
     "cart_your_cart": "장바구니",
     "cart_empty": "장바구니가 비어 있습니다 — 커스텀 벤토를 담아보세요.",
+    "cart_continue_contact": "고객 정보 입력으로 이동",
     "cart_est_total": "예상 총 금액",
     "cart_show_ing": "재료 보기",
     "cart_hide_ing": "재료 숨기기",
@@ -1439,6 +1256,7 @@ const I18N = {
     "ingredient_plural": "재료",
     "back_btn": "뒤로",
     "contact_title": "고객 정보",
+    "step2of2": "2단계 중 2단계",
     "label_phone": "전화번호",
     "phone_placeholder": "예: 0900000001",
     "label_title_field": "호칭",
@@ -1459,7 +1277,7 @@ const I18N = {
     "new_order_btn": "새 요청 시작하기",
     "order_default_name": "고객님",
     "toast_added": "장바구니에 담았습니다",
-    "toast_fill_fields": "이름, 전화번호, 배달 주소를 입력해 주세요.",
+    "toast_fill_fields": "이름과 전화번호를 입력해 주세요.",
     "toast_soba_sauce_lock": "소바는 멘츠유 소스와만 함께 제공됩니다.",
     "toast_slow_down": "몇 초 후에 다시 시도해 주세요.",
     "footer_tagline": "당신의 일본식 건강식 파트너.",
@@ -1480,30 +1298,6 @@ const I18N = {
     "nav_menu": "我的便当",
     "nav_about": "关于我们",
     "mode_byo": "自选搭配",
-    "mode_picks": "主厨精选",
-    "picks_eyebrow": "一键即可下单",
-    "picks_title": "主厨精选",
-    "picks_desc": "四大系列招牌便当 —— 选择数量，直接加入购物车。",
-    "add_to_cart_short": "加入购物车",
-    "chefs_pick_label": "主厨精选",
-    "cart_continue_delivery": "继续选择送达时间",
-    "delivery_time_title": "送达时间",
-    "step2of3": "第2步，共3步",
-    "step3of3": "第3步，共3步",
-    "checkout_note_late": "已过晚上6点，最早可送达日期为2天后。晚上6点前下单可享次日送达。",
-    "checkout_note_ontime": "今天晚上6点前下单可于明天送达。更远的日期随时可选，没有限制。",
-    "delivery_date_label": "送达日期",
-    "delivery_slot_label": "送达时间段",
-    "checkout_slot_note": "时间为预估 —— 骑手将在您选择的30分钟时段内送达，每日11:00至13:30。",
-    "continue_details": "继续填写详细信息",
-    "label_address": "送达地址",
-    "address_placeholder": "街道、坊/村、区、城市",
-    "label_email": "电子邮箱（选填）",
-    "email_placeholder": "you@email.com",
-    "autofill_note": "已找到您保存的信息 —— 可随时修改。",
-    "title_mx": "其他",
-    "order_delivery": "配送",
-    "order_address": "地址",
     "order_confirmed_title": "请求已确认",
     "cart_nutrition_total": "营养总计",
     "cart_nutrition_note": "营养数值仅供参考，实际情况可能略有差异。",
@@ -1539,6 +1333,7 @@ const I18N = {
     "fab_view_bento": "查看便当",
     "cart_your_cart": "购物车",
     "cart_empty": "购物车是空的 —— 添加自选便当开始下单吧。",
+    "cart_continue_contact": "继续填写详细信息",
     "cart_est_total": "预估总计",
     "cart_show_ing": "查看食材",
     "cart_hide_ing": "隐藏食材",
@@ -1548,6 +1343,7 @@ const I18N = {
     "ingredient_plural": "种食材",
     "back_btn": "返回",
     "contact_title": "您的详细信息",
+    "step2of2": "第2步，共2步",
     "label_phone": "电话号码",
     "phone_placeholder": "例如：0900000001",
     "label_title_field": "称呼",
@@ -1568,7 +1364,7 @@ const I18N = {
     "new_order_btn": "开始新请求",
     "order_default_name": "您",
     "toast_added": "已加入购物车",
-    "toast_fill_fields": "请填写姓名、电话号码和送达地址。",
+    "toast_fill_fields": "请填写姓名和电话号码。",
     "toast_soba_sauce_lock": "荞麦面仅可搭配蘸面汁（Mentsuyu）。",
     "toast_slow_down": "请稍等几秒后再试。",
     "footer_tagline": "您的日式健康餐伙伴。",
@@ -1787,7 +1583,6 @@ function setLanguage(lang){
   try{ localStorage.setItem('rokusho_lang', lang); }catch(e){}
   applyStaticTranslations();
   renderAll();
-  renderPicks();
   renderCartPanel();
 }
 
@@ -1800,9 +1595,9 @@ const DATA = {
     {id:'chicken-drumstick', icon:'chicken', kcal:180, protein:30, carbs:0, fat:6, price:85000, name:'Grilled chicken drumstick'},
     {id:'chicken-breast', icon:'chicken', kcal:180, protein:34.5, carbs:0, fat:3.9, price:70000, name:'Grilled chicken breast'},
     {id:'salmon', icon:'fish', kcal:250, protein:24, carbs:0, fat:16.8, price:180000, name:'Grilled salmon'},
-    {id:'beef-belly', icon:'beef', kcal:494, protein:22.4, carbs:0, fat:44.8, price:120000, name:'Grilled beef belly'},
-    {id:'saba', icon:'fish', kcal:170, protein:24.7, carbs:0, fat:18.6, price:85000, name:'Grilled saba mackerel'},
-    {id:'cod-fish', icon:'fish', kcal:98, protein:21.6, carbs:0, fat:0.8, price:480000, name:'Grilled cod fish'}
+    // {id:'beef-belly', icon:'beef', kcal:494, protein:22.4, carbs:0, fat:44.8, price:120000, name:'Grilled beef belly'}, // temporarily hidden — out of stock
+    {id:'saba', icon:'fish', kcal:170, protein:24.7, carbs:0, fat:18.6, price:85000, name:'Grilled saba mackerel'}
+    // {id:'cod-fish', icon:'fish', kcal:98, protein:21.6, carbs:0, fat:0.8, price:480000, name:'Grilled cod fish'} // temporarily hidden — out of stock
   ],
   carbs:[
     {id:'rice-white', icon:'rice', kcal:168, protein:2.5, carbs:37.1, fat:0.3, price:10000, name:'Japanese white rice'},
@@ -1834,137 +1629,6 @@ const DATA = {
 
 const CATS = ['protein','carbs','side','sauce'];
 const CAT_LABEL = {protein:'Protein', carbs:'Carbs', side:'Sides', sauce:'Sauce'};
-
-/* ============================================================
-   CHEF'S PICKS — 8 pre-built bentos across 4 collections, built
-   entirely from the same ingredient catalogue above (item ids
-   reused from DATA) so their nutrition is computed live from
-   real ingredient values, never hand-typed.
-   ============================================================ */
-const PICKS = [
-  {id:'pick-teriyaki-beef', group:'high-protein', name:'Teriyaki Beef Bento', tagline:'Grilled beef belly, Japanese white rice, steamed broccoli & teriyaki sauce.', price:119000, items:['beef-belly','rice-white','broccoli','teriyaki']},
-  {id:'pick-salmon-power', group:'high-protein', name:'Salmon Power Bento', tagline:'Grilled salmon, brown rice, steamed spinach & sesame mayo.', price:135000, items:['salmon','rice-brown','spinach','sesame-mayo']},
-  {id:'pick-lean-chicken', group:'low-calories', name:'Lean Chicken Bento', tagline:'Grilled chicken breast, brown rice, steamed broccoli & soy sauce.', price:79000, items:['chicken-breast','rice-brown','broccoli','soy-sauce']},
-  {id:'pick-cod-greens', group:'low-calories', name:"Cod & Greens Bento", tagline:'Grilled cod fish, brown rice, mixed salad & shoyu fruit dressing.', price:99000, items:['cod-fish','rice-brown','mixed-salad','shoyu-dressing']},
-  {id:'pick-soba-chicken', group:'balanced', name:'Soba Chicken Bento', tagline:'Grilled chicken drumstick, soba noodles, grilled tomato & mentsuyu.', price:89000, items:['chicken-drumstick','soba','tomato-grilled','mentsuyu']},
-  {id:'pick-saba-classic', group:'balanced', name:'Saba Classic Bento', tagline:'Grilled saba mackerel, Japanese white rice, steamed carrot & sesame honey dressing.', price:99000, items:['saba','rice-white','carrot','sesame-honey']},
-  {id:'pick-pumpkin-garden', group:'vegan', name:'Pumpkin Garden Bento', tagline:'Brown rice, grilled paprika pumpkin, steamed broccoli & shoyu fruit dressing.', price:75000, items:['rice-brown','pumpkin-grilled','broccoli','shoyu-dressing']},
-  {id:'pick-sweet-potato-veggie', group:'vegan', name:'Sweet Potato Veggie Bento', tagline:'Steamed sweet potato, stir-fried vegetables, mixed salad & soy sauce.', price:69000, items:['sweet-potato','stir-fried-veg','mixed-salad','soy-sauce']}
-];
-
-const GROUP_ORDER = ['high-protein','low-calories','balanced','vegan'];
-const GROUP_META = {
-  'high-protein':{label:'High-Protein', desc:'Built around a generous protein portion to fuel recovery and keep you full.', color:'#9F2F2D', pastelBg:'#FDEBEC'},
-  'low-calories':{label:'Low-Calories', desc:'Lighter combinations, without skimping on flavour.', color:'#346538', pastelBg:'#EDF3EC'},
-  'balanced':{label:'Balanced', desc:'An even split of protein, carbs and healthy fats — an everyday go-to.', color:'#956400', pastelBg:'#FBF3DB'},
-  'vegan':{label:'Vegan', desc:'100% plant-based, no animal products.', color:'#1F6C9F', pastelBg:'#E1F3FE'}
-};
-
-const PICK_I18N = {
-  'pick-teriyaki-beef': {
-    vi:{name:'Bento Bò Teriyaki', tagline:'Ba chỉ bò nướng sốt teriyaki, cơm trắng Nhật, bông cải xanh hấp & sốt teriyaki.'},
-    ja:{name:'照り焼きビーフ弁当', tagline:'牛バラ肉の照り焼きグリル、白ごはん、蒸しブロッコリー、照り焼きソース。'},
-    ko:{name:'데리야키 소고기 벤토', tagline:'그릴에 구운 소 삼겹살 데리야키, 백미밥, 찐 브로콜리 & 데리야키 소스.'},
-    zh:{name:'照烧牛肉便当', tagline:'烤牛五花配照烧酱、日式白米饭、水煮西兰花与照烧酱汁。'}
-  },
-  'pick-salmon-power': {
-    vi:{name:'Bento Cá Hồi Năng Lượng', tagline:'Cá hồi nướng, cơm gạo lứt, bó xôi hấp & sốt mè mayo.'},
-    ja:{name:'サーモンパワー弁当', tagline:'サーモンのグリル、玄米、蒸しほうれん草、ごまマヨソース。'},
-    ko:{name:'연어 파워 벤토', tagline:'그릴에 구운 연어, 현미밥, 찐 시금치 & 참깨 마요 소스.'},
-    zh:{name:'三文鱼能量便当', tagline:'烤三文鱼、糙米饭、水煮菠菜与芝麻蛋黄酱。'}
-  },
-  'pick-lean-chicken': {
-    vi:{name:'Bento Gà Ít Béo', tagline:'Ức gà nướng, cơm gạo lứt, bông cải xanh hấp & nước tương.'},
-    ja:{name:'ヘルシーチキン弁当', tagline:'鶏むね肉のグリル、玄米、蒸しブロッコリー、醤油。'},
-    ko:{name:'저지방 치킨 벤토', tagline:'그릴에 구운 닭가슴살, 현미밥, 찐 브로콜리 & 간장 소스.'},
-    zh:{name:'低脂鸡肉便当', tagline:'烤鸡胸肉、糙米饭、水煮西兰花与酱油。'}
-  },
-  'pick-cod-greens': {
-    vi:{name:'Bento Cá Tuyết Rau Xanh', tagline:'Cá tuyết nướng, cơm gạo lứt, salad trộn & sốt trái cây.'},
-    ja:{name:'タラと野菜の弁当', tagline:'タラのグリル、玄米、本日のサラダ、醤油フルーツドレッシング。'},
-    ko:{name:'대구 & 채소 벤토', tagline:'그릴에 구운 대구, 현미밥, 오늘의 샐러드 & 쇼유 과일 드레싱.'},
-    zh:{name:'鳕鱼时蔬便当', tagline:'烤鳕鱼、糙米饭、每日沙拉与酱油水果酱汁。'}
-  },
-  'pick-soba-chicken': {
-    vi:{name:'Bento Gà Soba', tagline:'Đùi gà nướng, mì soba, cà chua nướng & sốt mì lạnh Mentsuyu.'},
-    ja:{name:'鶏そば弁当', tagline:'鶏もも肉のグリル、そば、トマトのグリル、麺つゆ。'},
-    ko:{name:'치킨 소바 벤토', tagline:'그릴에 구운 닭다리, 소바, 구운 토마토 & 멘츠유.'},
-    zh:{name:'鸡肉荞麦便当', tagline:'烤鸡腿、荞麦面、烤番茄与面露酱汁。'}
-  },
-  'pick-saba-classic': {
-    vi:{name:'Bento Cá Saba Truyền Thống', tagline:'Cá Saba nướng, cơm trắng Nhật, cà rốt hấp & sốt mè rang mật ong.'},
-    ja:{name:'サバ定番弁当', tagline:'サバのグリル、白ごはん、蒸しにんじん、ごまはちみつドレッシング。'},
-    ko:{name:'고등어 클래식 벤토', tagline:'그릴에 구운 고등어(사바), 백미밥, 찐 당근 & 참깨 꿀 드레싱.'},
-    zh:{name:'经典烤鲭鱼便当', tagline:'烤鲭鱼（Saba）、日式白米饭、蒸胡萝卜与芝麻蜂蜜酱汁。'}
-  },
-  'pick-pumpkin-garden': {
-    vi:{name:'Bento Bí Đỏ Vườn Nhà', tagline:'Cơm gạo lứt, bí đỏ nướng paprika, bông cải xanh hấp & sốt trái cây.'},
-    ja:{name:'かぼちゃガーデン弁当', tagline:'玄米、かぼちゃのパプリカグリル、蒸しブロッコリー、醤油フルーツドレッシング。'},
-    ko:{name:'호박 가든 벤토', tagline:'현미밥, 파프리카 호박구이, 찐 브로콜리 & 쇼유 과일 드레싱.'},
-    zh:{name:'南瓜花园便当', tagline:'糙米饭、烤南瓜（红椒粉）、水煮西兰花与酱油水果酱汁。'}
-  },
-  'pick-sweet-potato-veggie': {
-    vi:{name:'Bento Khoai Lang Rau Củ', tagline:'Khoai lang luộc, rau xào, salad trộn & nước tương.'},
-    ja:{name:'さつまいもベジ弁当', tagline:'蒸しさつまいも、野菜炒め、本日のサラダ、醤油。'},
-    ko:{name:'고구마 베지 벤토', tagline:'찐 고구마, 야채볶음, 오늘의 샐러드 & 간장 소스.'},
-    zh:{name:'红薯蔬菜便当', tagline:'水煮红薯、炒时蔬、每日沙拉与酱油。'}
-  }
-};
-const GROUP_I18N = {
-  'high-protein': {
-    vi:{label:'Giàu Đạm', desc:'Xây dựng quanh khẩu phần đạm dồi dào giúp phục hồi và no lâu.'},
-    ja:{label:'高タンパク', desc:'しっかりタンパク質を摂れる、回復と満足感を重視した組み合わせ。'},
-    ko:{label:'고단백', desc:'회복을 돕고 든든하게 채워주는 넉넉한 단백질 구성입니다.'},
-    zh:{label:'高蛋白', desc:'以充足的蛋白质为核心，帮助恢复体力并保持饱腹感。'}
-  },
-  'low-calories': {
-    vi:{label:'Ít Calo', desc:'Sự kết hợp nhẹ nhàng hơn nhưng vẫn đầy đủ hương vị.'},
-    ja:{label:'低カロリー', desc:'軽やかながら味わいはそのまま楽しめる組み合わせ。'},
-    ko:{label:'저칼로리', desc:'맛은 그대로, 더 가벼운 조합입니다.'},
-    zh:{label:'低卡路里', desc:'更轻盈的搭配，风味丝毫不减。'}
-  },
-  'balanced': {
-    vi:{label:'Cân Bằng', desc:'Tỷ lệ đều giữa đạm, tinh bột và chất béo lành mạnh — lựa chọn mỗi ngày.'},
-    ja:{label:'バランス', desc:'タンパク質・炭水化物・良質な脂質を均等に — 毎日の定番。'},
-    ko:{label:'밸런스', desc:'단백질, 탄수화물, 건강한 지방을 고르게 — 매일 먹기 좋은 구성.'},
-    zh:{label:'均衡', desc:'蛋白质、碳水与健康脂肪均衡搭配 —— 日常首选。'}
-  },
-  'vegan': {
-    vi:{label:'Thuần Chay', desc:'100% từ thực vật, không có sản phẩm từ động vật.'},
-    ja:{label:'ヴィーガン', desc:'100%植物性、動物性食品は使用していません。'},
-    ko:{label:'비건', desc:'100% 식물성 재료로만 구성, 동물성 재료 없음.'},
-    zh:{label:'纯素', desc:'100%植物基，不含任何动物成分。'}
-  }
-};
-
-function pickName(pick){
-  const tr = PICK_I18N[pick.id];
-  return (LANG!=='en' && tr && tr[LANG] && tr[LANG].name) || pick.name;
-}
-function pickTagline(pick){
-  const tr = PICK_I18N[pick.id];
-  return (LANG!=='en' && tr && tr[LANG] && tr[LANG].tagline) || pick.tagline;
-}
-function groupLabel(group){
-  const tr = GROUP_I18N[group];
-  return (LANG!=='en' && tr && tr[LANG] && tr[LANG].label) || GROUP_META[group].label;
-}
-function groupDesc(group){
-  const tr = GROUP_I18N[group];
-  return (LANG!=='en' && tr && tr[LANG] && tr[LANG].desc) || GROUP_META[group].desc;
-}
-
-const pickQty = {};
-PICKS.forEach(p=>{ pickQty[p.id] = 1; });
-
-function pickNutrition(pick){
-  const t={kcal:0,protein:0,carbs:0,fat:0};
-  pick.items.forEach(id=>{
-    const found = findItem(id);
-    if(found){ t.kcal+=found.item.kcal; t.protein+=found.item.protein; t.carbs+=found.item.carbs; t.fat+=found.item.fat; }
-  });
-  return t;
-}
 
 /* ============================================================
    STATE — quantity per item id, flexible across every category
@@ -2065,52 +1729,6 @@ function renderGrids(){
   document.getElementById('carbsCount').textContent = categoryCount('carbs');
   document.getElementById('sideCount').textContent = categoryCount('side');
   document.getElementById('sauceCount').textContent = categoryCount('sauce');
-}
-
-function pickCardTemplate(pick){
-  const nutri = pickNutrition(pick);
-  const meta = GROUP_META[pick.group];
-  const name = pickName(pick);
-  const q = pickQty[pick.id];
-  const iconsHtml = pick.items.map(id=>{
-    const found = findItem(id);
-    return found ? iconSvg(found.item.icon) : '';
-  }).join('');
-  return `<div class="pick-card">
-    <div class="pick-media" style="background:${meta.pastelBg};color:${meta.color}">${iconsHtml}</div>
-    <div class="pick-body">
-      <div class="pick-name">${name}</div>
-      <div class="pick-tagline">${pickTagline(pick)}</div>
-      <div class="pick-nutrition">
-        <span class="pick-macro"><b>${Math.round(nutri.kcal)}</b><small>${tr_('label_kcal')}</small></span>
-        <span class="pick-macro"><b>${nutri.protein.toFixed(1)}g</b><small>${tr_('label_protein')}</small></span>
-        <span class="pick-macro"><b>${nutri.carbs.toFixed(1)}g</b><small>${tr_('label_carbs')}</small></span>
-        <span class="pick-macro"><b>${nutri.fat.toFixed(1)}g</b><small>${tr_('label_fat')}</small></span>
-      </div>
-      <div class="pick-actions">
-        <span class="stepper">
-          <button type="button" class="step-btn minus" data-pick="${pick.id}" data-dir="-1" ${q<=1?'disabled':''} aria-label="Decrease quantity">–</button>
-          <span class="step-count">${q}</span>
-          <button type="button" class="step-btn plus" data-pick="${pick.id}" data-dir="1" aria-label="Increase quantity">+</button>
-        </span>
-        <button type="button" class="btn btn-solid" data-pick-add="${pick.id}">${tr_('add_to_cart_short')}</button>
-      </div>
-    </div>
-  </div>`;
-}
-
-function renderPicks(){
-  document.getElementById('picksGrid').innerHTML = GROUP_ORDER.map(g=>{
-    const meta = GROUP_META[g];
-    const items = PICKS.filter(p=>p.group===g);
-    return `<div class="picks-group">
-      <div class="picks-group-head">
-        <span class="picks-group-dot" style="background:${meta.color}"></span>
-        <div><h3>${groupLabel(g)}</h3><p>${groupDesc(g)}</p></div>
-      </div>
-      <div class="card-grid picks-grid">${items.map(pickCardTemplate).join('')}</div>
-    </div>`;
-  }).join('');
 }
 
 let lastBentoItemTotal = 0;
@@ -2351,7 +1969,6 @@ function sendOrderConfirmationEmail(order){
   const carbsItem = categoryItems.carbs.join(' | ');
   const sideItem = categoryItems.side.join(' | ');
   const sauceItem = categoryItems.sauce.join(' | ');
-  const itemsSummary = order.lines.map(l=>`${l.qty}x ${l.label}`).join(', ');
 
   html2canvas(receipt, {scale:2, backgroundColor:'#FFFFFF'}).then(canvas=>{
     const imageBase64 = canvas.toDataURL('image/jpeg', 0.92);
@@ -2367,12 +1984,8 @@ function sendOrderConfirmationEmail(order){
         contactName: order.contact.name || '',
         contactPhone: order.contact.phone || '',
         customerEmail: order.contact.email || '',
-        customerAddress: order.contact.address || '',
         customerNote: order.contact.notes || '',
-        deliveryDate: order.dateLabel || '',
-        deliverySlot: order.slotLabel || '',
         itemCount: order.itemCount,
-        itemsSummary: itemsSummary,
         proteinItem: proteinItem,
         carbsItem: carbsItem,
         sideItem: sideItem,
@@ -2396,10 +2009,6 @@ const cart = [];
 function cartItemCount(){ return cart.reduce((s,l)=>s+l.qty,0); }
 
 function lineNutrition(line){
-  if(line.type==='pick'){
-    const pick = PICKS.find(p=>p.id===line.pickId);
-    return pick ? pickNutrition(pick) : {kcal:0,protein:0,carbs:0,fat:0};
-  }
   return line.nutrition;
 }
 
@@ -2460,27 +2069,6 @@ function addCustomBentoToCart(){
   openCartPanel();
 }
 
-function addPickToCart(pickId){
-  const pick = PICKS.find(p=>p.id===pickId);
-  if(!pick) return;
-  const q = pickQty[pickId] || 1;
-  const existing = cart.find(c=>c.type==='pick' && c.pickId===pickId);
-  if(existing){ existing.qty += q; }
-  else{
-    cart.push({cartId:'p'+Date.now()+Math.floor(Math.random()*1000), type:'pick', pickId:pick.id, label:pick.name, qty:q, expanded:false});
-  }
-  pickQty[pickId] = 1;
-  renderPicks();
-  renderCartBadge();
-  showToast(tr_('toast_added'));
-
-  const card = document.querySelector(`[data-pick-add="${pickId}"]`)?.closest('.pick-card');
-  if(card){
-    card.classList.add('is-added');
-    card.addEventListener('animationend', () => card.classList.remove('is-added'), {once:true});
-  }
-}
-
 function adjustCartLineQty(cartId, dir){
   const line = cart.find(c=>c.cartId===cartId);
   if(!line) return;
@@ -2502,67 +2090,9 @@ function removeCartLine(cartId){
 /* ============================================================
    CHECKOUT — contact info + confirmation
    ============================================================ */
-let cartStep = 'review'; // review | datetime | contact | done
-let checkoutData = {date:'', dateLabel:'', slot:'', slotLabel:'', phone:'', name:'', title:'Mr', address:'', email:'', notes:''};
+let cartStep = 'review'; // review | contact | done
+let checkoutData = {phone:'', name:'', title:'Mr', notes:''};
 let lastOrder = null;
-let calendarViewDate = null;
-
-// Looked up by phone number to auto-fill returning customers' details at checkout.
-// Empty until wired up to a real customer/order database.
-const CUSTOMER_DB = {};
-
-// Delivery window is always 11:00 AM – 1:30 PM, split into 30-minute estimate slots.
-const DELIVERY_SLOTS = [
-  {id:'11:00', label:'11:00 – 11:30 AM'},
-  {id:'11:30', label:'11:30 AM – 12:00 PM'},
-  {id:'12:00', label:'12:00 – 12:30 PM'},
-  {id:'12:30', label:'12:30 – 1:00 PM'},
-  {id:'13:00', label:'1:00 – 1:30 PM'}
-];
-
-function earliestAllowedDate(){
-  const now = new Date();
-  const cutoffPassed = now.getHours() >= 18;
-  const offset = cutoffPassed ? 2 : 1;
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate()+offset);
-}
-function isoDate(d){
-  const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${day}`;
-}
-function calendarHtml(){
-  const earliest = earliestAllowedDate();
-  if(!calendarViewDate) calendarViewDate = new Date(earliest.getFullYear(), earliest.getMonth(), 1);
-  const year = calendarViewDate.getFullYear();
-  const month = calendarViewDate.getMonth();
-  const firstDay = new Date(year, month, 1);
-  const startWeekday = firstDay.getDay();
-  const daysInMonth = new Date(year, month+1, 0).getDate();
-  const monthLabel = firstDay.toLocaleDateString(currentLocale(),{month:'long', year:'numeric'});
-  const isPrevDisabled = (year===earliest.getFullYear() && month===earliest.getMonth());
-
-  let cells = '';
-  for(let i=0;i<startWeekday;i++){ cells += `<span class="cal-cell cal-empty"></span>`; }
-  for(let d=1; d<=daysInMonth; d++){
-    const cellDate = new Date(year, month, d);
-    const iso = isoDate(cellDate);
-    const isPast = cellDate < new Date(earliest.getFullYear(), earliest.getMonth(), earliest.getDate());
-    const isSelected = checkoutData.date === iso;
-    const cls = ['cal-cell','cal-day'];
-    if(isPast) cls.push('is-disabled');
-    if(isSelected) cls.push('is-selected');
-    const label = cellDate.toLocaleDateString(currentLocale(),{weekday:'short',month:'short',day:'numeric'});
-    cells += `<button type="button" class="${cls.join(' ')}" ${isPast?'disabled':''} data-cal-date="${iso}" data-cal-label="${label}">${d}</button>`;
-  }
-
-  return `<div class="cal-head">
-    <button type="button" class="cal-nav" id="calPrev" ${isPrevDisabled?'disabled':''} aria-label="Previous month">‹</button>
-    <span class="cal-month-label">${monthLabel}</span>
-    <button type="button" class="cal-nav" id="calNext" aria-label="Next month">›</button>
-  </div>
-  <div class="cal-weekdays">${(WEEKDAY_INITIALS[LANG]||WEEKDAY_INITIALS.en).map(w=>`<span>${w}</span>`).join('')}</div>
-  <div class="cal-grid">${cells}</div>`;
-}
 
 function generateOrderCode(){
   const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -2588,21 +2118,18 @@ function closeCartPanel(){
 function goToCartStep(step){ cartStep = step; renderCartPanel(); }
 
 function cartLineTemplate(line){
-  const isPick = line.type==='pick';
-  const displayLabel = isPick
-    ? (PICKS.find(p=>p.id===line.pickId) ? pickName(PICKS.find(p=>p.id===line.pickId)) : line.label)
-    : tr_('custom_bento_label');
-  const sub = isPick ? tr_('chefs_pick_label') : `${line.lines.length} ${tr_(line.lines.length>1?'ingredient_plural':'ingredient_singular')}`;
+  const displayLabel = tr_('custom_bento_label');
+  const sub = `${line.lines.length} ${tr_(line.lines.length>1?'ingredient_plural':'ingredient_singular')}`;
   const n = lineNutrition(line);
   let breakdown = '';
-  if(!isPick && line.expanded){
+  if(line.expanded){
     breakdown = `<div class="cart-line-breakdown">${line.lines.map(l=>{
       const found = findItem(l.id);
       const dName = found ? itemName(found.item) : l.name;
       return `<div><span>${dName} x${l.qty}</span><span>${l.kcal*l.qty} kcal</span></div>`;
     }).join('')}</div>`;
   }
-  const toggle = isPick ? '' : `<span class="cart-line-toggle" data-toggle-line="${line.cartId}">${line.expanded?tr_('cart_hide_ing'):tr_('cart_show_ing')}</span>`;
+  const toggle = `<span class="cart-line-toggle" data-toggle-line="${line.cartId}">${line.expanded?tr_('cart_hide_ing'):tr_('cart_show_ing')}</span>`;
   return `<div class="cart-line">
     <span class="cart-line-thumb"><img src="${LOGO_MARK_SRC}" alt="${displayLabel}"></span>
     <div class="cart-line-main">
@@ -2628,7 +2155,7 @@ function renderCartReview(body, footer){
   document.getElementById('cartStepLabel').textContent = '';
   if(!cart.length){
     body.innerHTML = `<p class="panel-empty">${tr_('cart_empty')}</p>`;
-    footer.innerHTML = `<button class="btn btn-solid" disabled>${tr_('cart_continue_delivery')}</button>`;
+    footer.innerHTML = `<button class="btn btn-solid" disabled>${tr_('cart_continue_contact')}</button>`;
     return;
   }
   body.innerHTML = cart.map(cartLineTemplate).join('') +
@@ -2640,56 +2167,19 @@ function renderCartReview(body, footer){
        <div class="stat-box"><b>${n.fat.toFixed(1)}g</b><span>${tr_('label_fat')}</span></div>
      </div>
      <p class="checkout-note">${tr_('cart_nutrition_note')}</p>`; })();
-  footer.innerHTML = `<button class="btn btn-solid" id="cartContinueBtn">${tr_('cart_continue_delivery')}</button>`;
-}
-
-function renderCartDatetime(body, footer){
-  document.getElementById('cartPanelTitle').textContent = tr_('delivery_time_title');
-  document.getElementById('cartStepLabel').textContent = tr_('step2of3');
-  if(!checkoutData.date){
-    const d = earliestAllowedDate();
-    checkoutData.date = isoDate(d);
-    checkoutData.dateLabel = d.toLocaleDateString(currentLocale(),{weekday:'short',month:'short',day:'numeric'});
-  }
-  if(!checkoutData.slot){
-    checkoutData.slot = DELIVERY_SLOTS[0].id;
-    checkoutData.slotLabel = DELIVERY_SLOTS[0].label;
-  }
-  const cutoffPassed = new Date().getHours() >= 18;
-  const note = cutoffPassed ? tr_('checkout_note_late') : tr_('checkout_note_ontime');
-
-  body.innerHTML = `
-    <div class="checkout-note">${note}</div>
-    <div class="form-field"><label>${tr_('delivery_date_label')}</label></div>
-    <div class="calendar">${calendarHtml()}</div>
-    <div class="form-field"><label>${tr_('delivery_slot_label')}</label></div>
-    <div class="slot-grid">
-      ${DELIVERY_SLOTS.map(s=>`<button type="button" class="date-chip${checkoutData.slot===s.id?' is-selected':''}" data-slot="${s.id}" data-slot-label="${s.label}">${s.label}</button>`).join('')}
-    </div>
-    <p class="checkout-note">${tr_('checkout_slot_note')}</p>
-  `;
-  footer.innerHTML = `<div style="display:flex;gap:10px;width:100%">
-      <button class="btn btn-ghost" id="cartBackBtn" style="flex:1">${tr_('back_btn')}</button>
-      <button class="btn btn-solid" id="cartContinueBtn" style="flex:2">${tr_('continue_details')}</button>
-    </div>`;
+  footer.innerHTML = `<button class="btn btn-solid" id="cartContinueBtn">${tr_('cart_continue_contact')}</button>`;
 }
 
 function renderCartContact(body, footer){
   document.getElementById('cartPanelTitle').textContent = tr_('contact_title');
-  document.getElementById('cartStepLabel').textContent = tr_('step3of3');
+  document.getElementById('cartStepLabel').textContent = tr_('step2of2');
   body.innerHTML = `
-    <div class="form-field">
-      <label>${tr_('label_phone')}</label>
-      <input type="tel" id="ckPhone" placeholder="${tr_('phone_placeholder')}" value="${checkoutData.phone}">
-    </div>
-    <p class="autofill-note" id="ckAutofillNote" style="display:none">${tr_('autofill_note')}</p>
     <div class="form-row" style="margin-bottom:14px">
       <div class="form-field" style="margin-bottom:0">
         <label>${tr_('label_title_field')}</label>
         <select id="ckTitle">
           <option value="Mr" ${checkoutData.title==='Mr'?'selected':''}>${tr_('title_mr')}</option>
           <option value="Ms" ${checkoutData.title==='Ms'?'selected':''}>${tr_('title_ms')}</option>
-          <option value="Mx" ${checkoutData.title==='Mx'?'selected':''}>${tr_('title_mx')}</option>
         </select>
       </div>
       <div class="form-field" style="margin-bottom:0">
@@ -2698,12 +2188,8 @@ function renderCartContact(body, footer){
       </div>
     </div>
     <div class="form-field">
-      <label>${tr_('label_address')}</label>
-      <textarea id="ckAddress" rows="2" placeholder="${tr_('address_placeholder')}">${checkoutData.address}</textarea>
-    </div>
-    <div class="form-field">
-      <label>${tr_('label_email')}</label>
-      <input type="email" id="ckEmail" placeholder="${tr_('email_placeholder')}" value="${checkoutData.email}">
+      <label>${tr_('label_phone')}</label>
+      <input type="tel" id="ckPhone" placeholder="${tr_('phone_placeholder')}" value="${checkoutData.phone}">
     </div>
     <div class="form-field" style="margin-bottom:0">
       <label>${tr_('label_notes')}</label>
@@ -2716,28 +2202,11 @@ function renderCartContact(body, footer){
     </div>`;
 }
 
-function lookupCustomer(phone){
-  const clean = phone.replace(/\s+/g,'');
-  const hit = CUSTOMER_DB[clean];
-  const note = document.getElementById('ckAutofillNote');
-  if(hit){
-    checkoutData.name = hit.name; checkoutData.title = hit.title;
-    checkoutData.address = hit.address; checkoutData.email = hit.email;
-    if(document.getElementById('ckName')) document.getElementById('ckName').value = hit.name;
-    if(document.getElementById('ckTitle')) document.getElementById('ckTitle').value = hit.title;
-    if(document.getElementById('ckAddress')) document.getElementById('ckAddress').value = hit.address;
-    if(document.getElementById('ckEmail')) document.getElementById('ckEmail').value = hit.email;
-    if(note) note.style.display = 'block';
-  } else if(note){
-    note.style.display = 'none';
-  }
-}
-
 function renderCartDone(body, footer){
   document.getElementById('cartPanelTitle').textContent = tr_('order_confirmed_title');
   document.getElementById('cartStepLabel').textContent = '';
   if(!lastOrder){ body.innerHTML=''; footer.innerHTML=''; return; }
-  const doneTitleKey = {Mr:'title_mr', Ms:'title_ms', Mx:'title_mx'}[lastOrder.contact.title];
+  const doneTitleKey = {Mr:'title_mr', Ms:'title_ms'}[lastOrder.contact.title];
   const doneDisplayTitle = doneTitleKey ? tr_(doneTitleKey) : lastOrder.contact.title;
   const doneGreetName = lastOrder.contact.name ? `${doneDisplayTitle} ${lastOrder.contact.name}` : tr_('order_default_name');
   body.innerHTML = `<div class="order-done">
@@ -2764,9 +2233,7 @@ function renderCartDone(body, footer){
       </div>
       <div class="order-summary">
         <div><span>${tr_('order_items')}</span><b>${lastOrder.itemCount}</b></div>
-        <div><span>${tr_('order_delivery')}</span><b>${lastOrder.dateLabel}, ${lastOrder.slotLabel}</b></div>
         <div><span>${tr_('order_contact')}</span><b>${doneDisplayTitle} ${lastOrder.contact.name}, ${lastOrder.contact.phone}</b></div>
-        <div><span>${tr_('order_address')}</span><b>${lastOrder.contact.address}</b></div>
         <div><span>${tr_('order_nutrition_total')}</span><b>${Math.round(lastOrder.nutrition.kcal)} kcal · ${lastOrder.nutrition.protein.toFixed(1)}g ${tr_('label_protein')} · ${lastOrder.nutrition.carbs.toFixed(1)}g ${tr_('label_carbs')} · ${lastOrder.nutrition.fat.toFixed(1)}g ${tr_('label_fat')}</b></div>
         ${lastOrder.contact.notes ? `<div><span>${tr_('order_notes')}</span><b>${lastOrder.contact.notes}</b></div>` : ''}
       </div>
@@ -2778,7 +2245,6 @@ function renderCartPanel(){
   const body = document.getElementById('cartPanelBody');
   const footer = document.getElementById('cartPanelFooter');
   if(cartStep==='review') renderCartReview(body,footer);
-  else if(cartStep==='datetime') renderCartDatetime(body,footer);
   else if(cartStep==='contact') renderCartContact(body,footer);
   else if(cartStep==='done') renderCartDone(body,footer);
 }
@@ -2788,18 +2254,11 @@ function syncContactFields(){
   if(document.getElementById('ckPhone')) checkoutData.phone = get('ckPhone');
   if(document.getElementById('ckName')) checkoutData.name = get('ckName');
   if(document.getElementById('ckTitle')) checkoutData.title = get('ckTitle') || 'Mr';
-  if(document.getElementById('ckAddress')) checkoutData.address = get('ckAddress');
-  if(document.getElementById('ckEmail')) checkoutData.email = get('ckEmail');
   if(document.getElementById('ckNotes')) checkoutData.notes = get('ckNotes');
 }
 
 function snapshotCartLines(){
   return cart.map(line=>{
-    if(line.type==='pick'){
-      const pick = PICKS.find(p=>p.id===line.pickId);
-      const label = pick ? pickName(pick) : line.label;
-      return {type: line.type, label, qty: line.qty, nutrition: lineNutrition(line), ingredients: null};
-    }
     const ingredients = line.lines.map(l=>{
       const found = findItem(l.id);
       return {name: found ? itemName(found.item) : l.name, qty: l.qty, cat: found ? found.cat : l.cat};
@@ -2810,7 +2269,7 @@ function snapshotCartLines(){
 
 function confirmOrder(){
   syncContactFields();
-  if(!checkoutData.phone || !checkoutData.name || !checkoutData.address){
+  if(!checkoutData.phone || !checkoutData.name){
     showToast(tr_('toast_fill_fields'));
     return;
   }
@@ -2824,15 +2283,11 @@ function confirmOrder(){
     code: generateOrderCode(),
     itemCount: cartItemCount(),
     nutrition: cartNutritionTotals(),
-    dateLabel: checkoutData.dateLabel,
-    slotLabel: checkoutData.slotLabel,
     contact: {...checkoutData},
     lines: snapshotCartLines()
   };
   cart.length = 0;
   renderCartBadge();
-  checkoutData.date=''; checkoutData.dateLabel=''; checkoutData.slot=''; checkoutData.slotLabel='';
-  calendarViewDate = null;
   cartStep = 'done';
   renderCartPanel();
   sendOrderConfirmationEmail(lastOrder);
@@ -2841,14 +2296,6 @@ function startNewOrder(){
   cartStep = 'review';
   lastOrder = null;
   closeCartPanel();
-}
-
-/* ---------- view switching (Build your own / Chef's picks) ---------- */
-function switchView(view){
-  document.querySelectorAll('.mode-pill').forEach(p=>p.classList.toggle('is-active', p.getAttribute('data-view')===view));
-  document.getElementById('byoView').style.display = view==='byo' ? '' : 'none';
-  document.getElementById('picksView').style.display = view==='picks' ? '' : 'none';
-  document.getElementById('bentoBar').style.display = view==='byo' ? '' : 'none';
 }
 
 /* ---------- events ---------- */
@@ -2863,10 +2310,6 @@ document.addEventListener('click', e=>{
     const dir = parseInt(stepBtn.getAttribute('data-dir'),10);
     if(stepBtn.hasAttribute('data-cartline')){
       adjustCartLineQty(stepBtn.getAttribute('data-cartline'), dir);
-    } else if(stepBtn.hasAttribute('data-pick')){
-      const pid = stepBtn.getAttribute('data-pick');
-      pickQty[pid] = Math.max(1, (pickQty[pid]||1) + dir);
-      renderPicks();
     }
     return;
   }
@@ -2887,12 +2330,6 @@ document.addEventListener('click', e=>{
     return;
   }
 
-  const pickAddBtn = e.target.closest('[data-pick-add]');
-  if(pickAddBtn){ addPickToCart(pickAddBtn.getAttribute('data-pick-add')); return; }
-
-  const modePill = e.target.closest('.mode-pill');
-  if(modePill){ switchView(modePill.getAttribute('data-view')); return; }
-
   if(e.target.id==='cartBtn' || e.target.closest('#cartBtn') || e.target.id==='bentoBarCartBtn' || e.target.closest('#bentoBarCartBtn')){ openCartPanel(); return; }
   if(e.target.id==='cartPanelClose' || e.target.id==='cartOverlay'){ closeCartPanel(); return; }
 
@@ -2906,41 +2343,16 @@ document.addEventListener('click', e=>{
   const removeBtn = e.target.closest('[data-remove]');
   if(removeBtn){ removeCartLine(removeBtn.getAttribute('data-remove')); return; }
 
-  if(e.target.id==='calPrev'){ calendarViewDate.setMonth(calendarViewDate.getMonth()-1); renderCartPanel(); return; }
-  if(e.target.id==='calNext'){ calendarViewDate.setMonth(calendarViewDate.getMonth()+1); renderCartPanel(); return; }
-
-  const calDay = e.target.closest('[data-cal-date]');
-  if(calDay && !calDay.disabled){
-    checkoutData.date = calDay.getAttribute('data-cal-date');
-    checkoutData.dateLabel = calDay.getAttribute('data-cal-label');
-    renderCartPanel();
-    return;
-  }
-
-  const slotChip = e.target.closest('[data-slot]');
-  if(slotChip){
-    checkoutData.slot = slotChip.getAttribute('data-slot');
-    checkoutData.slotLabel = slotChip.getAttribute('data-slot-label');
-    renderCartPanel();
-    return;
-  }
-
   if(e.target.id==='cartContinueBtn'){
-    if(cartStep==='review') goToCartStep('datetime');
-    else if(cartStep==='datetime') goToCartStep('contact');
+    if(cartStep==='review') goToCartStep('contact');
     return;
   }
   if(e.target.id==='cartBackBtn'){
-    if(cartStep==='datetime') goToCartStep('review');
-    else if(cartStep==='contact'){ syncContactFields(); goToCartStep('datetime'); }
+    if(cartStep==='contact') goToCartStep('review');
     return;
   }
   if(e.target.id==='cartConfirmBtn'){ confirmOrder(); return; }
   if(e.target.id==='cartNewOrderBtn'){ startNewOrder(); return; }
-});
-
-document.addEventListener('focusout', e=>{
-  if(e.target && e.target.id==='ckPhone') lookupCustomer(e.target.value);
 });
 
 document.addEventListener('keydown', e=>{
@@ -2987,7 +2399,6 @@ sections.forEach(s=>observer.observe(s));
 document.getElementById('langSelect').value = LANG;
 applyStaticTranslations();
 renderAll();
-renderPicks();
 renderCartBadge();
 
 /* ---------- page loader ---------- */
