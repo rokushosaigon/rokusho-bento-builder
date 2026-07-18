@@ -227,6 +227,15 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 .card-grid{
   display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;
 }
+.menu-load-error{
+  grid-column:1/-1;font-size:13.5px;color:var(--rk-ink-soft);text-align:center;
+  padding:26px 16px;display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+.menu-retry-btn{
+  font-family:inherit;border:1.5px solid var(--rk-line);border-radius:999px;padding:8px 20px;
+  font-size:13px;font-weight:600;color:var(--rk-ink);background:transparent;cursor:pointer;transition:.15s;
+}
+.menu-retry-btn:hover{border-color:var(--rk-ink);}
 .ing-card{
   position:relative;background:var(--rk-white);border:1px solid var(--rk-line);
   border-radius:var(--radius-m);padding:12px 12px 14px;display:flex;flex-direction:column;
@@ -280,13 +289,6 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 .step-btn[disabled]:hover{border-color:var(--rk-line);color:var(--rk-ink);}
 .step-count{min-width:16px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums;}
 
-.select-btn{
-  width:100%;border-radius:var(--radius-s);padding:8px 10px;font-size:12.5px;font-weight:600;
-  border:1.5px solid var(--rk-line);background:transparent;color:var(--rk-ink-soft);
-  margin-top:2px;transition:.15s;font-family:var(--font-body);
-}
-.select-btn:hover{border-color:var(--rk-primary);color:var(--rk-primary);}
-.select-btn.is-selected{background:var(--rk-primary);border-color:var(--rk-primary);color:var(--rk-white);}
 .line-remove{font-size:11px;color:var(--rk-ink-soft);text-decoration:underline;background:none;border:none;padding:0;cursor:pointer;font-family:inherit;flex:none;}
 
 /* ---------- floating bento bar (bento button + live totals + quick cart) ---------- */
@@ -576,8 +578,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 }
 .form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--rk-primary);outline:none;}
 .form-row{display:grid;grid-template-columns:1fr 2fr;gap:10px;}
-.note-banner{font-size:12.5px;color:var(--rk-yuzu-deep);background:var(--rk-yuzu-pale);border-radius:10px;padding:9px 12px;margin:0 0 16px;line-height:1.5;}
-
 .order-done{text-align:center;padding:20px 4px 10px;}
 .order-done-check{
   width:56px;height:56px;border-radius:50%;background:var(--rk-matcha-pale);color:var(--rk-matcha);
@@ -776,7 +776,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
       </div>
       <div class="step-counter"><b id="proteinCount">0</b> <span data-i18n="step_added">added</span></div>
     </div>
-    <p class="note-banner" data-i18n="note_single_select">Pick any 1 item in this category.</p>
     <div class="card-grid" id="grid-protein"></div>
   </section>
 
@@ -791,7 +790,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
       </div>
       <div class="step-counter"><b id="carbsCount">0</b> <span data-i18n="step_added">added</span></div>
     </div>
-    <p class="note-banner" data-i18n="note_single_select">Pick any 1 item in this category.</p>
     <div class="card-grid" id="grid-carbs"></div>
   </section>
 
@@ -806,7 +804,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
       </div>
       <div class="step-counter"><b id="sideCount">0</b> <span data-i18n="step_added">added</span></div>
     </div>
-    <p class="note-banner" data-i18n="note_single_select">Pick any 1 item in this category.</p>
     <div class="card-grid" id="grid-side"></div>
   </section>
 
@@ -821,7 +818,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
       </div>
       <div class="step-counter"><b id="sauceCount">0</b> <span data-i18n="step_added">added</span></div>
     </div>
-    <p class="note-banner" data-i18n="note_single_select">Pick any 1 item in this category.</p>
     <div class="card-grid" id="grid-sauce"></div>
   </section>
 </main>
@@ -1059,9 +1055,6 @@ const I18N = {
     "step4_title": "Select sauce",
     "step4_desc": "Pure Japanese flavour, made to drizzle.",
     "step_added": "added",
-    "note_single_select": "Pick any 1 item in this category.",
-    "btn_select": "Select",
-    "btn_selected": "Selected",
     "tab_protein": "Protein",
     "tab_carbs": "Carbs",
     "tab_side": "Sides",
@@ -1110,6 +1103,9 @@ const I18N = {
     "toast_fill_fields": "Please fill in your name, phone number and delivery address.",
     "toast_slow_down": "Please wait a few seconds before submitting again.",
     "toast_soba_sauce_lock": "Soba only pairs with mentsuyu sauce.",
+    "menu_load_error": "Couldn't load the menu right now.",
+    "menu_load_retry": "Retry",
+    "toast_menu_updated_items_removed": "The menu just changed — some of your selected items are no longer available and were removed.",
     "footer_tagline": "Your Japanese-style healthy food companion.",
     "footer_contact": "Contact",
     "hours_dining_label": "Dining · Dine-in & Delivery",
@@ -1177,9 +1173,6 @@ const I18N = {
   "step4_desc": "Hoàn thiện hương vị chuẩn Nhật.",
 
   "step_added": "Đã thêm",
-  "note_single_select": "Chọn 1 món bất kỳ trong mục này.",
-  "btn_select": "Chọn",
-  "btn_selected": "Đã chọn",
 
   "tab_protein": "Protein",
   "tab_carbs": "Tinh bột",
@@ -1248,6 +1241,9 @@ const I18N = {
   "toast_fill_fields": "Vui lòng nhập đầy đủ họ tên, số điện thoại và địa chỉ nhận hàng.",
   "toast_soba_sauce_lock": "Mì soba chỉ dùng kèm sốt Mentsuyu.",
   "toast_slow_down": "Vui lòng đợi vài giây trước khi gửi lại.",
+  "menu_load_error": "Không tải được thực đơn lúc này.",
+  "menu_load_retry": "Thử lại",
+  "toast_menu_updated_items_removed": "Thực đơn vừa được cập nhật — một số món bạn chọn không còn nữa nên đã được gỡ ra.",
 
   "footer_tagline": "Bento chuẩn Nhật mỗi ngày.",
   "footer_contact": "Liên hệ",
@@ -1309,9 +1305,6 @@ const I18N = {
     "step4_title": "ソースを選ぶ",
     "step4_desc": "純和風の味わいを、お好みでかけて。",
     "step_added": "個選択中",
-    "note_single_select": "このカテゴリーからお好きな1品をお選びください。",
-    "btn_select": "選ぶ",
-    "btn_selected": "選択済み",
     "tab_protein": "タンパク質",
     "tab_carbs": "炭水化物",
     "tab_side": "副菜",
@@ -1360,6 +1353,9 @@ const I18N = {
     "toast_fill_fields": "お名前・電話番号・配達先住所をご入力ください。",
     "toast_soba_sauce_lock": "そばはめんつゆのみと組み合わせられます。",
     "toast_slow_down": "数秒待ってから再度お試しください。",
+    "menu_load_error": "只今メニューを読み込めませんでした。",
+    "menu_load_retry": "再試行",
+    "toast_menu_updated_items_removed": "メニューが更新されました — 選択していた一部の商品がなくなったため削除されました。",
     "footer_tagline": "あなたの和風ヘルシーフードパートナー。",
     "footer_contact": "お問い合わせ",
     "hours_dining_label": "Dining・店内飲食＆デリバリー",
@@ -1418,9 +1414,6 @@ const I18N = {
     "step4_title": "소스 선택",
     "step4_desc": "정통 일본식 풍미, 곁들여 뿌려보세요.",
     "step_added": "개 선택됨",
-    "note_single_select": "이 카테고리에서 원하는 1개를 선택하세요.",
-    "btn_select": "선택",
-    "btn_selected": "선택됨",
     "tab_protein": "단백질",
     "tab_carbs": "탄수화물",
     "tab_side": "사이드",
@@ -1469,6 +1462,9 @@ const I18N = {
     "toast_fill_fields": "이름, 전화번호, 배달 주소를 입력해 주세요.",
     "toast_soba_sauce_lock": "소바는 멘츠유 소스와만 함께 제공됩니다.",
     "toast_slow_down": "몇 초 후에 다시 시도해 주세요.",
+    "menu_load_error": "지금은 메뉴를 불러올 수 없습니다.",
+    "menu_load_retry": "다시 시도",
+    "toast_menu_updated_items_removed": "메뉴가 방금 업데이트되었습니다 — 선택하신 일부 항목이 더 이상 제공되지 않아 제거되었습니다.",
     "footer_tagline": "당신의 일본식 건강식 파트너.",
     "footer_contact": "문의",
     "hours_dining_label": "Dining · 다이닝 & 배달",
@@ -1527,9 +1523,6 @@ const I18N = {
     "step4_title": "选择酱汁",
     "step4_desc": "纯正日式风味，淋在便当上恰到好处。",
     "step_added": "已选",
-    "note_single_select": "从此类别中任选1项。",
-    "btn_select": "选择",
-    "btn_selected": "已选择",
     "tab_protein": "蛋白质",
     "tab_carbs": "碳水",
     "tab_side": "配菜",
@@ -1578,6 +1571,9 @@ const I18N = {
     "toast_fill_fields": "请填写姓名、电话号码和送达地址。",
     "toast_soba_sauce_lock": "荞麦面仅可搭配蘸面汁（Mentsuyu）。",
     "toast_slow_down": "请稍等几秒后再试。",
+    "menu_load_error": "暂时无法加载菜单。",
+    "menu_load_retry": "重试",
+    "toast_menu_updated_items_removed": "菜单刚刚更新——您选择的部分商品已不可用，已自动移除。",
     "footer_tagline": "您的日式健康餐伙伴。",
     "footer_contact": "联系我们",
     "hours_dining_label": "Dining · 堂食与外送",
@@ -1770,8 +1766,10 @@ const WEEKDAY_INITIALS = {
 function tr_(key){ return (I18N[LANG] && I18N[LANG][key]) || I18N.en[key] || key; }
 function currentLocale(){ return LOCALE_MAP[LANG] || 'en-US'; }
 function itemName(item){
+  if(LANG==='en') return item.name;
+  if(LANG==='vi') return item.name_vi || item.name;
   const tr = ITEM_I18N[item.id];
-  return (LANG!=='en' && tr && tr[LANG]) || item.name;
+  return (tr && tr[LANG]) || item.name;
 }
 function catLabel(cat){ return tr_('tab_'+cat); }
 
@@ -1799,45 +1797,13 @@ function setLanguage(lang){
 }
 
 /* ============================================================
-   DATA — ingredient catalogue, pure Japanese-style line-up
-   kcal / protein(g) / carbs(g) / fat(g) are demo estimates
+   DATA — ingredient catalogue, loaded from the Rokusho costing
+   Google Sheet through a dedicated Apps Script Web App (see
+   BentoMenuAPI.gs). Populated by loadMenuAndInit() below;
+   empty until that fetch resolves.
    ============================================================ */
-const DATA = {
-  protein:[
-    {id:'chicken-drumstick', icon:'chicken', kcal:180, protein:30, carbs:0, fat:6, price:85000, name:'Grilled chicken drumstick'},
-    {id:'chicken-breast', icon:'chicken', kcal:180, protein:34.5, carbs:0, fat:3.9, price:70000, name:'Grilled chicken breast'},
-    {id:'salmon', icon:'fish', kcal:250, protein:24, carbs:0, fat:16.8, price:180000, name:'Grilled salmon'},
-    {id:'beef-belly', icon:'beef', kcal:494, protein:22.4, carbs:0, fat:44.8, price:120000, name:'Grilled beef belly'},
-    {id:'saba', icon:'fish', kcal:170, protein:24.7, carbs:0, fat:18.6, price:85000, name:'Grilled saba mackerel'},
-    {id:'cod-fish', icon:'fish', kcal:98, protein:21.6, carbs:0, fat:0.8, price:480000, name:'Grilled cod fish'}
-  ],
-  carbs:[
-    {id:'rice-white', icon:'rice', kcal:168, protein:2.5, carbs:37.1, fat:0.3, price:10000, name:'Japanese white rice'},
-    {id:'rice-brown', icon:'rice', kcal:123, protein:2.7, carbs:25.6, fat:1, price:20000, name:'Brown rice'},
-    {id:'soba', icon:'noodle', kcal:99, protein:5.1, carbs:21.4, fat:0.1, price:45000, name:'Soba noodles'},
-    {id:'sweet-corn', icon:'corn', kcal:96, protein:3.4, carbs:21, fat:1.5, price:40000, name:'Steamed corn'},
-    {id:'sweet-potato', icon:'potato', kcal:776, protein:1.4, carbs:17.7, fat:0.1, price:20000, name:'Steamed sweet potato'}
-  ],
-  side:[
-    {id:'mushroom-simmered', icon:'mushroom', kcal:86, protein:3, carbs:10, fat:0.2, price:30000, name:'Simmered mushrooms'},
-    {id:'tomato-grilled', icon:'tomato', kcal:82, protein:1.3, carbs:5.5, fat:6.8, price:25000, name:'Grilled tomato'},
-    {id:'mixed-salad', icon:'leaf', kcal:45, protein:1.5, carbs:6, fat:2, price:14000, name:'Mixed salad'},
-    {id:'stir-fried-veg', icon:'leaf', kcal:70, protein:2.5, carbs:7, fat:3.5, price:20000, name:'Stir-fried vegetables'},
-    {id:'broccoli', icon:'leaf', kcal:35, protein:2.4, carbs:7.2, fat:0.4, price:30000, name:'Steamed broccoli'},
-    {id:'spinach', icon:'leaf', kcal:23, protein:3, carbs:3.8, fat:0.3, price:20000, name:'Steamed spinach'},
-    {id:'carrot', icon:'root', kcal:35, protein:0.8, carbs:8.2, fat:0.2, price:6000, name:'Steamed carrot'},
-    {id:'potato-grilled', icon:'potato', kcal:214, protein:3.5, carbs:30.2, fat:9.1, price:25000, name:'Grilled potato'},
-    {id:'pumpkin-grilled', icon:'pumpkin', kcal:246, protein:2.7, carbs:17.7, fat:15.3, price:25000, name:'Grilled paprika pumpkin'}
-  ],
-  sauce:[
-    {id:'sesame-mayo', icon:'sesame', kcal:146, protein:1.3, carbs:3.8, fat:14.3, price:12000, name:'Sesame mayo'},
-    {id:'shoyu-dressing', icon:'droplet', kcal:40, protein:0.5, carbs:8, fat:0.5, price:12000, name:'Shoyu fruit dressing'},
-    {id:'mentsuyu', icon:'droplet', kcal:25, protein:1, carbs:4, fat:0.3, price:12000, name:'Mentsuyu (cold noodle sauce)'},
-    {id:'soy-sauce', icon:'droplet', kcal:20, protein:2, carbs:2, fat:0, price:12000, name:'Soy sauce'},
-    {id:'teriyaki', icon:'droplet', kcal:45, protein:1, carbs:9, fat:0.2, price:12000, name:'Teriyaki sauce'},
-    {id:'sesame-honey', icon:'sesame', kcal:85, protein:1, carbs:10, fat:4.5, price:12000, name:'Sesame honey dressing'}
-  ]
-};
+const MENU_API_URL = 'https://script.google.com/macros/s/AKfycbydLfOegaXqpnkYO4c_leJAB08JV0fQDEVokN2Xften1Buz_xlOq0drDtlGhE64Qto-/exec';
+let DATA = {protein:[], carbs:[], side:[], sauce:[]};
 
 const CATS = ['protein','carbs','side','sauce'];
 const CAT_LABEL = {protein:'Protein', carbs:'Carbs', side:'Sides', sauce:'Sauce'};
@@ -1847,76 +1813,22 @@ const CAT_LABEL = {protein:'Protein', carbs:'Carbs', side:'Sides', sauce:'Sauce'
    entirely from the same ingredient catalogue above (item ids
    reused from DATA) so their nutrition is computed live from
    real ingredient values, never hand-typed.
+   Populated by loadMenuAndInit() from the "Chef's Picks" tab via
+   BentoMenuAPI.gs; empty until that fetch resolves. Pick ids are
+   generated per-group ("pick-high-protein-1", ...), so PICK_I18N
+   translations need to be re-added against the new ids.
    ============================================================ */
-const PICKS = [
-  {id:'pick-teriyaki-beef', group:'high-protein', name:'Teriyaki Beef Bento', tagline:'Grilled beef belly, Japanese white rice, steamed broccoli & teriyaki sauce.', price:119000, items:['beef-belly','rice-white','broccoli','teriyaki']},
-  {id:'pick-salmon-power', group:'high-protein', name:'Salmon Power Bento', tagline:'Grilled salmon, brown rice, steamed spinach & sesame mayo.', price:135000, items:['salmon','rice-brown','spinach','sesame-mayo']},
-  {id:'pick-lean-chicken', group:'low-calories', name:'Lean Chicken Bento', tagline:'Grilled chicken breast, brown rice, steamed broccoli & soy sauce.', price:79000, items:['chicken-breast','rice-brown','broccoli','soy-sauce']},
-  {id:'pick-cod-greens', group:'low-calories', name:"Cod & Greens Bento", tagline:'Grilled cod fish, brown rice, mixed salad & shoyu fruit dressing.', price:99000, items:['cod-fish','rice-brown','mixed-salad','shoyu-dressing']},
-  {id:'pick-soba-chicken', group:'balanced', name:'Soba Chicken Bento', tagline:'Grilled chicken drumstick, soba noodles, grilled tomato & mentsuyu.', price:89000, items:['chicken-drumstick','soba','tomato-grilled','mentsuyu']},
-  {id:'pick-saba-classic', group:'balanced', name:'Saba Classic Bento', tagline:'Grilled saba mackerel, Japanese white rice, steamed carrot & sesame honey dressing.', price:99000, items:['saba','rice-white','carrot','sesame-honey']},
-  {id:'pick-pumpkin-garden', group:'vegan', name:'Pumpkin Garden Bento', tagline:'Brown rice, grilled paprika pumpkin, steamed broccoli & shoyu fruit dressing.', price:75000, items:['rice-brown','pumpkin-grilled','broccoli','shoyu-dressing']},
-  {id:'pick-sweet-potato-veggie', group:'vegan', name:'Sweet Potato Veggie Bento', tagline:'Steamed sweet potato, stir-fried vegetables, mixed salad & soy sauce.', price:69000, items:['sweet-potato','stir-fried-veg','mixed-salad','soy-sauce']}
-];
+let PICKS = [];
 
-const GROUP_ORDER = ['high-protein','low-calories','balanced','vegan'];
+const GROUP_ORDER = ['high-protein','low-carb','balanced','vegetarian'];
 const GROUP_META = {
   'high-protein':{label:'High-Protein', desc:'Built around a generous protein portion to fuel recovery and keep you full.', color:'#9F2F2D', pastelBg:'#FDEBEC'},
-  'low-calories':{label:'Low-Calories', desc:'Lighter combinations, without skimping on flavour.', color:'#346538', pastelBg:'#EDF3EC'},
+  'low-carb':{label:'Low-Carb', desc:'Lighter on carbs, without skimping on flavour.', color:'#346538', pastelBg:'#EDF3EC'},
   'balanced':{label:'Balanced', desc:'An even split of protein, carbs and healthy fats — an everyday go-to.', color:'#956400', pastelBg:'#FBF3DB'},
-  'vegan':{label:'Vegan', desc:'100% plant-based, no animal products.', color:'#1F6C9F', pastelBg:'#E1F3FE'}
+  'vegetarian':{label:'Vegetarian', desc:'Meat and seafood free, built around onsen egg for protein.', color:'#1F6C9F', pastelBg:'#E1F3FE'}
 };
 
-const PICK_I18N = {
-  'pick-teriyaki-beef': {
-    vi:{name:'Bento Bò Teriyaki', tagline:'Ba chỉ bò nướng sốt teriyaki, cơm trắng Nhật, bông cải xanh hấp & sốt teriyaki.'},
-    ja:{name:'照り焼きビーフ弁当', tagline:'牛バラ肉の照り焼きグリル、白ごはん、蒸しブロッコリー、照り焼きソース。'},
-    ko:{name:'데리야키 소고기 벤토', tagline:'그릴에 구운 소 삼겹살 데리야키, 백미밥, 찐 브로콜리 & 데리야키 소스.'},
-    zh:{name:'照烧牛肉便当', tagline:'烤牛五花配照烧酱、日式白米饭、水煮西兰花与照烧酱汁。'}
-  },
-  'pick-salmon-power': {
-    vi:{name:'Bento Cá Hồi Năng Lượng', tagline:'Cá hồi nướng, cơm gạo lứt, bó xôi hấp & sốt mè mayo.'},
-    ja:{name:'サーモンパワー弁当', tagline:'サーモンのグリル、玄米、蒸しほうれん草、ごまマヨソース。'},
-    ko:{name:'연어 파워 벤토', tagline:'그릴에 구운 연어, 현미밥, 찐 시금치 & 참깨 마요 소스.'},
-    zh:{name:'三文鱼能量便当', tagline:'烤三文鱼、糙米饭、水煮菠菜与芝麻蛋黄酱。'}
-  },
-  'pick-lean-chicken': {
-    vi:{name:'Bento Gà Ít Béo', tagline:'Ức gà nướng, cơm gạo lứt, bông cải xanh hấp & nước tương.'},
-    ja:{name:'ヘルシーチキン弁当', tagline:'鶏むね肉のグリル、玄米、蒸しブロッコリー、醤油。'},
-    ko:{name:'저지방 치킨 벤토', tagline:'그릴에 구운 닭가슴살, 현미밥, 찐 브로콜리 & 간장 소스.'},
-    zh:{name:'低脂鸡肉便当', tagline:'烤鸡胸肉、糙米饭、水煮西兰花与酱油。'}
-  },
-  'pick-cod-greens': {
-    vi:{name:'Bento Cá Tuyết Rau Xanh', tagline:'Cá tuyết nướng, cơm gạo lứt, salad trộn & sốt trái cây.'},
-    ja:{name:'タラと野菜の弁当', tagline:'タラのグリル、玄米、本日のサラダ、醤油フルーツドレッシング。'},
-    ko:{name:'대구 & 채소 벤토', tagline:'그릴에 구운 대구, 현미밥, 오늘의 샐러드 & 쇼유 과일 드레싱.'},
-    zh:{name:'鳕鱼时蔬便当', tagline:'烤鳕鱼、糙米饭、每日沙拉与酱油水果酱汁。'}
-  },
-  'pick-soba-chicken': {
-    vi:{name:'Bento Gà Soba', tagline:'Đùi gà nướng, mì soba, cà chua nướng & sốt mì lạnh Mentsuyu.'},
-    ja:{name:'鶏そば弁当', tagline:'鶏もも肉のグリル、そば、トマトのグリル、麺つゆ。'},
-    ko:{name:'치킨 소바 벤토', tagline:'그릴에 구운 닭다리, 소바, 구운 토마토 & 멘츠유.'},
-    zh:{name:'鸡肉荞麦便当', tagline:'烤鸡腿、荞麦面、烤番茄与面露酱汁。'}
-  },
-  'pick-saba-classic': {
-    vi:{name:'Bento Cá Saba Truyền Thống', tagline:'Cá Saba nướng, cơm trắng Nhật, cà rốt hấp & sốt mè rang mật ong.'},
-    ja:{name:'サバ定番弁当', tagline:'サバのグリル、白ごはん、蒸しにんじん、ごまはちみつドレッシング。'},
-    ko:{name:'고등어 클래식 벤토', tagline:'그릴에 구운 고등어(사바), 백미밥, 찐 당근 & 참깨 꿀 드레싱.'},
-    zh:{name:'经典烤鲭鱼便当', tagline:'烤鲭鱼（Saba）、日式白米饭、蒸胡萝卜与芝麻蜂蜜酱汁。'}
-  },
-  'pick-pumpkin-garden': {
-    vi:{name:'Bento Bí Đỏ Vườn Nhà', tagline:'Cơm gạo lứt, bí đỏ nướng paprika, bông cải xanh hấp & sốt trái cây.'},
-    ja:{name:'かぼちゃガーデン弁当', tagline:'玄米、かぼちゃのパプリカグリル、蒸しブロッコリー、醤油フルーツドレッシング。'},
-    ko:{name:'호박 가든 벤토', tagline:'현미밥, 파프리카 호박구이, 찐 브로콜리 & 쇼유 과일 드레싱.'},
-    zh:{name:'南瓜花园便当', tagline:'糙米饭、烤南瓜（红椒粉）、水煮西兰花与酱油水果酱汁。'}
-  },
-  'pick-sweet-potato-veggie': {
-    vi:{name:'Bento Khoai Lang Rau Củ', tagline:'Khoai lang luộc, rau xào, salad trộn & nước tương.'},
-    ja:{name:'さつまいもベジ弁当', tagline:'蒸しさつまいも、野菜炒め、本日のサラダ、醤油。'},
-    ko:{name:'고구마 베지 벤토', tagline:'찐 고구마, 야채볶음, 오늘의 샐러드 & 간장 소스.'},
-    zh:{name:'红薯蔬菜便当', tagline:'水煮红薯、炒时蔬、每日沙拉与酱油。'}
-  }
-};
+const PICK_I18N = {};
 const GROUP_I18N = {
   'high-protein': {
     vi:{label:'Giàu Đạm', desc:'Xây dựng quanh khẩu phần đạm dồi dào giúp phục hồi và no lâu.'},
@@ -1924,11 +1836,11 @@ const GROUP_I18N = {
     ko:{label:'고단백', desc:'회복을 돕고 든든하게 채워주는 넉넉한 단백질 구성입니다.'},
     zh:{label:'高蛋白', desc:'以充足的蛋白质为核心，帮助恢复体力并保持饱腹感。'}
   },
-  'low-calories': {
-    vi:{label:'Ít Calo', desc:'Sự kết hợp nhẹ nhàng hơn nhưng vẫn đầy đủ hương vị.'},
-    ja:{label:'低カロリー', desc:'軽やかながら味わいはそのまま楽しめる組み合わせ。'},
-    ko:{label:'저칼로리', desc:'맛은 그대로, 더 가벼운 조합입니다.'},
-    zh:{label:'低卡路里', desc:'更轻盈的搭配，风味丝毫不减。'}
+  'low-carb': {
+    vi:{label:'Ít Tinh Bột', desc:'Giảm tinh bột, vẫn giữ trọn hương vị.'},
+    ja:{label:'低糖質', desc:'糖質を抑えながら、味わいはそのまま楽しめる組み合わせ。'},
+    ko:{label:'저탄수화물', desc:'탄수화물은 줄이고, 맛은 그대로 즐기는 구성입니다.'},
+    zh:{label:'低碳水', desc:'降低碳水摄入，风味丝毫不减。'}
   },
   'balanced': {
     vi:{label:'Cân Bằng', desc:'Tỷ lệ đều giữa đạm, tinh bột và chất béo lành mạnh — lựa chọn mỗi ngày.'},
@@ -1936,11 +1848,11 @@ const GROUP_I18N = {
     ko:{label:'밸런스', desc:'단백질, 탄수화물, 건강한 지방을 고르게 — 매일 먹기 좋은 구성.'},
     zh:{label:'均衡', desc:'蛋白质、碳水与健康脂肪均衡搭配 —— 日常首选。'}
   },
-  'vegan': {
-    vi:{label:'Thuần Chay', desc:'100% từ thực vật, không có sản phẩm từ động vật.'},
-    ja:{label:'ヴィーガン', desc:'100%植物性、動物性食品は使用していません。'},
-    ko:{label:'비건', desc:'100% 식물성 재료로만 구성, 동물성 재료 없음.'},
-    zh:{label:'纯素', desc:'100%植物基，不含任何动物成分。'}
+  'vegetarian': {
+    vi:{label:'Chay', desc:'Không thịt, không hải sản, dùng trứng onsen làm nguồn đạm chính.'},
+    ja:{label:'ベジタリアン', desc:'肉・魚介不使用、温泉卵をたんぱく源に使用。'},
+    ko:{label:'베지테리언', desc:'육류·해산물 없이 온천계란으로 단백질을 채운 구성입니다.'},
+    zh:{label:'素食', desc:'不含肉类与海鲜，以温泉蛋作为主要蛋白质来源。'}
   }
 };
 
@@ -1961,24 +1873,55 @@ function groupDesc(group){
   return (LANG!=='en' && tr && tr[LANG] && tr[LANG].desc) || GROUP_META[group].desc;
 }
 
-const pickQty = {};
-PICKS.forEach(p=>{ pickQty[p.id] = 1; });
+let pickQty = {};
+function initPickQtyState(){
+  pickQty = {};
+  PICKS.forEach(p=>{ pickQty[p.id] = 1; });
+}
 
+// Like initPickQtyState, but keeps existing quantities for picks that are
+// still on the menu instead of resetting everything to 1 — used when a
+// background refresh brings in new data while the customer is mid-browse.
+function mergePickQtyState(){
+  const old = pickQty;
+  pickQty = {};
+  PICKS.forEach(p=>{ pickQty[p.id] = old[p.id] || 1; });
+}
+
+// Sheet-authored totals, not a live sum of full-size DATA items: combo
+// portions (esp. sides) are scaled down from their standalone serving size,
+// so summing full-size ingredient values here would overstate nutrition.
 function pickNutrition(pick){
-  const t={kcal:0,protein:0,carbs:0,fat:0};
-  pick.items.forEach(id=>{
-    const found = findItem(id);
-    if(found){ t.kcal+=found.item.kcal; t.protein+=found.item.protein; t.carbs+=found.item.carbs; t.fat+=found.item.fat; }
-  });
-  return t;
+  return {kcal:pick.kcal||0, protein:pick.protein||0, carbs:pick.carbs||0, fat:pick.fat||0};
 }
 
 /* ============================================================
    STATE — quantity per item id, flexible across every category
    (mirrors the real Soumaki cart: tap +/- to add any amount)
    ============================================================ */
-const qty = {};
-CATS.forEach(cat => DATA[cat].forEach(it => { qty[it.id] = 0; }));
+let qty = {};
+function initQtyState(){
+  qty = {};
+  CATS.forEach(cat => DATA[cat].forEach(it => { qty[it.id] = 0; }));
+}
+
+// Like initQtyState, but preserves the customer's current selections for
+// items that are still on the menu (used by the background menu refresh).
+// `oldNameOf` maps id -> display name from before DATA was overwritten, so
+// the caller can tell the customer which selected items just disappeared
+// (sold out / deleted) instead of silently zeroing their cart.
+function mergeQtyState(oldNameOf){
+  const old = qty;
+  const allNewIds = new Set(CATS.flatMap(cat => DATA[cat].map(it => it.id)));
+  const droppedNames = [];
+  Object.keys(old).forEach(id=>{
+    if(old[id] > 0 && !allNewIds.has(id) && oldNameOf[id]) droppedNames.push(oldNameOf[id]);
+  });
+
+  qty = {};
+  CATS.forEach(cat => DATA[cat].forEach(it => { qty[it.id] = old[it.id] || 0; }));
+  return droppedNames;
+}
 
 function findItem(id){
   for(const cat of CATS){
@@ -2012,27 +1955,12 @@ function selectItem(cat, id){
     return;
   }
   const wasSelected = qty[id] > 0;
-  DATA[cat].forEach(it=>{ qty[it.id] = 0; });
-  if(!wasSelected) qty[id] = 1;
+  qty[id] = wasSelected ? 0 : 1;
   if(cat==='carbs' && id==='soba' && !wasSelected){
     DATA.sauce.forEach(it=>{ qty[it.id] = 0; });
     qty[SOBA_SAUCE_LOCK] = 1;
   }
   renderAll();
-  if(!wasSelected) scrollToNextCategory(cat);
-}
-
-// After picking a fresh item, guide the customer straight to the next step
-// instead of leaving them to scroll and find it themselves.
-function scrollToNextCategory(cat){
-  const next = CATS[CATS.indexOf(cat) + 1];
-  if(!next) return;
-  const target = document.getElementById(next);
-  const nav = document.getElementById('stepNav');
-  if(!target) return;
-  const offset = (nav ? nav.offsetHeight : 0) + 12;
-  const top = target.getBoundingClientRect().top + window.scrollY - offset;
-  window.scrollTo({ top, behavior:'smooth' });
 }
 
 let toastTimer=null;
@@ -2060,7 +1988,6 @@ function cardTemplate(item,cat){
       <span class="ing-macro"><b>${item.carbs}g</b><small>${tr_('label_carbs')}</small></span>
       <span class="ing-macro"><b>${item.fat}g</b><small>${tr_('label_fat')}</small></span>
     </span>
-    <button type="button" class="select-btn${selected?' is-selected':''}" data-select="${item.id}" data-select-cat="${cat}">${selected?tr_('btn_selected'):tr_('btn_select')}</button>
   </div>`;
 }
 
@@ -2865,6 +2792,10 @@ document.addEventListener('click', e=>{
     selectItem(selectBtn.getAttribute('data-select-cat'), selectBtn.getAttribute('data-select'));
     return;
   }
+  if(e.target.closest('[data-retry-menu]')){
+    loadMenuAndInit();
+    return;
+  }
   const stepBtn = e.target.closest('.step-btn');
   if(stepBtn){
     const dir = parseInt(stepBtn.getAttribute('data-dir'),10);
@@ -2993,9 +2924,92 @@ sections.forEach(s=>observer.observe(s));
 /* ---------- init ---------- */
 document.getElementById('langSelect').value = LANG;
 applyStaticTranslations();
-renderAll();
-renderPicks();
-renderCartBadge();
+loadMenuAndInit();
+
+// Fetches the ingredient catalogue from the Apps Script menu API (BentoMenuAPI.gs)
+// backed by the Rokusho costing Google Sheet, then boots the rest of the app —
+// everything below reads DATA, so nothing else can render until this resolves.
+let lastMenuJsonText = null;
+function loadMenuAndInit(){
+  document.querySelectorAll('.menu-load-error').forEach(el=>el.remove());
+  fetch(MENU_API_URL)
+    .then(res=>res.text())
+    .then(text=>{
+      lastMenuJsonText = text;
+      const menu = JSON.parse(text);
+      DATA = {protein:menu.protein||[], carbs:menu.carbs||[], side:menu.side||[], sauce:menu.sauce||[]};
+      PICKS = menu.picks || [];
+      initQtyState();
+      initPickQtyState();
+      renderAll();
+      renderPicks();
+      renderCartBadge();
+      startMenuPolling();
+    })
+    .catch(err=>{
+      console.error('Failed to load menu data:', err);
+      showMenuLoadError();
+    })
+    .finally(()=>window.dispatchEvent(new Event('rk:menu-ready')));
+}
+
+function showMenuLoadError(){
+  document.querySelectorAll('.card-grid').forEach(grid=>{
+    grid.innerHTML = `<p class="menu-load-error">${tr_('menu_load_error')}
+      <button type="button" class="menu-retry-btn" data-retry-menu>${tr_('menu_load_retry')}</button></p>`;
+  });
+}
+
+// Polls the same menu API in the background so changes made in the admin
+// panel (add/edit/delete/toggle sold-out) show up here without the customer
+// reloading. Only re-renders when the response actually changed, and only
+// while the tab is visible — plus an immediate catch-up refresh whenever
+// the tab regains focus, in case it was backgrounded past several intervals.
+const MENU_POLL_INTERVAL_MS = 20000;
+let menuPollTimer = null;
+
+function startMenuPolling(){
+  if(menuPollTimer) return;
+  menuPollTimer = setInterval(()=>{
+    if(document.visibilityState === 'visible') refreshMenu();
+  }, MENU_POLL_INTERVAL_MS);
+}
+
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState === 'visible' && lastMenuJsonText) refreshMenu();
+});
+
+function refreshMenu(){
+  fetch(MENU_API_URL)
+    .then(res=>res.text())
+    .then(text=>{
+      if(text === lastMenuJsonText) return;
+      lastMenuJsonText = text;
+      applyMenuUpdate(JSON.parse(text));
+    })
+    .catch(err=>console.error('Background menu refresh failed:', err));
+}
+
+// Swaps in freshly-fetched menu data without disturbing the customer's
+// current picks: quantities are preserved for ids that still exist, and
+// only ids that disappeared (sold out / deleted) get zeroed — with a toast
+// so that isn't silent.
+function applyMenuUpdate(menu){
+  const oldNameOf = {};
+  CATS.forEach(cat => DATA[cat].forEach(it => { oldNameOf[it.id] = itemName(it); }));
+
+  DATA = {protein:menu.protein||[], carbs:menu.carbs||[], side:menu.side||[], sauce:menu.sauce||[]};
+  PICKS = menu.picks || [];
+
+  const droppedNames = mergeQtyState(oldNameOf);
+  mergePickQtyState();
+
+  renderAll();
+  renderPicks();
+  renderCartBadge();
+
+  if(droppedNames.length) showToast(tr_('toast_menu_updated_items_removed'));
+}
 
 /* ---------- page loader ---------- */
 (function(){
@@ -3010,8 +3024,7 @@ renderCartBadge();
       loader.addEventListener('transitionend', ()=>loader.remove(), {once:true});
     }, wait);
   }
-  if(document.readyState==='complete') hideLoader();
-  else window.addEventListener('load', hideLoader, {once:true});
+  window.addEventListener('rk:menu-ready', hideLoader, {once:true});
 })();
 
 </script>
