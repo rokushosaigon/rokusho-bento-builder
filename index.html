@@ -329,6 +329,19 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 /* quick-open cart button — hidden on desktop where the header cart is one tap away */
 .bento-bar-cart{display:none;}
 
+/* ---------- Chef's Picks — floating cart button, reveals on scroll ---------- */
+.picks-float-cart{
+  position:fixed;right:22px;bottom:calc(22px + env(safe-area-inset-bottom));z-index:40;
+  width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:var(--rk-white);border:1.5px solid var(--rk-ink);color:var(--rk-ink);
+  box-shadow:0 2px 10px rgba(17,17,17,.14);
+  opacity:0;transform:translateY(10px) scale(.9);pointer-events:none;
+  transition:opacity .25s ease,transform .25s ease;
+}
+.picks-float-cart.is-visible{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
+.picks-float-cart .cart-icon{width:22px;height:22px;}
+.picks-float-cart .cart-badge{position:absolute;top:-6px;right:-6px;}
+
 /* ---------- quick contact actions (floating right, vertically centered) ---------- */
 .quick-actions{
   position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:41;
@@ -483,6 +496,8 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .panel-actions-primary .btn{width:100%;}
 .cart-step-label{font-size:12px;color:var(--rk-ink-soft);margin-top:2px;}
 .cart-line{display:flex;align-items:flex-start;gap:10px;background:var(--rk-white);border:1px solid var(--rk-line);border-radius:12px;padding:12px;margin-bottom:10px;}
+.cart-line.is-editable{cursor:pointer;transition:border-color .15s;}
+.cart-line.is-editable:hover{border-color:var(--rk-primary);}
 .cart-line-thumb{width:52px;height:52px;border-radius:10px;flex:none;overflow:hidden;background:var(--rk-paper-deep);}
 .cart-line-thumb img{width:100%;height:100%;object-fit:contain;padding:5px;opacity:.9;}
 .cart-line-main{flex:1;min-width:0;}
@@ -507,17 +522,70 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .picks-group-dot{width:10px;height:10px;border-radius:50%;margin-top:9px;flex:none;}
 .picks-group-head h3{font-family:var(--font-display);font-size:20px;}
 .picks-group-head p{font-size:13.5px;color:var(--rk-ink-soft);margin-top:4px;max-width:480px;}
-.picks-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
+
+/* ---------- chef's picks — search + group filter toolbar ---------- */
+.picks-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:28px;}
+.picks-search-wrap{position:relative;flex:1 1 240px;max-width:340px;}
+.picks-search-icon{
+  position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;
+  color:var(--rk-ink-soft);pointer-events:none;
+}
+.picks-search-icon path,.picks-search-icon circle{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;}
+.picks-search{
+  width:100%;border:1px solid var(--rk-line);border-radius:999px;background:var(--rk-white);
+  color:var(--rk-ink);font-family:inherit;font-size:13.5px;padding:10px 14px 10px 36px;
+}
+.picks-search::placeholder{color:var(--rk-ink-soft);}
+.picks-search:focus-visible{outline:2px solid var(--rk-primary);outline-offset:1px;}
+.picks-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.picks-chip{
+  font-family:inherit;border:1.5px solid var(--rk-line);border-radius:999px;padding:7px 15px;
+  font-size:12.5px;font-weight:600;color:var(--rk-ink-soft);background:transparent;white-space:nowrap;transition:.15s;
+}
+.picks-chip:hover{border-color:var(--rk-ink);color:var(--rk-ink);}
+.picks-chip.is-active{background:var(--rk-ink);border-color:var(--rk-ink);color:var(--rk-paper);}
+.picks-no-results{
+  font-size:13.5px;color:var(--rk-ink-soft);text-align:center;padding:40px 16px;
+  border:1px dashed var(--rk-line);border-radius:var(--radius-m);
+}
+
+/* ---------- chef's picks — horizontal carousel, up to 4 cards in view ---------- */
+.picks-carousel-wrap{display:flex;align-items:center;gap:8px;}
+.picks-carousel-arrow{
+  flex:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--rk-line);background:var(--rk-white);
+  display:flex;align-items:center;justify-content:center;font-size:17px;color:var(--rk-ink);transition:.15s;
+}
+.picks-carousel-arrow:hover{border-color:var(--rk-primary);color:var(--rk-primary);}
+.picks-carousel-arrow.is-disabled{opacity:.3;pointer-events:none;}
+.picks-carousel-wrap.no-overflow .picks-carousel-arrow{display:none;}
+.picks-grid{
+  display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;flex:1;min-width:0;
+  -ms-overflow-style:none;scrollbar-width:none;
+}
+.picks-grid::-webkit-scrollbar{display:none;}
 .pick-card{
-  background:var(--rk-white);border:1px solid var(--rk-line);border-radius:var(--radius-m);
+  position:relative;background:var(--rk-white);border:1px solid var(--rk-line);border-radius:var(--radius-m);
   overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-card);text-align:left;align-items:stretch;
+  cursor:pointer;flex:0 0 calc((100% - 3*16px)/4);min-width:220px;scroll-snap-align:start;
 }
-@keyframes pick-card-added{
-  0%{border-color:var(--rk-primary);box-shadow:0 0 0 0 rgba(159,47,45,.4);}
-  70%{border-color:var(--rk-primary);box-shadow:0 0 0 8px rgba(159,47,45,0);}
-  100%{border-color:var(--rk-line);box-shadow:0 0 0 0 rgba(159,47,45,0);}
+/* one-time attention cue on the first pick a customer sees, pointing out
+   that the card itself is tappable — see showPickHint() in JS, which adds
+   .is-spotlight and removes it again after 10s */
+@keyframes pick-card-glow{
+  0%,100%{box-shadow:0 0 0 0 rgba(159,47,45,.35);}
+  50%{box-shadow:0 0 0 9px rgba(159,47,45,0);}
 }
-.pick-card.is-added{animation:pick-card-added .9s ease-out;}
+.pick-card.is-spotlight{animation:pick-card-glow 1.8s ease-in-out infinite;}
+.pick-card-hint{
+  position:absolute;top:10px;left:10px;right:10px;z-index:2;
+  background:var(--rk-ink);color:var(--rk-paper);font-size:11.5px;font-weight:600;text-align:center;
+  padding:7px 10px;border-radius:999px;box-shadow:0 2px 10px rgba(17,17,17,.22);pointer-events:none;
+  opacity:0;animation:pick-hint-in .3s ease forwards, pick-hint-out .3s ease 9.6s forwards;
+}
+@keyframes pick-hint-in{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pick-hint-out{to{opacity:0;}}
+@media(max-width:880px){ .pick-card{flex-basis:calc((100% - 2*16px)/3);} }
+@media(max-width:760px){ .pick-card{flex-basis:calc((100% - 16px)/2);min-width:180px;} }
 .pick-media{
   aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;gap:10px;padding:14%;
   border-bottom:1px solid var(--rk-line);
@@ -536,9 +604,52 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .pick-macro{display:flex;flex-direction:column;flex:1;min-width:0;font-family:var(--font-mono);}
 .pick-macro b{font-size:13px;font-weight:600;color:var(--rk-ink);line-height:1.3;}
 .pick-macro small{font-size:9.5px;color:var(--rk-ink-soft);text-transform:uppercase;letter-spacing:.03em;}
-.pick-actions{display:flex;align-items:center;gap:10px;margin-top:auto;}
-.pick-actions .stepper{flex:none;}
-.pick-actions .btn{padding:10px 14px;font-size:13px;}
+
+/* ---------- chef's picks — bento detail popup ---------- */
+.pick-modal{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.96);
+  width:min(440px,92vw);max-height:86vh;background:var(--rk-paper);
+  border-radius:var(--radius-l);z-index:50;box-shadow:0 12px 40px rgba(17,17,17,.18);
+  opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s ease,transform .22s ease,visibility .22s;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.pick-modal.is-open{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,-50%) scale(1);}
+.pick-modal-scroll{flex:1;min-height:0;overflow-y:auto;}
+.pick-modal-close{
+  position:absolute;top:14px;right:14px;background:var(--rk-white);border:1.5px solid var(--rk-line);
+  border-radius:50%;width:32px;height:32px;font-size:15px;color:var(--rk-ink-soft);z-index:1;
+}
+.pick-modal-media{
+  aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;gap:16px;padding:16%;
+  border-bottom:1px solid var(--rk-line);border-radius:var(--radius-l) var(--radius-l) 0 0;
+}
+.pick-modal-media .icon-svg{width:52px;height:52px;flex:none;}
+.pick-modal-body{padding:22px 24px 26px;}
+.pick-modal-group{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.pick-modal-name{font-size:23px;margin-top:8px;}
+.pick-modal-desc{font-size:14px;color:var(--rk-ink-soft);margin-top:10px;}
+
+.pick-modal-section-title{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--rk-ink-soft);margin:20px 0 10px;}
+.pick-swap-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.pick-swap-row .line-badge{width:30px;height:30px;flex:none;}
+.pick-swap-row .line-badge .icon-svg{width:16px;height:16px;}
+.pick-swap-select{
+  flex:1;min-width:0;border:1px solid var(--rk-line);border-radius:var(--radius-s);padding:8px 10px;
+  font-family:inherit;font-size:13px;background:var(--rk-white);color:var(--rk-ink);
+}
+.pick-swap-select:focus-visible{outline:2px solid var(--rk-primary);outline-offset:1px;}
+.pick-addon-group{margin-bottom:6px;}
+.pick-addon-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--rk-line);}
+.pick-addon-row:last-child{border-bottom:none;}
+.pick-addon-name{flex:1;min-width:0;font-size:13.5px;}
+.pick-addon-kcal{font-size:11px;color:var(--rk-ink-soft);font-family:var(--font-mono);flex:none;}
+.pick-addon-row .stepper{flex:none;}
+.pick-modal-footer{flex:none;border-top:1px solid var(--rk-line);padding:16px 24px calc(16px + env(safe-area-inset-bottom));background:var(--rk-paper);}
+.pick-modal-footer .totals-grid{margin:0 0 4px;}
+.pick-extra-kcal{font-size:12px;color:var(--rk-primary);font-weight:600;text-align:center;margin-top:6px;}
+.pick-modal-footer-row{display:flex;align-items:center;gap:12px;margin-top:12px;}
+.pick-modal-footer-row .btn{flex:1;}
+.pick-modal-footer-row .stepper{flex:none;}
 
 /* ---------- delivery date + time slot picker ---------- */
 .date-chip{
@@ -636,7 +747,8 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   .step-badge{font-size:11.5px;padding:4px 11px;}
 
   .card-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
-  .picks-grid{grid-template-columns:1fr;}
+  .pick-card{flex-basis:86%;min-width:0;}
+  .picks-carousel-arrow{width:30px;height:30px;font-size:15px;}
   .ing-card{padding:10px 10px 12px;gap:8px;}
   .ing-name{font-size:12.5px;min-height:30px;}
   .ing-macros{gap:6px;padding-top:6px;}
@@ -856,6 +968,11 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 
 </div><!-- /#byoView -->
 
+<button class="picks-float-cart" id="picksFloatCart" type="button" aria-label="Open cart">
+  <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1.6" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.6" fill="currentColor" stroke="none"/><path d="M2.5 3h2.4l2.1 11.4a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 7H6"/></svg>
+  <span class="cart-badge" id="picksFloatCartBadge">0</span>
+</button>
+
 <div id="picksView" style="display:none">
   <section class="hero picks-hero">
     <div class="hero-text">
@@ -865,10 +982,17 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
     </div>
   </section>
   <div class="picks-main">
+    <div class="picks-toolbar">
+      <div class="picks-search-wrap">
+        <svg class="picks-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="search" id="picksSearch" class="picks-search" data-i18n-placeholder="picks_search_placeholder" placeholder="Search bentos…">
+      </div>
+      <div class="picks-chips" id="picksChips"></div>
+    </div>
     <div id="picksGrid"></div>
   </div>
 </div>
-1
+
 <div class="quick-actions">
   <a class="quick-action-btn quick-action-messenger" href="https://m.me/1041737169016337" target="_blank" rel="noopener" aria-label="Chat on Messenger" title="Messenger">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0C5.24 0 0 4.952 0 11.64c0 3.499 1.434 6.521 3.769 8.61a.96.96 0 0 1 .323.683l.065 2.135a.96.96 0 0 0 1.347.85l2.381-1.053a.96.96 0 0 1 .641-.046A13 13 0 0 0 12 23.28c6.76 0 12-4.952 12-11.64S18.76 0 12 0m6.806 7.44c.522-.03.971.567.63 1.094l-4.178 6.457a.707.707 0 0 1-.977.208l-3.87-2.504a.44.44 0 0 0-.49.007l-4.363 3.01c-.637.438-1.415-.317-.995-.966l4.179-6.457a.706.706 0 0 1 .977-.21l3.87 2.505c.15.097.344.094.491-.007l4.362-3.008a.7.7 0 0 1 .364-.13"/></svg>
@@ -882,6 +1006,33 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   <a class="quick-action-btn quick-action-hotline" href="tel:0783888802" aria-label="Call hotline" title="Hotline">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.7 3.6 4.9 6.3 6.3l2.1-2.1c0.3-0.3 0.7-0.4 1.1-0.3 1.2 0.4 2.5 0.6 3.8 0.6 0.6 0 1.1 0.5 1.1 1.1V20c0 0.6-0.5 1.1-1.1 1.1C10.5 21.1 3 13.6 3 4.4 3 3.8 3.5 3.3 4.1 3.3H7.4c0.6 0 1.1 0.5 1.1 1.1 0 1.3 0.2 2.6 0.6 3.8 0.1 0.4 0 0.8-0.3 1.1L6.6 10.8z" fill="currentColor"/></svg>
   </a>
+</div>
+
+
+<div class="overlay" id="pickModalOverlay"></div>
+<div class="pick-modal" id="pickModal" role="dialog" aria-modal="true" aria-hidden="true">
+  <button type="button" class="pick-modal-close" id="pickModalClose" aria-label="Close">✕</button>
+  <div class="pick-modal-scroll">
+    <div class="pick-modal-media" id="pickModalMedia"></div>
+    <div class="pick-modal-body">
+      <span class="pick-modal-group" id="pickModalGroup"></span>
+      <h3 class="pick-modal-name" id="pickModalName"></h3>
+      <p class="pick-modal-desc" id="pickModalDesc"></p>
+      <div id="pickModalSwaps"></div>
+      <div id="pickModalAddons"></div>
+    </div>
+  </div>
+  <div class="pick-modal-footer">
+    <div class="pick-modal-totals" id="pickModalTotals"></div>
+    <div class="pick-modal-footer-row">
+      <span class="stepper">
+        <button type="button" class="step-btn minus" data-pickmodal-qty-dir="-1" aria-label="Decrease quantity">–</button>
+        <span class="step-count" id="pickModalQtyCount">1</span>
+        <button type="button" class="step-btn plus" data-pickmodal-qty-dir="1" aria-label="Increase quantity">+</button>
+      </span>
+      <button type="button" class="btn btn-solid" id="pickModalAddBtn" data-i18n="add_to_cart_short">Add to cart</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -1018,8 +1169,17 @@ const I18N = {
     "picks_eyebrow": "Ready in one tap",
     "picks_title": "Chef's picks",
     "picks_desc": "House bentos across four collections — pick a quantity and send it straight to your cart.",
+    "picks_search_placeholder": "Search bentos…",
+    "picks_filter_all": "All",
+    "picks_no_results": "No bentos match your search.",
     "add_to_cart_short": "Add to cart",
     "chefs_pick_label": "Chef's pick",
+    "pick_card_hint": "Tap to view details & order",
+    "chefs_pick_customized_label": "Chef's pick · Customized",
+    "pick_customize_ingredients": "Swap ingredients",
+    "pick_customize_addons": "Add extra",
+    "pick_customize_extra_note": "from customization",
+    "cart_swap_replaces": "instead of",
     "cart_continue_delivery": "Continue to delivery time",
     "delivery_time_title": "Delivery time",
     "step2of3": "Step 2 of 3",
@@ -1073,6 +1233,8 @@ const I18N = {
     "cart_est_total": "Estimated total",
     "cart_show_ing": "Show ingredients",
     "cart_hide_ing": "Hide ingredients",
+    "cart_edit_details": "View details & edit",
+    "cart_save_changes": "Save changes",
     "cart_remove": "Remove",
     "custom_bento_label": "Custom bento",
     "ingredient_singular": "ingredient",
@@ -1099,6 +1261,7 @@ const I18N = {
     "new_order_btn": "Start a new request",
     "order_default_name": "there",
     "toast_added": "Added to cart",
+    "toast_cart_updated": "Cart updated",
     "toast_fill_fields": "Please fill in your name, phone number and delivery address.",
     "toast_slow_down": "Please wait a few seconds before submitting again.",
     "toast_soba_sauce_lock": "Soba only pairs with mentsuyu sauce.",
@@ -1128,8 +1291,17 @@ const I18N = {
   "picks_eyebrow": "Chọn nhanh",
   "picks_title": "Bento nổi bật",
   "picks_desc": "Các set Bento bán chạy do đầu bếp tuyển chọn. Chỉ cần chọn số lượng và thêm vào giỏ hàng.",
+  "picks_search_placeholder": "Tìm bento…",
+  "picks_filter_all": "Tất cả",
+  "picks_no_results": "Không tìm thấy bento phù hợp.",
   "add_to_cart_short": "Thêm vào giỏ",
   "chefs_pick_label": "Bento có sẵn",
+  "pick_card_hint": "Bấm để xem chi tiết & đặt hàng",
+  "chefs_pick_customized_label": "Bento có sẵn · Đã tùy chỉnh",
+  "pick_customize_ingredients": "Đổi nguyên liệu",
+  "pick_customize_addons": "Thêm món",
+  "pick_customize_extra_note": "từ tùy chỉnh",
+  "cart_swap_replaces": "thay cho",
   "cart_continue_delivery": "Tiếp tục",
   "delivery_time_title": "Thời gian giao hàng",
   "step2of3": "Bước 2/3",
@@ -1196,6 +1368,8 @@ const I18N = {
   "cart_est_total": "Tạm tính",
   "cart_show_ing": "Xem nguyên liệu",
   "cart_hide_ing": "Ẩn nguyên liệu",
+  "cart_edit_details": "Xem chi tiết & sửa",
+  "cart_save_changes": "Lưu thay đổi",
   "cart_remove": "Xóa",
 
   "custom_bento_label": "Bento tự chọn",
@@ -1237,6 +1411,7 @@ const I18N = {
   "order_default_name": "bạn",
 
   "toast_added": "Đã thêm vào giỏ hàng",
+  "toast_cart_updated": "Đã cập nhật giỏ hàng",
   "toast_fill_fields": "Vui lòng nhập đầy đủ họ tên, số điện thoại và địa chỉ nhận hàng.",
   "toast_soba_sauce_lock": "Mì soba chỉ dùng kèm sốt Mentsuyu.",
   "toast_slow_down": "Vui lòng đợi vài giây trước khi gửi lại.",
@@ -1268,8 +1443,17 @@ const I18N = {
     "picks_eyebrow": "ワンタップで注文完了",
     "picks_title": "シェフのおすすめ",
     "picks_desc": "4つのコレクションから選べる弁当 — 数量を選んでそのままカートへ。",
+    "picks_search_placeholder": "弁当を検索…",
+    "picks_filter_all": "すべて",
+    "picks_no_results": "該当する弁当が見つかりません。",
     "add_to_cart_short": "カートに追加",
     "chefs_pick_label": "おすすめセット",
+    "pick_card_hint": "タップして詳細を見る・注文",
+    "chefs_pick_customized_label": "おすすめセット・カスタム",
+    "pick_customize_ingredients": "具材を変更",
+    "pick_customize_addons": "追加する",
+    "pick_customize_extra_note": "カスタム分",
+    "cart_swap_replaces": "の代わりに",
     "cart_continue_delivery": "配達時間の選択へ進む",
     "delivery_time_title": "配達時間",
     "step2of3": "ステップ 2/3",
@@ -1323,6 +1507,8 @@ const I18N = {
     "cart_est_total": "合計金額(概算)",
     "cart_show_ing": "具材を見る",
     "cart_hide_ing": "具材を隠す",
+    "cart_edit_details": "詳細を見る・編集",
+    "cart_save_changes": "変更を保存",
     "cart_remove": "削除",
     "custom_bento_label": "カスタム弁当",
     "ingredient_singular": "具材",
@@ -1349,6 +1535,7 @@ const I18N = {
     "new_order_btn": "新しいリクエストを始める",
     "order_default_name": "お客様",
     "toast_added": "カートに追加しました",
+    "toast_cart_updated": "カートを更新しました",
     "toast_fill_fields": "お名前・電話番号・配達先住所をご入力ください。",
     "toast_soba_sauce_lock": "そばはめんつゆのみと組み合わせられます。",
     "toast_slow_down": "数秒待ってから再度お試しください。",
@@ -1377,8 +1564,17 @@ const I18N = {
     "picks_eyebrow": "한 번의 탭으로 완성",
     "picks_title": "셰프 추천",
     "picks_desc": "4가지 컬렉션으로 구성된 시그니처 벤토 — 수량을 선택하고 바로 장바구니에 담아보세요.",
+    "picks_search_placeholder": "벤토 검색…",
+    "picks_filter_all": "전체",
+    "picks_no_results": "검색 결과와 일치하는 벤토가 없습니다.",
     "add_to_cart_short": "장바구니 담기",
     "chefs_pick_label": "셰프 추천 세트",
+    "pick_card_hint": "탭하여 상세 보기 및 주문",
+    "chefs_pick_customized_label": "셰프 추천 세트 · 커스텀",
+    "pick_customize_ingredients": "재료 변경",
+    "pick_customize_addons": "추가하기",
+    "pick_customize_extra_note": "커스텀 추가분",
+    "cart_swap_replaces": "대신",
     "cart_continue_delivery": "배달 시간 선택으로 이동",
     "delivery_time_title": "배달 시간",
     "step2of3": "3단계 중 2단계",
@@ -1432,6 +1628,8 @@ const I18N = {
     "cart_est_total": "예상 총 금액",
     "cart_show_ing": "재료 보기",
     "cart_hide_ing": "재료 숨기기",
+    "cart_edit_details": "상세 보기 및 수정",
+    "cart_save_changes": "변경사항 저장",
     "cart_remove": "삭제",
     "custom_bento_label": "커스텀 벤토",
     "ingredient_singular": "재료",
@@ -1458,6 +1656,7 @@ const I18N = {
     "new_order_btn": "새 요청 시작하기",
     "order_default_name": "고객님",
     "toast_added": "장바구니에 담았습니다",
+    "toast_cart_updated": "장바구니를 업데이트했습니다",
     "toast_fill_fields": "이름, 전화번호, 배달 주소를 입력해 주세요.",
     "toast_soba_sauce_lock": "소바는 멘츠유 소스와만 함께 제공됩니다.",
     "toast_slow_down": "몇 초 후에 다시 시도해 주세요.",
@@ -1486,8 +1685,17 @@ const I18N = {
     "picks_eyebrow": "一键即可下单",
     "picks_title": "主厨精选",
     "picks_desc": "四大系列招牌便当 —— 选择数量，直接加入购物车。",
+    "picks_search_placeholder": "搜索便当…",
+    "picks_filter_all": "全部",
+    "picks_no_results": "没有找到符合条件的便当。",
     "add_to_cart_short": "加入购物车",
     "chefs_pick_label": "主厨精选",
+    "pick_card_hint": "点击查看详情并下单",
+    "chefs_pick_customized_label": "主厨精选 · 已定制",
+    "pick_customize_ingredients": "更换食材",
+    "pick_customize_addons": "加购",
+    "pick_customize_extra_note": "定制新增",
+    "cart_swap_replaces": "替代",
     "cart_continue_delivery": "继续选择送达时间",
     "delivery_time_title": "送达时间",
     "step2of3": "第2步，共3步",
@@ -1541,6 +1749,8 @@ const I18N = {
     "cart_est_total": "预估总计",
     "cart_show_ing": "查看食材",
     "cart_hide_ing": "隐藏食材",
+    "cart_edit_details": "查看详情并修改",
+    "cart_save_changes": "保存修改",
     "cart_remove": "删除",
     "custom_bento_label": "自选便当",
     "ingredient_singular": "种食材",
@@ -1567,6 +1777,7 @@ const I18N = {
     "new_order_btn": "开始新请求",
     "order_default_name": "您",
     "toast_added": "已加入购物车",
+    "toast_cart_updated": "购物车已更新",
     "toast_fill_fields": "请填写姓名、电话号码和送达地址。",
     "toast_soba_sauce_lock": "荞麦面仅可搭配蘸面汁（Mentsuyu）。",
     "toast_slow_down": "请稍等几秒后再试。",
@@ -1859,7 +2070,13 @@ function pickName(pick){
   const tr = PICK_I18N[pick.id];
   return (LANG!=='en' && tr && tr[LANG] && tr[LANG].name) || pick.name;
 }
+// Ingredient-list translations now come straight from the "Chef's Picks"
+// sheet (VI/JA/KO/ZH columns added next to Ingredient — see BentoMenuAPI.gs),
+// rather than the hand-maintained PICK_I18N map, so every pick auto-updates
+// instead of needing a matching code entry per id.
 function pickTagline(pick){
+  const fromSheet = pick['tagline_'+LANG];
+  if(LANG!=='en' && fromSheet) return fromSheet;
   const tr = PICK_I18N[pick.id];
   return (LANG!=='en' && tr && tr[LANG] && tr[LANG].tagline) || pick.tagline;
 }
@@ -1870,21 +2087,6 @@ function groupLabel(group){
 function groupDesc(group){
   const tr = GROUP_I18N[group];
   return (LANG!=='en' && tr && tr[LANG] && tr[LANG].desc) || GROUP_META[group].desc;
-}
-
-let pickQty = {};
-function initPickQtyState(){
-  pickQty = {};
-  PICKS.forEach(p=>{ pickQty[p.id] = 1; });
-}
-
-// Like initPickQtyState, but keeps existing quantities for picks that are
-// still on the menu instead of resetting everything to 1 — used when a
-// background refresh brings in new data while the customer is mid-browse.
-function mergePickQtyState(){
-  const old = pickQty;
-  pickQty = {};
-  PICKS.forEach(p=>{ pickQty[p.id] = old[p.id] || 1; });
 }
 
 // Sheet-authored totals, not a live sum of full-size DATA items: combo
@@ -2021,12 +2223,11 @@ function pickCardTemplate(pick){
   const nutri = pickNutrition(pick);
   const meta = GROUP_META[pick.group];
   const name = pickName(pick);
-  const q = pickQty[pick.id];
   const iconsHtml = pick.items.map(id=>{
     const found = findItem(id);
     return found ? iconSvg(found.item.icon) : '';
   }).join('');
-  return `<div class="pick-card">
+  return `<div class="pick-card" data-pick-id="${pick.id}">
     <div class="pick-media" style="background:${meta.pastelBg};color:${meta.color}">${iconsHtml}</div>
     <div class="pick-body">
       <div class="pick-name">${name}</div>
@@ -2037,30 +2238,343 @@ function pickCardTemplate(pick){
         <span class="pick-macro"><b>${nutri.carbs.toFixed(1)}g</b><small>${tr_('label_carbs')}</small></span>
         <span class="pick-macro"><b>${nutri.fat.toFixed(1)}g</b><small>${tr_('label_fat')}</small></span>
       </div>
-      <div class="pick-actions">
-        <span class="stepper">
-          <button type="button" class="step-btn minus" data-pick="${pick.id}" data-dir="-1" ${q<=1?'disabled':''} aria-label="Decrease quantity">–</button>
-          <span class="step-count">${q}</span>
-          <button type="button" class="step-btn plus" data-pick="${pick.id}" data-dir="1" aria-label="Increase quantity">+</button>
-        </span>
-        <button type="button" class="btn btn-solid" data-pick-add="${pick.id}">${tr_('add_to_cart_short')}</button>
-      </div>
     </div>
   </div>`;
 }
 
+// Search + group-filter state for the Chef's Picks browser (see renderPicks below).
+let pickSearchQuery = '';
+let pickGroupFilter = 'all';
+
+function filteredPicks(){
+  const q = pickSearchQuery.trim().toLowerCase();
+  return PICKS.filter(p=>{
+    if(pickGroupFilter!=='all' && p.group!==pickGroupFilter) return false;
+    if(!q) return true;
+    const hay = [pickName(p), p.name, pickTagline(p), p.tagline].join(' ').toLowerCase();
+    return hay.includes(q);
+  });
+}
+
+function renderPicksChips(){
+  const chips = ['all', ...GROUP_ORDER];
+  document.getElementById('picksChips').innerHTML = chips.map(g=>{
+    const label = g==='all' ? tr_('picks_filter_all') : groupLabel(g);
+    return `<button type="button" class="picks-chip${pickGroupFilter===g?' is-active':''}" data-group-filter="${g}">${label}</button>`;
+  }).join('');
+}
+
+// Each collection renders as its own horizontally-scrolling row (up to 4
+// cards in view at once — see .picks-grid/.pick-card flex-basis), with
+// prev/next arrows either side. Groups with no matches (search/filter) are
+// simply omitted; an empty overall result shows a "no results" message.
 function renderPicks(){
-  document.getElementById('picksGrid').innerHTML = GROUP_ORDER.map(g=>{
+  renderPicksChips();
+  const filtered = filteredPicks();
+  const groupsWithItems = GROUP_ORDER.filter(g=>filtered.some(p=>p.group===g));
+  document.getElementById('picksGrid').innerHTML = groupsWithItems.length ? groupsWithItems.map(g=>{
     const meta = GROUP_META[g];
-    const items = PICKS.filter(p=>p.group===g);
+    const items = filtered.filter(p=>p.group===g);
     return `<div class="picks-group">
       <div class="picks-group-head">
         <span class="picks-group-dot" style="background:${meta.color}"></span>
         <div><h3>${groupLabel(g)}</h3><p>${groupDesc(g)}</p></div>
       </div>
-      <div class="card-grid picks-grid">${items.map(pickCardTemplate).join('')}</div>
+      <div class="picks-carousel-wrap">
+        <button type="button" class="picks-carousel-arrow prev" data-carousel-prev="${g}" aria-label="Previous">‹</button>
+        <div class="card-grid picks-grid" data-carousel="${g}">${items.map(pickCardTemplate).join('')}</div>
+        <button type="button" class="picks-carousel-arrow next" data-carousel-next="${g}" aria-label="Next">›</button>
+      </div>
+    </div>`;
+  }).join('') : `<p class="picks-no-results">${tr_('picks_no_results')}</p>`;
+  // Deferred a frame: right after innerHTML is set, the new cards haven't been
+  // laid out yet, so scrollWidth/clientWidth would still reflect the old (or
+  // empty) content and misjudge whether each row actually overflows.
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('.picks-carousel-wrap').forEach(updateCarouselArrows);
+  });
+}
+
+function updateCarouselArrows(wrap){
+  const track = wrap.querySelector('.picks-grid');
+  const prev = wrap.querySelector('.picks-carousel-arrow.prev');
+  const next = wrap.querySelector('.picks-carousel-arrow.next');
+  if(!track || !prev || !next) return;
+  prev.classList.toggle('is-disabled', track.scrollLeft <= 2);
+  next.classList.toggle('is-disabled', track.scrollLeft + track.clientWidth >= track.scrollWidth - 2);
+  wrap.classList.toggle('no-overflow', track.scrollWidth <= track.clientWidth + 2);
+}
+
+function scrollCarousel(group, dir){
+  const track = document.querySelector(`.picks-grid[data-carousel="${group}"]`);
+  if(track) track.scrollBy({left: dir*track.clientWidth, behavior:'smooth'});
+}
+
+/* ============================================================
+   PICK CUSTOMIZATION — swap an ingredient for another in the same
+   category, or add extra portions of anything, from inside the bento
+   detail popup. Kept separate from `qty`/DATA state above since it's
+   scoped to whichever pick the popup currently has open.
+   ============================================================ */
+let pickCustomState = null;
+
+function initPickCustomState(pick, editCartId){
+  const editLine = editCartId ? cart.find(c=>c.cartId===editCartId) : null;
+  if(editLine){
+    const swaps = {}, addons = {};
+    (editLine.changes||[]).forEach(c=>{
+      if(c.kind==='swap') swaps[c.origId] = c.newId;
+      else if(c.kind==='addon') addons[c.id] = c.qty;
+    });
+    pickCustomState = {pickId: pick.id, qty: editLine.qty, swaps, addons, editCartId};
+  } else {
+    pickCustomState = {pickId: pick.id, qty: 1, swaps: {}, addons: {}, editCartId: null};
+  }
+}
+
+// Swaps/add-ons are deltas against the sheet-authored pick totals (see
+// pickNutrition above) — computed from full-size DATA ingredient values,
+// since that's the only per-ingredient nutrition data available.
+function pickCustomExtra(){
+  const delta = {kcal:0, protein:0, carbs:0, fat:0};
+  if(!pickCustomState) return delta;
+  Object.keys(pickCustomState.swaps).forEach(origId=>{
+    const newId = pickCustomState.swaps[origId];
+    const oldF = findItem(origId), newF = findItem(newId);
+    if(!oldF || !newF) return;
+    delta.kcal += newF.item.kcal - oldF.item.kcal;
+    delta.protein += newF.item.protein - oldF.item.protein;
+    delta.carbs += newF.item.carbs - oldF.item.carbs;
+    delta.fat += newF.item.fat - oldF.item.fat;
+  });
+  Object.keys(pickCustomState.addons).forEach(id=>{
+    const q = pickCustomState.addons[id];
+    if(!q) return;
+    const f = findItem(id);
+    if(!f) return;
+    delta.kcal += f.item.kcal*q;
+    delta.protein += f.item.protein*q;
+    delta.carbs += f.item.carbs*q;
+    delta.fat += f.item.fat*q;
+  });
+  return delta;
+}
+
+function renderPickCustomTotals(pick){
+  const base = pickNutrition(pick);
+  const extra = pickCustomExtra();
+  const total = {
+    kcal: base.kcal+extra.kcal, protein: base.protein+extra.protein,
+    carbs: base.carbs+extra.carbs, fat: base.fat+extra.fat
+  };
+  const hasExtra = extra.kcal || extra.protein || extra.carbs || extra.fat;
+  document.getElementById('pickModalTotals').innerHTML = `
+    <div class="totals-grid">
+      <div class="stat-box"><b>${Math.round(total.kcal)}</b><span>${tr_('label_kcal')}</span></div>
+      <div class="stat-box"><b>${total.protein.toFixed(1)}g</b><span>${tr_('label_protein')}</span></div>
+      <div class="stat-box"><b>${total.carbs.toFixed(1)}g</b><span>${tr_('label_carbs')}</span></div>
+      <div class="stat-box"><b>${total.fat.toFixed(1)}g</b><span>${tr_('label_fat')}</span></div>
+    </div>
+    ${hasExtra ? `<div class="pick-extra-kcal">${extra.kcal>=0?'+':''}${Math.round(extra.kcal)} ${tr_('label_kcal')} ${tr_('pick_customize_extra_note')}</div>` : ''}`;
+}
+
+function renderPickCustomizer(pick){
+  const swapsHtml = pick.items.map(origId=>{
+    const found = findItem(origId);
+    if(!found) return '';
+    const cat = found.cat;
+    const pastel = CAT_PASTEL[cat];
+    const currentId = pickCustomState.swaps[origId] || origId;
+    const options = DATA[cat].map(it=>`<option value="${it.id}" ${it.id===currentId?'selected':''}>${itemName(it)}</option>`).join('');
+    return `<div class="pick-swap-row">
+      <span class="line-badge" style="background:${pastel.bg};color:${pastel.text}">${iconSvg(found.item.icon)}</span>
+      <select class="pick-swap-select" data-swap-original="${origId}">${options}</select>
     </div>`;
   }).join('');
+  document.getElementById('pickModalSwaps').innerHTML = `
+    <div class="pick-modal-section-title">${tr_('pick_customize_ingredients')}</div>
+    ${swapsHtml}`;
+
+  const addonsHtml = CATS.map(cat=>{
+    const rows = DATA[cat].map(it=>{
+      const q = pickCustomState.addons[it.id] || 0;
+      return `<div class="pick-addon-row">
+        <span class="pick-addon-name">${itemName(it)}</span>
+        <span class="pick-addon-kcal">${it.kcal} kcal</span>
+        <span class="stepper">
+          <button type="button" class="step-btn minus" data-addon-id="${it.id}" data-dir="-1" ${q<=0?'disabled':''} aria-label="Decrease quantity">–</button>
+          <span class="step-count">${q}</span>
+          <button type="button" class="step-btn plus" data-addon-id="${it.id}" data-dir="1" aria-label="Increase quantity">+</button>
+        </span>
+      </div>`;
+    }).join('');
+    return `<div class="pick-addon-group">
+      <div class="pick-modal-section-title">${catLabel(cat)}</div>
+      ${rows}
+    </div>`;
+  }).join('');
+  document.getElementById('pickModalAddons').innerHTML = `
+    <div class="pick-modal-section-title">${tr_('pick_customize_addons')}</div>
+    ${addonsHtml}`;
+
+  document.getElementById('pickModalQtyCount').textContent = pickCustomState.qty;
+  renderPickCustomTotals(pick);
+}
+
+// Re-renders just the swap <select> a customer just changed, in place —
+// rebuilding the whole swaps section here would reset scroll position and
+// interrupt the native <select> dropdown while it's still open.
+function updatePickSwap(origId, newId){
+  if(newId === origId) delete pickCustomState.swaps[origId];
+  else pickCustomState.swaps[origId] = newId;
+  const pick = PICKS.find(p=>p.id===pickCustomState.pickId);
+  if(pick) renderPickCustomTotals(pick);
+}
+
+function adjustPickAddon(itemId, dir){
+  const found = findItem(itemId);
+  if(!found) return;
+  const next = Math.max(0, (pickCustomState.addons[itemId]||0) + dir);
+  if(next<=0) delete pickCustomState.addons[itemId];
+  else pickCustomState.addons[itemId] = next;
+  const pick = PICKS.find(p=>p.id===pickCustomState.pickId);
+  if(!pick) return;
+  // The stepper count and disabled state live in this one row only —
+  // patch it directly instead of re-rendering the whole add-on list.
+  const row = document.querySelector(`.pick-addon-row .step-btn[data-addon-id="${itemId}"]`)?.closest('.pick-addon-row');
+  if(row){
+    row.querySelector('.step-count').textContent = next;
+    row.querySelector('.step-btn.minus').disabled = next<=0;
+  }
+  renderPickCustomTotals(pick);
+}
+
+// Ids are kept on each change entry (not just display names) so an already-
+// customized cart line can be re-opened later and have its swap <select>s
+// and add-on steppers put back exactly where the customer left them.
+function buildPickChanges(){
+  const changes = [];
+  Object.keys(pickCustomState.swaps).forEach(origId=>{
+    const newId = pickCustomState.swaps[origId];
+    const oldF = findItem(origId), newF = findItem(newId);
+    if(!oldF || !newF) return;
+    changes.push({
+      kind:'swap', origId, newId, cat:newF.cat,
+      fromName:itemName(oldF.item), toName:itemName(newF.item),
+      deltaKcal:newF.item.kcal-oldF.item.kcal, deltaProtein:newF.item.protein-oldF.item.protein,
+      deltaCarbs:newF.item.carbs-oldF.item.carbs, deltaFat:newF.item.fat-oldF.item.fat
+    });
+  });
+  Object.keys(pickCustomState.addons).filter(id=>pickCustomState.addons[id]>0).forEach(id=>{
+    const f = findItem(id);
+    if(!f) return;
+    changes.push({
+      kind:'addon', id, cat:f.cat, name:itemName(f.item), qty:pickCustomState.addons[id],
+      kcal:f.item.kcal, protein:f.item.protein, carbs:f.item.carbs, fat:f.item.fat
+    });
+  });
+  return changes;
+}
+
+function addCustomizedPickToCart(){
+  if(!pickCustomState) return;
+  const pick = PICKS.find(p=>p.id===pickCustomState.pickId);
+  if(!pick) return;
+  const changes = buildPickChanges();
+  const qty = pickCustomState.qty;
+  const editCartId = pickCustomState.editCartId;
+
+  // Editing an existing cart line: update it in place instead of adding a
+  // new one. If every swap/add-on was undone, it reverts to a plain pick.
+  if(editCartId){
+    const line = cart.find(c=>c.cartId===editCartId);
+    if(line){
+      if(!changes.length){
+        line.type = 'pick';
+        delete line.changes;
+        delete line.nutrition;
+      } else {
+        const base = pickNutrition(pick);
+        const extra = pickCustomExtra();
+        line.type = 'pick-custom';
+        line.label = pickName(pick);
+        line.changes = changes;
+        line.nutrition = {
+          kcal: base.kcal+extra.kcal, protein: base.protein+extra.protein,
+          carbs: base.carbs+extra.carbs, fat: base.fat+extra.fat
+        };
+      }
+      line.qty = qty;
+      renderCartBadge();
+      renderCartPanel();
+      showToast(tr_('toast_cart_updated'));
+    }
+    closePickDetail();
+    return;
+  }
+
+  if(!changes.length){
+    addPickToCart(pick.id, qty);
+    closePickDetail();
+    return;
+  }
+
+  const base = pickNutrition(pick);
+  const extra = pickCustomExtra();
+  cart.push({
+    cartId:'pc'+Date.now()+Math.floor(Math.random()*1000),
+    type:'pick-custom',
+    pickId: pick.id,
+    label: pickName(pick),
+    changes,
+    nutrition: {
+      kcal: base.kcal+extra.kcal, protein: base.protein+extra.protein,
+      carbs: base.carbs+extra.carbs, fat: base.fat+extra.fat
+    },
+    qty,
+    expanded:false
+  });
+  renderCartBadge();
+  showToast(tr_('toast_added'));
+  closePickDetail();
+}
+
+function openPickDetail(pickId, editCartId){
+  const pick = PICKS.find(p=>p.id===pickId);
+  if(!pick) return;
+  const meta = GROUP_META[pick.group];
+  const iconsHtml = pick.items.map(id=>{
+    const found = findItem(id);
+    return found ? iconSvg(found.item.icon) : '';
+  }).join('');
+  const media = document.getElementById('pickModalMedia');
+  media.innerHTML = iconsHtml;
+  media.style.background = meta.pastelBg;
+  media.style.color = meta.color;
+  const groupEl = document.getElementById('pickModalGroup');
+  groupEl.textContent = groupLabel(pick.group);
+  groupEl.style.color = meta.color;
+  document.getElementById('pickModalName').textContent = pickName(pick);
+  document.getElementById('pickModalDesc').textContent = pickTagline(pick);
+  initPickCustomState(pick, editCartId);
+  renderPickCustomizer(pick);
+  document.getElementById('pickModalAddBtn').textContent = editCartId ? tr_('cart_save_changes') : tr_('add_to_cart_short');
+  document.getElementById('pickModal').classList.add('is-open');
+  document.getElementById('pickModal').setAttribute('aria-hidden','false');
+  document.getElementById('pickModalOverlay').classList.add('is-open');
+  document.querySelector('.pick-modal-scroll').scrollTop = 0;
+  document.body.style.overflow='hidden';
+}
+function closePickDetail(){
+  document.getElementById('pickModal').classList.remove('is-open');
+  document.getElementById('pickModal').setAttribute('aria-hidden','true');
+  document.getElementById('pickModalOverlay').classList.remove('is-open');
+  // Leave scrolling locked if a panel behind this popup is still open —
+  // otherwise closing the popup would let the page scroll behind it.
+  const cartOpen = document.getElementById('cartPanel').classList.contains('is-open');
+  const byoOpen = document.getElementById('bentoPanel').classList.contains('is-open');
+  document.body.style.overflow = (cartOpen || byoOpen) ? 'hidden' : '';
+  pickCustomState = null;
 }
 
 let lastBentoItemTotal = 0;
@@ -2372,9 +2886,12 @@ function cartNutritionTotals(){
 }
 
 function renderCartBadge(){
-  document.getElementById('cartBadge').textContent = cartItemCount();
+  const count = cartItemCount();
+  document.getElementById('cartBadge').textContent = count;
   const barBadge = document.getElementById('bentoBarCartBadge');
-  if(barBadge) barBadge.textContent = cartItemCount();
+  if(barBadge) barBadge.textContent = count;
+  const floatBadge = document.getElementById('picksFloatCartBadge');
+  if(floatBadge) floatBadge.textContent = count;
 }
 
 function snapshotCustomBento(){
@@ -2415,25 +2932,16 @@ function addCustomBentoToCart(){
   openCartPanel();
 }
 
-function addPickToCart(pickId){
+function addPickToCart(pickId, qty){
   const pick = PICKS.find(p=>p.id===pickId);
   if(!pick) return;
-  const q = pickQty[pickId] || 1;
   const existing = cart.find(c=>c.type==='pick' && c.pickId===pickId);
-  if(existing){ existing.qty += q; }
+  if(existing){ existing.qty += qty; }
   else{
-    cart.push({cartId:'p'+Date.now()+Math.floor(Math.random()*1000), type:'pick', pickId:pick.id, label:pick.name, qty:q, expanded:false});
+    cart.push({cartId:'p'+Date.now()+Math.floor(Math.random()*1000), type:'pick', pickId:pick.id, label:pick.name, qty, expanded:false});
   }
-  pickQty[pickId] = 1;
-  renderPicks();
   renderCartBadge();
   showToast(tr_('toast_added'));
-
-  const card = document.querySelector(`[data-pick-add="${pickId}"]`)?.closest('.pick-card');
-  if(card){
-    card.classList.add('is-added');
-    card.addEventListener('animationend', () => card.classList.remove('is-added'), {once:true});
-  }
 }
 
 function adjustCartLineQty(cartId, dir){
@@ -2544,26 +3052,38 @@ function goToCartStep(step){ cartStep = step; renderCartPanel(); }
 
 function cartLineTemplate(line){
   const isPick = line.type==='pick';
+  const isPickCustom = line.type==='pick-custom';
+  const isEditablePick = isPick || isPickCustom;
   const displayLabel = isPick
     ? (PICKS.find(p=>p.id===line.pickId) ? pickName(PICKS.find(p=>p.id===line.pickId)) : line.label)
+    : isPickCustom ? line.label
     : tr_('custom_bento_label');
-  const sub = isPick ? tr_('chefs_pick_label') : `${line.lines.length} ${tr_(line.lines.length>1?'ingredient_plural':'ingredient_singular')}`;
+  const sub = isPick ? tr_('chefs_pick_label')
+    : isPickCustom ? tr_('chefs_pick_customized_label')
+    : `${line.lines.length} ${tr_(line.lines.length>1?'ingredient_plural':'ingredient_singular')}`;
   const n = lineNutrition(line);
+  // Chef's Pick lines (plain or customized) open the full detail popup on
+  // click instead of an inline breakdown — only build-your-own bentos still
+  // use the old show/hide toggle.
+  const canExpand = line.type==='custom';
   let breakdown = '';
-  if(!isPick && line.expanded){
+  if(canExpand && line.expanded){
     breakdown = `<div class="cart-line-breakdown">${line.lines.map(l=>{
       const found = findItem(l.id);
       const dName = found ? itemName(found.item) : l.name;
       return `<div><span>${dName} x${l.qty}</span><span>${l.kcal*l.qty} kcal</span></div>`;
     }).join('')}</div>`;
   }
-  const toggle = isPick ? '' : `<span class="cart-line-toggle" data-toggle-line="${line.cartId}">${line.expanded?tr_('cart_hide_ing'):tr_('cart_show_ing')}</span>`;
-  return `<div class="cart-line">
+  const toggle = canExpand ? `<span class="cart-line-toggle" data-toggle-line="${line.cartId}">${line.expanded?tr_('cart_hide_ing'):tr_('cart_show_ing')}</span>` : '';
+  const editHint = isEditablePick ? `<span class="cart-line-toggle">${tr_('cart_edit_details')}</span>` : '';
+  const editAttrs = isEditablePick ? ` data-cart-edit-pick="${line.pickId}" data-cart-edit-cartid="${line.cartId}"` : '';
+  return `<div class="cart-line${isEditablePick?' is-editable':''}"${editAttrs}>
     <span class="cart-line-thumb"><img src="${LOGO_MARK_SRC}" alt="${displayLabel}"></span>
     <div class="cart-line-main">
       <div class="cart-line-label">${displayLabel}</div>
       <div class="cart-line-sub">${sub} · ${Math.round(n.kcal)} kcal</div>
       ${toggle}
+      ${editHint}
       ${breakdown}
     </div>
     <div class="cart-line-right">
@@ -2755,6 +3275,13 @@ function snapshotCartLines(){
       const label = pick ? pickName(pick) : line.label;
       return {type: line.type, label, qty: line.qty, nutrition: lineNutrition(line), ingredients: null};
     }
+    if(line.type==='pick-custom'){
+      const ingredients = line.changes.map(c=>{
+        if(c.kind==='swap') return {name: `${c.toName} (${tr_('cart_swap_replaces')} ${c.fromName})`, qty:1, cat:c.cat};
+        return {name: c.name, qty: c.qty, cat: c.cat};
+      });
+      return {type: line.type, label: line.label, qty: line.qty, nutrition: lineNutrition(line), ingredients};
+    }
     const ingredients = line.lines.map(l=>{
       const found = findItem(l.id);
       return {name: found ? itemName(found.item) : l.name, qty: l.qty, cat: found ? found.cat : l.cat};
@@ -2804,6 +3331,53 @@ function switchView(view){
   document.getElementById('byoView').style.display = view==='byo' ? '' : 'none';
   document.getElementById('picksView').style.display = view==='picks' ? '' : 'none';
   document.getElementById('bentoBar').style.display = view==='byo' ? '' : 'none';
+  // The picks carousels were first measured while this view was display:none
+  // (everything reads 0 in a hidden subtree), so their overflow/arrow state
+  // needs a fresh measurement now that real layout is available.
+  if(view==='picks'){
+    requestAnimationFrame(()=>{
+      document.querySelectorAll('.picks-carousel-wrap').forEach(updateCarouselArrows);
+    });
+    maybeShowPickHint();
+  }
+  updatePicksFloatCart();
+}
+
+// Chef's Picks has no floating "view bento" bar (that's the build-your-own
+// running total), so a quick way back to the cart only appears once the
+// customer has scrolled past the hero/toolbar — otherwise it'd just sit on
+// top of content that's already in view.
+function updatePicksFloatCart(){
+  const btn = document.getElementById('picksFloatCart');
+  if(!btn) return;
+  const inPicksView = document.getElementById('picksView').style.display !== 'none';
+  btn.classList.toggle('is-visible', inPicksView && window.scrollY > 220);
+}
+let picksFloatCartTicking = false;
+window.addEventListener('scroll', ()=>{
+  if(picksFloatCartTicking) return;
+  picksFloatCartTicking = true;
+  requestAnimationFrame(()=>{ updatePicksFloatCart(); picksFloatCartTicking = false; });
+}, {passive:true});
+
+// One-time nudge toward the first bento a customer sees on Chef's Picks,
+// since the card's own add-to-cart button is gone now (see popup) — without
+// this, nothing on the card itself signals that tapping it does anything.
+let pickHintShown = false;
+function maybeShowPickHint(){
+  if(pickHintShown) return;
+  const firstCard = document.querySelector('#picksGrid .pick-card');
+  if(!firstCard) return;
+  pickHintShown = true;
+  firstCard.classList.add('is-spotlight');
+  const hint = document.createElement('span');
+  hint.className = 'pick-card-hint';
+  hint.textContent = tr_('pick_card_hint');
+  firstCard.appendChild(hint);
+  setTimeout(()=>{
+    firstCard.classList.remove('is-spotlight');
+    hint.remove();
+  }, 10000);
 }
 
 /* ---------- events ---------- */
@@ -2814,6 +3388,18 @@ document.addEventListener('click', e=>{
     adjustItemQty(ingStepBtn.getAttribute('data-ing-cat'), ingStepBtn.getAttribute('data-ing-qty'), dir);
     return;
   }
+  const addonBtn = e.target.closest('[data-addon-id]');
+  if(addonBtn){
+    adjustPickAddon(addonBtn.getAttribute('data-addon-id'), parseInt(addonBtn.getAttribute('data-dir'),10));
+    return;
+  }
+  const pmQtyBtn = e.target.closest('[data-pickmodal-qty-dir]');
+  if(pmQtyBtn && pickCustomState){
+    pickCustomState.qty = Math.max(1, pickCustomState.qty + parseInt(pmQtyBtn.getAttribute('data-pickmodal-qty-dir'),10));
+    document.getElementById('pickModalQtyCount').textContent = pickCustomState.qty;
+    return;
+  }
+  if(e.target.id==='pickModalAddBtn'){ addCustomizedPickToCart(); return; }
   const selectBtn = e.target.closest('[data-select]');
   if(selectBtn){
     incrementItem(selectBtn.getAttribute('data-select-cat'), selectBtn.getAttribute('data-select'));
@@ -2828,10 +3414,6 @@ document.addEventListener('click', e=>{
     const dir = parseInt(stepBtn.getAttribute('data-dir'),10);
     if(stepBtn.hasAttribute('data-cartline')){
       adjustCartLineQty(stepBtn.getAttribute('data-cartline'), dir);
-    } else if(stepBtn.hasAttribute('data-pick')){
-      const pid = stepBtn.getAttribute('data-pick');
-      pickQty[pid] = Math.max(1, (pickQty[pid]||1) + dir);
-      renderPicks();
     }
     return;
   }
@@ -2852,13 +3434,26 @@ document.addEventListener('click', e=>{
     return;
   }
 
-  const pickAddBtn = e.target.closest('[data-pick-add]');
-  if(pickAddBtn){ addPickToCart(pickAddBtn.getAttribute('data-pick-add')); return; }
+  const groupChip = e.target.closest('[data-group-filter]');
+  if(groupChip){ pickGroupFilter = groupChip.getAttribute('data-group-filter'); renderPicks(); return; }
+
+  const carPrev = e.target.closest('[data-carousel-prev]');
+  if(carPrev){ scrollCarousel(carPrev.getAttribute('data-carousel-prev'), -1); return; }
+  const carNext = e.target.closest('[data-carousel-next]');
+  if(carNext){ scrollCarousel(carNext.getAttribute('data-carousel-next'), 1); return; }
+
+  // Clicking anywhere on a pick card opens its detail popup — this runs after
+  // the stepper/add-to-cart checks above, which already return early, so
+  // clicks on those controls never reach here.
+  const pickCardEl = e.target.closest('.pick-card');
+  if(pickCardEl){ openPickDetail(pickCardEl.getAttribute('data-pick-id')); return; }
+
+  if(e.target.id==='pickModalClose' || e.target.id==='pickModalOverlay'){ closePickDetail(); return; }
 
   const modePill = e.target.closest('.mode-pill');
   if(modePill){ switchView(modePill.getAttribute('data-view')); return; }
 
-  if(e.target.id==='cartBtn' || e.target.closest('#cartBtn') || e.target.id==='bentoBarCartBtn' || e.target.closest('#bentoBarCartBtn')){ openCartPanel(); return; }
+  if(e.target.id==='cartBtn' || e.target.closest('#cartBtn') || e.target.id==='bentoBarCartBtn' || e.target.closest('#bentoBarCartBtn') || e.target.id==='picksFloatCart' || e.target.closest('#picksFloatCart')){ openCartPanel(); return; }
   if(e.target.id==='cartPanelClose' || e.target.id==='cartOverlay'){ closeCartPanel(); return; }
 
   const lineToggle = e.target.closest('[data-toggle-line]');
@@ -2870,6 +3465,15 @@ document.addEventListener('click', e=>{
 
   const removeBtn = e.target.closest('[data-remove]');
   if(removeBtn){ removeCartLine(removeBtn.getAttribute('data-remove')); return; }
+
+  // Clicking a Chef's Pick cart line (plain or already customized) opens the
+  // same detail popup used to build one, pre-filled with its current swaps/
+  // add-ons so it can be reviewed or edited further.
+  const cartEditPick = e.target.closest('.cart-line[data-cart-edit-pick]');
+  if(cartEditPick){
+    openPickDetail(cartEditPick.getAttribute('data-cart-edit-pick'), cartEditPick.getAttribute('data-cart-edit-cartid'));
+    return;
+  }
 
   if(e.target.id==='calPrev'){ calendarViewDate.setMonth(calendarViewDate.getMonth()-1); renderCartPanel(); return; }
   if(e.target.id==='calNext'){ calendarViewDate.setMonth(calendarViewDate.getMonth()+1); renderCartPanel(); return; }
@@ -2909,11 +3513,31 @@ document.addEventListener('focusout', e=>{
 });
 
 document.addEventListener('keydown', e=>{
-  if(e.key==='Escape'){ closePanel(); closeCartPanel(); }
+  if(e.key==='Escape'){ closePanel(); closeCartPanel(); closePickDetail(); }
 });
 
 document.addEventListener('change', e=>{
-  if(e.target && e.target.id==='langSelect'){ setLanguage(e.target.value); }
+  if(e.target && e.target.id==='langSelect'){ setLanguage(e.target.value); return; }
+  const swapSelect = e.target.closest && e.target.closest('.pick-swap-select');
+  if(swapSelect && pickCustomState){
+    updatePickSwap(swapSelect.getAttribute('data-swap-original'), swapSelect.value);
+  }
+});
+
+document.addEventListener('input', e=>{
+  if(e.target && e.target.id==='picksSearch'){ pickSearchQuery = e.target.value; renderPicks(); }
+});
+
+// Scroll events don't bubble, but a capturing listener on document still sees
+// them fire on their way down to the target — used here to keep each
+// carousel's prev/next arrows in sync with its scroll position.
+document.addEventListener('scroll', e=>{
+  const track = e.target && e.target.closest && e.target.closest('.picks-grid');
+  if(track){ const wrap = track.closest('.picks-carousel-wrap'); if(wrap) updateCarouselArrows(wrap); }
+}, true);
+
+window.addEventListener('resize', ()=>{
+  document.querySelectorAll('.picks-carousel-wrap').forEach(updateCarouselArrows);
 });
 
 /* ---------- messenger: try opening the native app before falling back to web ---------- */
@@ -2967,7 +3591,6 @@ function loadMenuAndInit(){
       DATA = {protein:menu.protein||[], carbs:menu.carbs||[], side:menu.side||[], sauce:menu.sauce||[]};
       PICKS = menu.picks || [];
       initQtyState();
-      initPickQtyState();
       renderAll();
       renderPicks();
       renderCartBadge();
@@ -3029,7 +3652,6 @@ function applyMenuUpdate(menu){
   PICKS = menu.picks || [];
 
   const droppedNames = mergeQtyState(oldNameOf);
-  mergePickQtyState();
 
   renderAll();
   renderPicks();
