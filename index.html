@@ -689,6 +689,24 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .cal-day.is-selected{background:var(--rk-primary);color:var(--rk-white);}
 .cal-day.is-disabled{color:var(--rk-line);cursor:default;}
 .autofill-note{font-size:12px;color:var(--rk-matcha);margin:-6px 0 14px;}
+.ck-distance{font-size:12px;margin-top:6px;min-height:1.4em;}
+.ck-distance .ck-distance-loading{color:var(--rk-ink-soft);}
+.ck-distance .ck-distance-ok{color:var(--rk-ink);}
+.ck-distance .ck-distance-ok b{font-family:var(--font-mono);color:var(--rk-primary);}
+
+.ck-address-wrap{position:relative;}
+.ck-address-suggestions{
+  position:absolute;left:0;right:0;top:100%;z-index:5;margin-top:4px;
+  background:var(--rk-white);border:1px solid var(--rk-line);border-radius:var(--radius-s);
+  box-shadow:0 4px 16px rgba(17,17,17,.1);overflow:hidden;display:none;
+}
+.ck-address-suggestions.is-open{display:block;}
+.ck-address-suggestion{
+  display:block;width:100%;text-align:left;font:inherit;font-size:13px;padding:10px 12px;
+  border:none;background:none;cursor:pointer;color:var(--rk-ink);border-bottom:1px solid var(--rk-line);
+}
+.ck-address-suggestion:last-child{border-bottom:none;}
+.ck-address-suggestion:hover{background:var(--rk-paper-deep);}
 
 .checkout-note{font-size:13px;color:var(--rk-ink-soft);background:var(--rk-paper-deep);border-radius:12px;padding:12px 14px;margin-bottom:16px;line-height:1.5;}
 .order-followup-note{font-size:12.5px;color:var(--rk-ink-soft);background:var(--rk-paper-deep);border-radius:10px;padding:10px 12px;margin-bottom:14px;line-height:1.5;}
@@ -1207,10 +1225,12 @@ const I18N = {
     "continue_details": "Continue to your details",
     "label_address": "Delivery address",
     "address_placeholder": "Street, ward, district, city",
+    "distance_checking": "Checking distance…",
+    "distance_label": "Distance from Rokusho",
+    "distance_duration_prefix": "about",
     "label_email": "Email (optional)",
     "email_placeholder": "you@email.com",
     "autofill_note": "We found your saved details — feel free to edit them.",
-    "title_mx": "Mx",
     "order_delivery": "Delivery",
     "order_address": "Address",
     "order_confirmed_title": "Request confirmed",
@@ -1332,10 +1352,12 @@ const I18N = {
   "continue_details": "Tiếp tục",
   "label_address": "Địa chỉ nhận hàng",
   "address_placeholder": "Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố",
+  "distance_checking": "Đang tính khoảng cách…",
+  "distance_label": "Khoảng cách tới Rokusho",
+  "distance_duration_prefix": "khoảng",
   "label_email": "Email (không bắt buộc)",
   "email_placeholder": "email@example.com",
   "autofill_note": "Thông tin của bạn đã được điền sẵn. Bạn có thể chỉnh sửa nếu cần.",
-  "title_mx": "Khác",
   "order_delivery": "Giao hàng",
   "order_address": "Địa chỉ",
 
@@ -1487,10 +1509,12 @@ const I18N = {
     "continue_details": "お客様情報の入力へ",
     "label_address": "配達先住所",
     "address_placeholder": "番地・町名・区・市",
+    "distance_checking": "距離を計算中…",
+    "distance_label": "Rokushoからの距離",
+    "distance_duration_prefix": "約",
     "label_email": "メールアドレス（任意）",
     "email_placeholder": "you@email.com",
     "autofill_note": "保存済みの情報が見つかりました — 必要に応じて編集できます。",
-    "title_mx": "その他",
     "order_delivery": "お届け",
     "order_address": "住所",
     "order_confirmed_title": "リクエストを確定しました",
@@ -1611,10 +1635,12 @@ const I18N = {
     "continue_details": "상세 정보 입력으로 이동",
     "label_address": "배달 주소",
     "address_placeholder": "도로명, 동, 구, 시",
+    "distance_checking": "거리 계산 중…",
+    "distance_label": "Rokusho로부터의 거리",
+    "distance_duration_prefix": "약",
     "label_email": "이메일 (선택 사항)",
     "email_placeholder": "you@email.com",
     "autofill_note": "저장된 정보를 찾았습니다 — 필요하면 자유롭게 수정하세요.",
-    "title_mx": "기타",
     "order_delivery": "배달",
     "order_address": "주소",
     "order_confirmed_title": "요청이 확정되었습니다",
@@ -1735,10 +1761,12 @@ const I18N = {
     "continue_details": "继续填写详细信息",
     "label_address": "送达地址",
     "address_placeholder": "街道、坊/村、区、城市",
+    "distance_checking": "正在计算距离…",
+    "distance_label": "距离 Rokusho",
+    "distance_duration_prefix": "约",
     "label_email": "电子邮箱（选填）",
     "email_placeholder": "you@email.com",
     "autofill_note": "已找到您保存的信息 —— 可随时修改。",
-    "title_mx": "其他",
     "order_delivery": "配送",
     "order_address": "地址",
     "order_confirmed_title": "请求已确认",
@@ -3229,7 +3257,6 @@ function renderCartContact(body, footer){
         <select id="ckTitle">
           <option value="Mr" ${checkoutData.title==='Mr'?'selected':''}>${tr_('title_mr')}</option>
           <option value="Ms" ${checkoutData.title==='Ms'?'selected':''}>${tr_('title_ms')}</option>
-          <option value="Mx" ${checkoutData.title==='Mx'?'selected':''}>${tr_('title_mx')}</option>
         </select>
       </div>
       <div class="form-field" style="margin-bottom:0">
@@ -3239,7 +3266,11 @@ function renderCartContact(body, footer){
     </div>
     <div class="form-field">
       <label>${tr_('label_address')}</label>
-      <textarea id="ckAddress" rows="2" placeholder="${tr_('address_placeholder')}">${checkoutData.address}</textarea>
+      <div class="ck-address-wrap">
+        <textarea id="ckAddress" rows="2" placeholder="${tr_('address_placeholder')}" autocomplete="off">${checkoutData.address}</textarea>
+        <div class="ck-address-suggestions" id="ckAddressSuggestions"></div>
+      </div>
+      <div class="ck-distance" id="ckDistance"></div>
     </div>
     <div class="form-field">
       <label>${tr_('label_email')}</label>
@@ -3254,6 +3285,102 @@ function renderCartContact(body, footer){
       <button class="btn btn-ghost" id="cartBackBtn" style="flex:1">${tr_('back_btn')}</button>
       <button class="btn btn-solid" id="cartConfirmBtn" style="flex:2">${tr_('confirm_request')}</button>
     </div>`;
+  if(checkoutData.address) scheduleDistanceLookup(checkoutData.address);
+}
+
+function escHtml(s){
+  return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// Address suggestions as the customer types their delivery address, via
+// the same Apps Script deployment (?action=autocomplete, backed by Goong's
+// Place Autocomplete). Shorter debounce than the distance lookup below
+// since this needs to feel responsive while typing, not just accurate once
+// typing stops. Suggestions are kept in a plain array (not baked into the
+// DOM as data attributes) so nothing needs HTML-attribute escaping to wire
+// a click back to the right one — just an index.
+let addressSuggestTimer = null;
+let addressSuggestSeq = 0;
+let currentAddressSuggestions = [];
+
+function scheduleAddressSuggestions(input){
+  clearTimeout(addressSuggestTimer);
+  const trimmed = (input||'').trim();
+  if(trimmed.length < 4){ renderAddressSuggestions([]); return; }
+  addressSuggestTimer = setTimeout(()=>fetchAddressSuggestions(trimmed), 300);
+}
+
+function fetchAddressSuggestions(input){
+  const seq = ++addressSuggestSeq;
+  fetch(MENU_API_URL + '?action=autocomplete&input=' + encodeURIComponent(input))
+    .then(res=>res.json())
+    .then(data=>{
+      if(seq !== addressSuggestSeq) return; // superseded by a newer lookup
+      renderAddressSuggestions(data && data.ok ? data.predictions : []);
+    })
+    .catch(()=>{ if(seq===addressSuggestSeq) renderAddressSuggestions([]); });
+}
+
+function renderAddressSuggestions(predictions){
+  currentAddressSuggestions = predictions || [];
+  const box = document.getElementById('ckAddressSuggestions');
+  if(!box) return;
+  if(!currentAddressSuggestions.length){
+    box.innerHTML = '';
+    box.classList.remove('is-open');
+    return;
+  }
+  box.innerHTML = currentAddressSuggestions.map((p,i)=>
+    `<button type="button" class="ck-address-suggestion" data-suggest-index="${i}">${escHtml(p.description)}</button>`
+  ).join('');
+  box.classList.add('is-open');
+}
+
+function selectAddressSuggestion(index){
+  const picked = currentAddressSuggestions[index];
+  if(!picked) return;
+  checkoutData.address = picked.description;
+  const field = document.getElementById('ckAddress');
+  if(field) field.value = picked.description;
+  renderAddressSuggestions([]);
+  scheduleDistanceLookup(picked.description);
+}
+
+// Delivery-distance lookup — calls the same Apps Script deployment as the
+// menu API (BentoMenuAPI.gs, ?action=distance, backed by Goong's Distance
+// Matrix API) so the map provider's API key stays server-side. Debounced on
+// typing, and re-checked whenever the address is
+// set programmatically (customer autofill). Best-effort only: any failure
+// (bad address, API not configured yet, network hiccup) just clears the
+// note rather than blocking checkout — driving distance is a nice-to-have,
+// not something the order can be refused over.
+let distanceLookupTimer = null;
+let distanceLookupSeq = 0;
+function scheduleDistanceLookup(address){
+  clearTimeout(distanceLookupTimer);
+  const trimmed = (address||'').trim();
+  if(trimmed.length < 8){ renderDeliveryDistance(null); return; }
+  distanceLookupTimer = setTimeout(()=>lookupDeliveryDistance(trimmed), 900);
+}
+
+function lookupDeliveryDistance(address){
+  const seq = ++distanceLookupSeq;
+  renderDeliveryDistance({loading:true});
+  fetch(MENU_API_URL + '?action=distance&address=' + encodeURIComponent(address))
+    .then(res=>res.json())
+    .then(data=>{
+      if(seq !== distanceLookupSeq) return; // superseded by a newer lookup
+      renderDeliveryDistance(data && data.ok ? {distanceText:data.distanceText, durationText:data.durationText} : {error:true});
+    })
+    .catch(()=>{ if(seq===distanceLookupSeq) renderDeliveryDistance({error:true}); });
+}
+
+function renderDeliveryDistance(state){
+  const el = document.getElementById('ckDistance');
+  if(!el) return;
+  if(!state || state.error){ el.innerHTML = ''; return; }
+  if(state.loading){ el.innerHTML = `<span class="ck-distance-loading">${tr_('distance_checking')}</span>`; return; }
+  el.innerHTML = `<span class="ck-distance-ok">📍 ${tr_('distance_label')}: <b>${state.distanceText}</b> · ${tr_('distance_duration_prefix')} ${state.durationText}</span>`;
 }
 
 function lookupCustomer(phone){
@@ -3268,6 +3395,7 @@ function lookupCustomer(phone){
     if(document.getElementById('ckAddress')) document.getElementById('ckAddress').value = hit.address;
     if(document.getElementById('ckEmail')) document.getElementById('ckEmail').value = hit.email;
     if(note) note.style.display = 'block';
+    scheduleDistanceLookup(hit.address);
   } else if(note){
     note.style.display = 'none';
   }
@@ -3277,7 +3405,7 @@ function renderCartDone(body, footer){
   document.getElementById('cartPanelTitle').textContent = tr_('order_confirmed_title');
   document.getElementById('cartStepLabel').textContent = '';
   if(!lastOrder){ body.innerHTML=''; footer.innerHTML=''; return; }
-  const doneTitleKey = {Mr:'title_mr', Ms:'title_ms', Mx:'title_mx'}[lastOrder.contact.title];
+  const doneTitleKey = {Mr:'title_mr', Ms:'title_ms'}[lastOrder.contact.title];
   const doneDisplayTitle = doneTitleKey ? tr_(doneTitleKey) : lastOrder.contact.title;
   const doneGreetName = lastOrder.contact.name ? `${doneDisplayTitle} ${lastOrder.contact.name}` : tr_('order_default_name');
   body.innerHTML = `<div class="order-done">
@@ -3450,6 +3578,16 @@ function maybeShowPickHint(){
 
 /* ---------- events ---------- */
 document.addEventListener('click', e=>{
+  // Close the address-suggestion dropdown on any click outside it, without
+  // otherwise interrupting whatever else this click is meant to do.
+  if(currentAddressSuggestions.length && !e.target.closest('.ck-address-wrap')){
+    renderAddressSuggestions([]);
+  }
+  const addressSuggestBtn = e.target.closest('.ck-address-suggestion');
+  if(addressSuggestBtn){
+    selectAddressSuggestion(parseInt(addressSuggestBtn.getAttribute('data-suggest-index'),10));
+    return;
+  }
   const ingStepBtn = e.target.closest('[data-ing-qty]');
   if(ingStepBtn){
     const dir = parseInt(ingStepBtn.getAttribute('data-dir'),10);
@@ -3594,6 +3732,7 @@ document.addEventListener('change', e=>{
 
 document.addEventListener('input', e=>{
   if(e.target && e.target.id==='picksSearch'){ pickSearchQuery = e.target.value; renderPicks(); }
+  if(e.target && e.target.id==='ckAddress'){ scheduleDistanceLookup(e.target.value); scheduleAddressSuggestions(e.target.value); }
 });
 
 // Scroll events don't bubble, but a capturing listener on document still sees
