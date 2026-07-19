@@ -279,6 +279,7 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 .ing-macro b{font-size:12px;font-weight:600;color:var(--rk-ink);line-height:1.3;}
 .ing-macro small{font-size:9.5px;color:var(--rk-ink-soft);text-transform:uppercase;letter-spacing:.03em;}
 .stepper{display:flex;align-items:center;gap:10px;margin-top:2px;}
+.ing-stepper{justify-content:center;padding-top:10px;border-top:1px solid var(--rk-line);}
 .step-btn{
   width:26px;height:26px;border-radius:50%;border:1px solid var(--rk-line);background:var(--rk-white);
   font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center;color:var(--rk-ink);
@@ -288,8 +289,6 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 .step-btn[disabled]{opacity:.3;cursor:default;}
 .step-btn[disabled]:hover{border-color:var(--rk-line);color:var(--rk-ink);}
 .step-count{min-width:16px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums;}
-
-.line-remove{font-size:11px;color:var(--rk-ink-soft);text-decoration:underline;background:none;border:none;padding:0;cursor:pointer;font-family:inherit;flex:none;}
 
 /* ---------- floating bento bar (bento button + live totals + quick cart) ---------- */
 .bento-bar{
@@ -1949,18 +1948,28 @@ function categoryCount(cat){
 // Soba is only served with mentsuyu (cold noodle dipping sauce) — picking soba
 // locks the sauce step to it, and switching sauce away is blocked while soba is selected.
 const SOBA_SAUCE_LOCK = 'mentsuyu';
-function selectItem(cat, id){
-  if(cat==='sauce' && qty['soba']>0 && id!==SOBA_SAUCE_LOCK){
+function setItemQty(cat, id, newQty){
+  newQty = Math.max(0, newQty);
+  if(cat==='sauce' && qty['soba']>0 && id!==SOBA_SAUCE_LOCK && newQty>0){
     showToast(tr_('toast_soba_sauce_lock'));
     return;
   }
   const wasSelected = qty[id] > 0;
-  qty[id] = wasSelected ? 0 : 1;
-  if(cat==='carbs' && id==='soba' && !wasSelected){
+  qty[id] = newQty;
+  if(cat==='carbs' && id==='soba' && !wasSelected && newQty>0){
     DATA.sauce.forEach(it=>{ qty[it.id] = 0; });
     qty[SOBA_SAUCE_LOCK] = 1;
   }
   renderAll();
+}
+
+// Tapping an ingredient card adds one more of it each time — the +/- stepper
+// that appears once qty>0 is just a faster way to do the same increment/decrement.
+function incrementItem(cat, id){
+  setItemQty(cat, id, (qty[id]||0) + 1);
+}
+function adjustItemQty(cat, id, dir){
+  setItemQty(cat, id, (qty[id]||0) + dir);
 }
 
 let toastTimer=null;
@@ -1974,11 +1983,17 @@ function showToast(msg){
 
 /* ---------- rendering ---------- */
 function cardTemplate(item,cat){
-  const selected = qty[item.id] > 0;
+  const q = qty[item.id]||0;
+  const selected = q > 0;
   const name = itemName(item);
+  const stepperHtml = selected ? `<span class="stepper ing-stepper">
+      <button type="button" class="step-btn minus" data-ing-qty="${item.id}" data-ing-cat="${cat}" data-dir="-1" aria-label="Decrease quantity">–</button>
+      <span class="step-count">${q}</span>
+      <button type="button" class="step-btn plus" data-ing-qty="${item.id}" data-ing-cat="${cat}" data-dir="1" aria-label="Increase quantity">+</button>
+    </span>` : '';
   return `<div class="ing-card${selected?' has-qty':''}" data-cat="${cat}" data-id="${item.id}" data-select="${item.id}" data-select-cat="${cat}">
     <span class="ing-media">
-      <span class="qty-flag">✓</span>
+      <span class="qty-flag">${q}</span>
       <span class="ing-illustration" role="img" aria-label="${name}">${iconSvg(item.icon)}</span>
     </span>
     <span class="ing-name">${name}</span>
@@ -1988,6 +2003,7 @@ function cardTemplate(item,cat){
       <span class="ing-macro"><b>${item.carbs}g</b><small>${tr_('label_carbs')}</small></span>
       <span class="ing-macro"><b>${item.fat}g</b><small>${tr_('label_fat')}</small></span>
     </span>
+    ${stepperHtml}
   </div>`;
 }
 
@@ -2074,13 +2090,18 @@ function renderStats(){
 
 function lineRow(item, cat){
   const pastel = CAT_PASTEL[cat];
+  const q = qty[item.id];
   return `<div class="line-row" data-cat="${cat}">
     <span class="line-badge" style="background:${pastel.bg};color:${pastel.text}">${iconSvg(item.icon)}</span>
     <span class="line-info">
       <span class="line-name">${itemName(item)}</span>
-      <span class="line-kcal">${item.kcal} kcal</span>
+      <span class="line-kcal">${item.kcal*q} kcal${q>1?` (${item.kcal} × ${q})`:''}</span>
     </span>
-    <button type="button" class="line-remove" data-select="${item.id}" data-select-cat="${cat}">${tr_('cart_remove')}</button>
+    <span class="stepper line-stepper">
+      <button type="button" class="step-btn minus" data-ing-qty="${item.id}" data-ing-cat="${cat}" data-dir="-1" aria-label="Decrease quantity">–</button>
+      <span class="step-count">${q}</span>
+      <button type="button" class="step-btn plus" data-ing-qty="${item.id}" data-ing-cat="${cat}" data-dir="1" aria-label="Increase quantity">+</button>
+    </span>
   </div>`;
 }
 
@@ -2787,9 +2808,15 @@ function switchView(view){
 
 /* ---------- events ---------- */
 document.addEventListener('click', e=>{
+  const ingStepBtn = e.target.closest('[data-ing-qty]');
+  if(ingStepBtn){
+    const dir = parseInt(ingStepBtn.getAttribute('data-dir'),10);
+    adjustItemQty(ingStepBtn.getAttribute('data-ing-cat'), ingStepBtn.getAttribute('data-ing-qty'), dir);
+    return;
+  }
   const selectBtn = e.target.closest('[data-select]');
   if(selectBtn){
-    selectItem(selectBtn.getAttribute('data-select-cat'), selectBtn.getAttribute('data-select'));
+    incrementItem(selectBtn.getAttribute('data-select-cat'), selectBtn.getAttribute('data-select'));
     return;
   }
   if(e.target.closest('[data-retry-menu]')){
