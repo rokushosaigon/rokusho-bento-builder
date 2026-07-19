@@ -192,6 +192,7 @@ a{color:inherit;text-decoration:none;}
 .nav-stat{display:flex;flex-direction:column;align-items:flex-end;line-height:1.25;}
 .nav-stat b{color:var(--rk-ink);font-family:var(--font-mono);font-size:14px;font-weight:600;}
 .nav-stat small{font-size:9.5px;color:var(--rk-ink-soft);text-transform:uppercase;letter-spacing:.03em;}
+.nav-stat-price b{color:var(--rk-primary);}
 
 /* on narrow phones the running totals move to their own row instead of hiding —
    people need to see the full macro tally at every step, not just on desktop */
@@ -274,6 +275,7 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 }
 .ing-name{font-size:13px;font-weight:600;line-height:1.3;min-height:34px;display:flex;align-items:center;}
 .ing-kcal{font-size:11.5px;color:var(--rk-ink-soft);font-variant-numeric:tabular-nums;font-family:var(--font-mono);}
+.ing-price{font-size:13.5px;font-weight:700;color:var(--rk-primary);font-variant-numeric:tabular-nums;font-family:var(--font-mono);}
 .ing-macros{display:flex;gap:8px;padding-top:8px;border-top:1px solid var(--rk-line);}
 .ing-macro{display:flex;flex-direction:column;flex:1;min-width:0;font-family:var(--font-mono);}
 .ing-macro b{font-size:12px;font-weight:600;color:var(--rk-ink);line-height:1.3;}
@@ -395,6 +397,7 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 .line-row[data-cat="sauce"] .line-badge{background:var(--grad-sauce);}
 .line-info{flex:1;min-width:0;}
 .line-name{font-size:13.5px;font-weight:600;line-height:1.3;}
+.line-price{font-size:12.5px;font-weight:700;color:var(--rk-primary);font-family:var(--font-mono);}
 .line-kcal{font-size:11.5px;color:var(--rk-ink-soft);}
 .line-stepper{display:flex;align-items:center;gap:8px;flex:none;}
 .panel-empty{font-size:14px;color:var(--rk-ink-soft);padding:30px 0;text-align:center;}
@@ -402,6 +405,11 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 .totals-grid .stat-box{background:var(--rk-white);border:1px solid var(--rk-line);border-radius:var(--radius-s);padding:10px 6px;text-align:center;}
 .totals-grid .stat-box b{display:block;font-family:var(--font-mono);font-size:17px;font-weight:600;}
 .totals-grid .stat-box span{font-size:10.5px;color:var(--rk-ink-soft);}
+.panel-price-total{
+  display:flex;align-items:center;justify-content:space-between;background:var(--rk-primary-pale);
+  border-radius:var(--radius-s);padding:12px 14px;margin:14px 0 4px;font-size:14px;font-weight:600;color:var(--rk-ink);
+}
+.panel-price-total b{font-family:var(--font-mono);font-size:19px;color:var(--rk-primary);}
 .panel-actions{padding:18px 24px 24px;border-top:1px solid var(--rk-line);display:flex;gap:10px;flex:none;}
 .btn{
   flex:1;border-radius:var(--radius-s);padding:13px 16px;font-size:14px;font-weight:600;border:1px solid transparent;
@@ -507,7 +515,8 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .cart-line-breakdown{margin-top:8px;padding-top:8px;border-top:1px dashed var(--rk-line);font-size:12px;color:var(--rk-ink-soft);}
 .cart-line-breakdown div{display:flex;justify-content:space-between;padding:2px 0;}
 .cart-line-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex:none;}
-.cart-line-kcal{font-size:13.5px;font-weight:700;font-family:var(--font-mono);}
+.cart-line-price{font-size:14.5px;font-weight:700;font-family:var(--font-mono);color:var(--rk-primary);margin-bottom:-4px;}
+.cart-line-kcal{font-size:11.5px;font-weight:600;color:var(--rk-ink-soft);font-family:var(--font-mono);}
 .cart-line-remove{font-size:11px;color:var(--rk-ink-soft);text-decoration:underline;background:none;border:none;padding:0;cursor:pointer;font-family:inherit;}
 .cart-summary-row{display:flex;justify-content:space-between;font-size:13.5px;padding:6px 0;color:var(--rk-ink-soft);}
 .cart-nutrition-title{font-size:12.5px;font-weight:600;color:var(--rk-ink-soft);text-transform:uppercase;letter-spacing:.04em;margin:16px 0 10px;}
@@ -596,6 +605,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   font-family:var(--font-display);font-size:18px;letter-spacing:-0.01em;line-height:1.25;
   min-height:2.5em;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
+.pick-price{font-size:17px;font-weight:700;color:var(--rk-primary);font-family:var(--font-mono);margin-top:-4px;}
 .pick-tagline{
   font-size:13px;color:var(--rk-ink-soft);line-height:1.4;
   min-height:4.2em;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
@@ -646,6 +656,9 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .pick-addon-row .stepper{flex:none;}
 .pick-modal-footer{flex:none;border-top:1px solid var(--rk-line);padding:16px 24px calc(16px + env(safe-area-inset-bottom));background:var(--rk-paper);}
 .pick-modal-footer .totals-grid{margin:0 0 4px;}
+.pick-price-total{display:flex;align-items:baseline;justify-content:center;gap:10px;margin-bottom:10px;}
+.pick-price-total b{font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--rk-primary);}
+.price-extra-note{font-size:12px;color:var(--rk-ink-soft);}
 .pick-extra-kcal{font-size:12px;color:var(--rk-primary);font-weight:600;text-align:center;margin-top:6px;}
 .pick-modal-footer-row{display:flex;align-items:center;gap:12px;margin-top:12px;}
 .pick-modal-footer-row .btn{flex:1;}
@@ -774,7 +787,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   }
   .fab-bento-icon{width:20px;height:20px;}
   .fab-text{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;}
-  .fab-text small{display:none;}
+  .fab-text small{display:inline;margin-left:6px;opacity:.85;}
   .bento-bar-cart{
     display:flex;align-items:center;justify-content:center;flex:none;position:relative;
     width:38px;height:38px;border-radius:var(--radius-s);
@@ -867,6 +880,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
       <a href="#sauce" class="step-tab" data-target="sauce"><span class="num">4</span><span data-i18n="tab_sauce">Sauce</span></a>
     </div>
     <div class="nav-stats">
+      <span class="nav-stat nav-stat-price"><b class="stat-price">0đ</b><small data-i18n="label_price">Price</small></span>
       <span class="nav-stat"><b class="stat-kcal">0</b><small data-i18n="label_kcal">Kcal</small></span>
       <span class="nav-stat"><b class="stat-protein">0</b><small data-i18n="label_protein">Protein</small></span>
       <span class="nav-stat"><b class="stat-carbs">0</b><small data-i18n="label_carbs">Carbs</small></span>
@@ -938,9 +952,10 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   <button class="bento-bar-main" id="bentoFab" type="button">
     <svg class="fab-bento-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11h18a9 9 0 0 1-18 0z"/><path d="M5 11c0-3 3-6 7-6s7 3 7 6"/></svg>
     <span class="fab-count" id="fabCount">0</span>
-    <span class="fab-text"><span data-i18n="fab_view_bento">View bento</span><small><span class="stat-kcal">0</span> kcal</small></span>
+    <span class="fab-text"><span data-i18n="fab_view_bento">View bento</span><small><span class="stat-price">0đ</span></small></span>
   </button>
   <div class="bento-bar-stats">
+    <span><b class="stat-price">0đ</b></span>
     <span><b class="stat-kcal">0</b> kcal · <b class="stat-protein">0</b>g <span data-i18n="label_protein">protein</span></span>
     <span><b class="stat-carbs">0</b>g <span data-i18n="label_carbs">carbs</span> · <b class="stat-fat">0</b>g <span data-i18n="label_fat">fat</span></span>
   </div>
@@ -1222,6 +1237,9 @@ const I18N = {
     "label_protein": "Protein",
     "label_carbs": "Carbs",
     "label_fat": "Fat",
+    "label_price": "Price",
+    "cart_subtotal_label": "Subtotal",
+    "cart_subtotal_note": "VAT included; delivery fee not included.",
     "panel_your_bento": "Your bento",
     "panel_clear": "Clear",
     "panel_download": "Download",
@@ -1354,6 +1372,9 @@ const I18N = {
   "label_protein": "Protein",
   "label_carbs": "Tinh bột",
   "label_fat": "Chất béo",
+  "label_price": "Giá",
+  "cart_subtotal_label": "Tạm tính",
+  "cart_subtotal_note": "Đã bao gồm VAT, chưa bao gồm phí vận chuyển.",
 
   "panel_your_bento": "Bento của bạn",
   "panel_clear": "Xóa tất cả",
@@ -1496,6 +1517,9 @@ const I18N = {
     "label_protein": "タンパク質",
     "label_carbs": "炭水化物",
     "label_fat": "脂質",
+    "label_price": "価格",
+    "cart_subtotal_label": "小計",
+    "cart_subtotal_note": "消費税込み、配送料は含まれていません。",
     "panel_your_bento": "あなたの弁当",
     "panel_clear": "クリア",
     "panel_download": "ダウンロード",
@@ -1617,6 +1641,9 @@ const I18N = {
     "label_protein": "단백질",
     "label_carbs": "탄수화물",
     "label_fat": "지방",
+    "label_price": "가격",
+    "cart_subtotal_label": "소계",
+    "cart_subtotal_note": "부가세 포함, 배송비는 별도입니다.",
     "panel_your_bento": "나의 벤토",
     "panel_clear": "초기화",
     "panel_download": "다운로드",
@@ -1738,6 +1765,9 @@ const I18N = {
     "label_protein": "蛋白质",
     "label_carbs": "碳水",
     "label_fat": "脂肪",
+    "label_price": "价格",
+    "cart_subtotal_label": "小计",
+    "cart_subtotal_note": "已含增值税，不含配送费。",
     "panel_your_bento": "我的便当",
     "panel_clear": "清空",
     "panel_download": "下载",
@@ -1975,6 +2005,19 @@ const WEEKDAY_INITIALS = {
 
 function tr_(key){ return (I18N[LANG] && I18N[LANG][key]) || I18N.en[key] || key; }
 function currentLocale(){ return LOCALE_MAP[LANG] || 'en-US'; }
+
+// Sheet prices are "exclude VAT & SVC" (see BentoMenuAPI.gs) — the customer-
+// facing price adds the in-house 5% service charge and 8% VAT on top.
+// Kept as a single multiplier applied only at display time, so every running
+// total sums raw base prices first and rounds once, at the end, like kcal.
+const PRICE_MULTIPLIER = 1.05 * 1.08;
+function fmtPrice(basePrice){
+  return Math.round((basePrice||0) * PRICE_MULTIPLIER).toLocaleString('vi-VN') + 'đ';
+}
+function fmtPriceDelta(basePriceDelta){
+  const v = Math.round((basePriceDelta||0) * PRICE_MULTIPLIER);
+  return (v>=0?'+':'') + v.toLocaleString('vi-VN') + 'đ';
+}
 function itemName(item){
   if(LANG==='en') return item.name;
   if(LANG==='vi') return item.name_vi || item.name;
@@ -2093,7 +2136,7 @@ function groupDesc(group){
 // portions (esp. sides) are scaled down from their standalone serving size,
 // so summing full-size ingredient values here would overstate nutrition.
 function pickNutrition(pick){
-  return {kcal:pick.kcal||0, protein:pick.protein||0, carbs:pick.carbs||0, fat:pick.fat||0};
+  return {kcal:pick.kcal||0, protein:pick.protein||0, carbs:pick.carbs||0, fat:pick.fat||0, price:pick.price||0};
 }
 
 /* ============================================================
@@ -2133,11 +2176,11 @@ function findItem(id){
 }
 
 function computeTotals(){
-  const t={kcal:0,protein:0,carbs:0,fat:0};
+  const t={kcal:0,protein:0,carbs:0,fat:0,price:0};
   CATS.forEach(cat=>{
     DATA[cat].forEach(it=>{
       const q = qty[it.id];
-      if(q>0){ t.kcal+=it.kcal*q; t.protein+=it.protein*q; t.carbs+=it.carbs*q; t.fat+=it.fat*q; }
+      if(q>0){ t.kcal+=it.kcal*q; t.protein+=it.protein*q; t.carbs+=it.carbs*q; t.fat+=it.fat*q; t.price+=(it.price||0)*q; }
     });
   });
   return t;
@@ -2199,6 +2242,7 @@ function cardTemplate(item,cat){
       <span class="ing-illustration" role="img" aria-label="${name}">${iconSvg(item.icon)}</span>
     </span>
     <span class="ing-name">${name}</span>
+    <span class="ing-price">${fmtPrice(item.price)}</span>
     <span class="ing-kcal">${item.kcal} kcal</span>
     <span class="ing-macros">
       <span class="ing-macro"><b>${item.protein}g</b><small>${tr_('label_protein')}</small></span>
@@ -2231,6 +2275,7 @@ function pickCardTemplate(pick){
     <div class="pick-media" style="background:${meta.pastelBg};color:${meta.color}">${iconsHtml}</div>
     <div class="pick-body">
       <div class="pick-name">${name}</div>
+      <div class="pick-price">${fmtPrice(nutri.price)}</div>
       <div class="pick-tagline">${pickTagline(pick)}</div>
       <div class="pick-nutrition">
         <span class="pick-macro"><b>${Math.round(nutri.kcal)}</b><small>${tr_('label_kcal')}</small></span>
@@ -2336,7 +2381,7 @@ function initPickCustomState(pick, editCartId){
 // pickNutrition above) — computed from full-size DATA ingredient values,
 // since that's the only per-ingredient nutrition data available.
 function pickCustomExtra(){
-  const delta = {kcal:0, protein:0, carbs:0, fat:0};
+  const delta = {kcal:0, protein:0, carbs:0, fat:0, price:0};
   if(!pickCustomState) return delta;
   Object.keys(pickCustomState.swaps).forEach(origId=>{
     const newId = pickCustomState.swaps[origId];
@@ -2346,6 +2391,7 @@ function pickCustomExtra(){
     delta.protein += newF.item.protein - oldF.item.protein;
     delta.carbs += newF.item.carbs - oldF.item.carbs;
     delta.fat += newF.item.fat - oldF.item.fat;
+    delta.price += (newF.item.price||0) - (oldF.item.price||0);
   });
   Object.keys(pickCustomState.addons).forEach(id=>{
     const q = pickCustomState.addons[id];
@@ -2356,6 +2402,7 @@ function pickCustomExtra(){
     delta.protein += f.item.protein*q;
     delta.carbs += f.item.carbs*q;
     delta.fat += f.item.fat*q;
+    delta.price += (f.item.price||0)*q;
   });
   return delta;
 }
@@ -2365,10 +2412,11 @@ function renderPickCustomTotals(pick){
   const extra = pickCustomExtra();
   const total = {
     kcal: base.kcal+extra.kcal, protein: base.protein+extra.protein,
-    carbs: base.carbs+extra.carbs, fat: base.fat+extra.fat
+    carbs: base.carbs+extra.carbs, fat: base.fat+extra.fat, price: base.price+extra.price
   };
   const hasExtra = extra.kcal || extra.protein || extra.carbs || extra.fat;
   document.getElementById('pickModalTotals').innerHTML = `
+    <div class="pick-price-total"><b>${fmtPrice(total.price)}</b>${extra.price ? `<span class="price-extra-note">${fmtPriceDelta(extra.price)} ${tr_('pick_customize_extra_note')}</span>` : ''}</div>
     <div class="totals-grid">
       <div class="stat-box"><b>${Math.round(total.kcal)}</b><span>${tr_('label_kcal')}</span></div>
       <div class="stat-box"><b>${total.protein.toFixed(1)}g</b><span>${tr_('label_protein')}</span></div>
@@ -2462,7 +2510,8 @@ function buildPickChanges(){
       kind:'swap', origId, newId, cat:newF.cat,
       fromName:itemName(oldF.item), toName:itemName(newF.item),
       deltaKcal:newF.item.kcal-oldF.item.kcal, deltaProtein:newF.item.protein-oldF.item.protein,
-      deltaCarbs:newF.item.carbs-oldF.item.carbs, deltaFat:newF.item.fat-oldF.item.fat
+      deltaCarbs:newF.item.carbs-oldF.item.carbs, deltaFat:newF.item.fat-oldF.item.fat,
+      deltaPrice:(newF.item.price||0)-(oldF.item.price||0)
     });
   });
   Object.keys(pickCustomState.addons).filter(id=>pickCustomState.addons[id]>0).forEach(id=>{
@@ -2470,7 +2519,7 @@ function buildPickChanges(){
     if(!f) return;
     changes.push({
       kind:'addon', id, cat:f.cat, name:itemName(f.item), qty:pickCustomState.addons[id],
-      kcal:f.item.kcal, protein:f.item.protein, carbs:f.item.carbs, fat:f.item.fat
+      kcal:f.item.kcal, protein:f.item.protein, carbs:f.item.carbs, fat:f.item.fat, price:f.item.price||0
     });
   });
   return changes;
@@ -2501,7 +2550,7 @@ function addCustomizedPickToCart(){
         line.changes = changes;
         line.nutrition = {
           kcal: base.kcal+extra.kcal, protein: base.protein+extra.protein,
-          carbs: base.carbs+extra.carbs, fat: base.fat+extra.fat
+          carbs: base.carbs+extra.carbs, fat: base.fat+extra.fat, price: base.price+extra.price
         };
       }
       line.qty = qty;
@@ -2529,7 +2578,7 @@ function addCustomizedPickToCart(){
     changes,
     nutrition: {
       kcal: base.kcal+extra.kcal, protein: base.protein+extra.protein,
-      carbs: base.carbs+extra.carbs, fat: base.fat+extra.fat
+      carbs: base.carbs+extra.carbs, fat: base.fat+extra.fat, price: base.price+extra.price
     },
     qty,
     expanded:false
@@ -2584,6 +2633,7 @@ function renderStats(){
   document.querySelectorAll('.stat-protein').forEach(el=>el.textContent = Math.round(t.protein));
   document.querySelectorAll('.stat-carbs').forEach(el=>el.textContent = Math.round(t.carbs));
   document.querySelectorAll('.stat-fat').forEach(el=>el.textContent = Math.round(t.fat));
+  document.querySelectorAll('.stat-price').forEach(el=>el.textContent = fmtPrice(t.price));
 
   const totalItems = CATS.reduce((s,c)=>s+categoryCount(c),0);
   document.getElementById('fabCount').textContent = totalItems;
@@ -2609,6 +2659,7 @@ function lineRow(item, cat){
     <span class="line-badge" style="background:${pastel.bg};color:${pastel.text}">${iconSvg(item.icon)}</span>
     <span class="line-info">
       <span class="line-name">${itemName(item)}</span>
+      <span class="line-price">${fmtPrice(item.price*q)}</span>
       <span class="line-kcal">${item.kcal*q} kcal${q>1?` (${item.kcal} × ${q})`:''}</span>
     </span>
     <span class="stepper line-stepper">
@@ -2633,7 +2684,8 @@ function renderPanel(){
   }).join('');
 
   const t = computeTotals();
-  const totalsHtml = `<div class="totals-grid">
+  const totalsHtml = `<div class="panel-price-total"><span>${tr_('cart_subtotal_label')}</span><b>${fmtPrice(t.price)}</b></div>
+  <div class="totals-grid">
     <div class="stat-box"><b>${Math.round(t.kcal)}</b><span>${tr_('label_kcal')}</span></div>
     <div class="stat-box"><b>${t.protein.toFixed(1)}g</b><span>${tr_('label_protein')}</span></div>
     <div class="stat-box"><b>${t.carbs.toFixed(1)}g</b><span>${tr_('label_carbs')}</span></div>
@@ -2770,10 +2822,14 @@ function buildOrderReceiptHtml(order){
   let groups = '';
   order.lines.forEach(line=>{
     const lineKcal = Math.round(line.nutrition.kcal * line.qty);
+    const linePrice = fmtPrice(line.nutrition.price * line.qty);
     groups += `<div class="r-line">
       <span class="r-thumb"><img src="${LOGO_MARK_SRC}" alt=""></span>
       <span style="flex:1">${line.label} × ${line.qty}</span>
-      <span>${lineKcal} kcal</span>
+      <span style="text-align:right;">
+        <b style="display:block;">${linePrice}</b>
+        <small style="display:block;font-size:10px;color:var(--rk-ink-soft);font-weight:400;">${lineKcal} kcal</small>
+      </span>
     </div>`;
     if(line.ingredients && line.ingredients.length){
       groups += `<div style="padding:0 0 6px 38px;font-size:11.5px;color:var(--rk-ink-soft);">${line.ingredients.map(ing=>ing.name+' x'+ing.qty).join(', ')}</div>`;
@@ -2785,6 +2841,9 @@ function buildOrderReceiptHtml(order){
     <div style="font-family:var(--font-mono);font-size:17px;font-weight:600;letter-spacing:.05em;background:var(--rk-paper-deep);border:1px dashed var(--rk-yuzu);border-radius:10px;padding:12px;margin-bottom:16px;text-align:center;">${order.code}</div>
     <div class="r-group-label">${tr_('order_items')}</div>
     ${groups}
+    <div style="display:flex;justify-content:space-between;font-weight:700;font-size:15px;padding:10px 0;border-top:1px solid var(--rk-line);border-bottom:1px solid var(--rk-line);margin:4px 0 14px;">
+      <span>${tr_('cart_subtotal_label')}</span><span>${fmtPrice(order.nutrition.price)}</span>
+    </div>
     <div class="r-totals">
       <div class="r-stat"><b>${Math.round(order.nutrition.kcal)}</b><span>${tr_('label_kcal').toUpperCase()}</span></div>
       <div class="r-stat"><b>${order.nutrition.protein.toFixed(1)}g</b><span>${tr_('label_protein').toUpperCase()}</span></div>
@@ -2873,7 +2932,7 @@ function lineNutrition(line){
 }
 
 function cartNutritionTotals(){
-  const totals = {kcal:0, protein:0, carbs:0, fat:0};
+  const totals = {kcal:0, protein:0, carbs:0, fat:0, price:0};
   cart.forEach(line=>{
     const n = lineNutrition(line);
     if(!n) return;
@@ -2881,6 +2940,7 @@ function cartNutritionTotals(){
     totals.protein += n.protein*line.qty;
     totals.carbs += n.carbs*line.qty;
     totals.fat += n.fat*line.qty;
+    totals.price += (n.price||0)*line.qty;
   });
   return totals;
 }
@@ -2896,16 +2956,17 @@ function renderCartBadge(){
 
 function snapshotCustomBento(){
   const lines = [];
-  const totals = {kcal:0, protein:0, carbs:0, fat:0};
+  const totals = {kcal:0, protein:0, carbs:0, fat:0, price:0};
   CATS.forEach(cat=>{
     DATA[cat].forEach(it=>{
       const q = qty[it.id];
       if(q>0){
-        lines.push({id:it.id, name:it.name, qty:q, icon:it.icon, cat:cat, kcal:it.kcal, protein:it.protein, carbs:it.carbs, fat:it.fat});
+        lines.push({id:it.id, name:it.name, qty:q, icon:it.icon, cat:cat, kcal:it.kcal, protein:it.protein, carbs:it.carbs, fat:it.fat, price:it.price});
         totals.kcal += it.kcal*q;
         totals.protein += it.protein*q;
         totals.carbs += it.carbs*q;
         totals.fat += it.fat*q;
+        totals.price += (it.price||0)*q;
       }
     });
   });
@@ -3087,6 +3148,7 @@ function cartLineTemplate(line){
       ${breakdown}
     </div>
     <div class="cart-line-right">
+      <div class="cart-line-price">${fmtPrice(n.price*line.qty)}</div>
       <div class="cart-line-kcal">${Math.round(n.kcal*line.qty)} kcal</div>
       <span class="stepper">
         <button type="button" class="step-btn minus" data-cartline="${line.cartId}" data-dir="-1" aria-label="Decrease quantity">–</button>
@@ -3107,7 +3169,10 @@ function renderCartReview(body, footer){
     return;
   }
   body.innerHTML = cart.map(cartLineTemplate).join('') +
-    (()=>{ const n = cartNutritionTotals(); return `<div class="cart-nutrition-title">${tr_('cart_nutrition_total')}</div>
+    (()=>{ const n = cartNutritionTotals(); return `
+     <div class="cart-summary-row total"><span>${tr_('cart_subtotal_label')}</span><span>${fmtPrice(n.price)}</span></div>
+     <p class="checkout-note">${tr_('cart_subtotal_note')}</p>
+     <div class="cart-nutrition-title">${tr_('cart_nutrition_total')}</div>
      <div class="totals-grid">
        <div class="stat-box"><b>${Math.round(n.kcal)}</b><span>${tr_('label_kcal')}</span></div>
        <div class="stat-box"><b>${n.protein.toFixed(1)}g</b><span>${tr_('label_protein')}</span></div>
@@ -3228,16 +3293,19 @@ function renderCartDone(body, footer){
           const sub = (line.ingredients && line.ingredients.length)
             ? `<div class="order-item-sub">${line.ingredients.map(ing=>ing.name+' x'+ing.qty).join(', ')}</div>`
             : '';
+          const linePrice = fmtPrice(line.nutrition.price * line.qty);
           return `<div class="order-item-row">
             <span class="order-item-thumb"><img src="${LOGO_MARK_SRC}" alt="${line.label}"></span>
             <div class="order-item-body">
-              <div class="order-item-main"><span>${line.label} × ${line.qty}</span><b>${lineKcal} kcal</b></div>
+              <div class="order-item-main"><span>${line.label} × ${line.qty}</span><b>${linePrice}</b></div>
+              <div class="order-item-sub">${lineKcal} kcal</div>
               ${sub}
             </div>
           </div>`;
         }).join('')}
       </div>
       <div class="order-summary">
+        <div><span>${tr_('cart_subtotal_label')}</span><b>${fmtPrice(lastOrder.nutrition.price)}</b></div>
         <div><span>${tr_('order_items')}</span><b>${lastOrder.itemCount}</b></div>
         <div><span>${tr_('order_delivery')}</span><b>${lastOrder.dateLabel}, ${lastOrder.slotLabel}</b></div>
         <div><span>${tr_('order_contact')}</span><b>${doneDisplayTitle} ${lastOrder.contact.name}, ${lastOrder.contact.phone}</b></div>
