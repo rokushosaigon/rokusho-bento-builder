@@ -1786,6 +1786,13 @@ function sendOrderConfirmationEmail(order){
         customerNote: order.contact.notes || '',
         deliveryDate: order.dateLabel || '',
         deliverySlot: order.slotLabel || '',
+        // Raw ISO date + slot id (still on order.contact — it's a spread of
+        // checkoutData taken before checkout resets it), alongside the
+        // locale-formatted labels above: dateLabel/slotLabel are rendered
+        // via toLocaleDateString in the customer's chosen site language, so
+        // they can't be sorted/grouped by day reliably in the order admin.
+        deliveryDateIso: order.contact.date || '',
+        deliverySlotId: order.contact.slot || '',
         itemCount: order.itemCount,
         itemsSummary: itemsSummary,
         proteinItem: proteinItem,
