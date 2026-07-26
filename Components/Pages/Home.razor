@@ -1,0 +1,23 @@
+@page "/"
+@inject IWebHostEnvironment Env
+
+<PageTitle>Kenko Bento by Rokusho — Build Your Own Bento</PageTitle>
+
+<HeadContent>
+    @((MarkupString)_headHtml)
+</HeadContent>
+
+@((MarkupString)_bodyHtml)
+
+<script src="js/kenko-bento.js"></script>
+
+@code {
+    private string _headHtml = string.Empty;
+    private string _bodyHtml = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        _headHtml = File.ReadAllText(Path.Combine(Env.WebRootPath, "content", "kenko-bento-head.html"));
+        _bodyHtml = File.ReadAllText(Path.Combine(Env.WebRootPath, "content", "kenko-bento-body.html"));
+    }
+}
