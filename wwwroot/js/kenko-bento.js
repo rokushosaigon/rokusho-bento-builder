@@ -1155,12 +1155,8 @@ function pickCardTemplate(pick){
   const nutri = pickNutrition(pick);
   const meta = GROUP_META[pick.group];
   const name = pickName(pick);
-  const iconsHtml = pick.items.map(id=>{
-    const found = findItem(id);
-    return found ? iconSvg(found.item.icon) : '';
-  }).join('');
   return `<div class="pick-card" data-pick-id="${pick.id}">
-    <div class="pick-media" style="background:${meta.pastelBg};color:${meta.color}">${iconsHtml}</div>
+    <div class="pick-media" style="background:${meta.pastelBg}"><img class="pick-media-img" src="${LOGO_MARK_SRC}" alt="${name}"></div>
     <div class="pick-body">
       <div class="pick-name">${name}</div>
       <div class="pick-price">${fmtPrice(nutri.price)}</div>
@@ -1480,14 +1476,10 @@ function openPickDetail(pickId, editCartId){
   const pick = PICKS.find(p=>p.id===pickId);
   if(!pick) return;
   const meta = GROUP_META[pick.group];
-  const iconsHtml = pick.items.map(id=>{
-    const found = findItem(id);
-    return found ? iconSvg(found.item.icon) : '';
-  }).join('');
   const media = document.getElementById('pickModalMedia');
-  media.innerHTML = iconsHtml;
+  media.innerHTML = `<img class="pick-media-img" src="${LOGO_MARK_SRC}" alt="${pickName(pick)}">`;
   media.style.background = meta.pastelBg;
-  media.style.color = meta.color;
+  media.style.color = '';
   const groupEl = document.getElementById('pickModalGroup');
   groupEl.textContent = groupLabel(pick.group);
   groupEl.style.color = meta.color;
