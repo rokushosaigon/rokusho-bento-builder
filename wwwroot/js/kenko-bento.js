@@ -34,9 +34,10 @@ const ICONS = {
 };
 function iconSvg(key){ return `<svg viewBox="0 0 48 48" class="icon-svg">${ICONS[key]||ICONS.leaf}</svg>`; }
 
-// Cropped kamon mark (left glyph only) — used for small square thumbnails where
-// the full wide wordmark would be squeezed unreadably thin.
-const LOGO_MARK_SRC = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE4AAABcCAYAAADAtIONAAAACXBIWXMAAAsSAAALEgHS3X78AAAC9UlEQVR42u2cy63kIBBFncRIs5gcKiyyIAnnQArE4AjIwRmw8nuLfpoehoICf9qm7qIW3bYs+ejWF/D05/evCdZugABwAAdwAAcDOIADOIADOBjAARzAAdxptnzblpgBuLLFDLQfswAngxa+zb39XgHufwsZhf1cy/2nEtycgbABXNk8AyEHjjJqVAkuFtQTCklBreIoA8Bn7lsBrlyThYoLv2dQleBS15yZ+xyjRqcRnG2o/LkiN2oENzMxKmaU937dFdSmAlwtS5pKKaI2OSxJzDKVAje+qY2DHrQkBypk1yBMFCrBcYkiTQKGKVs2YVYeEhwJAHCguBrwFvO5q6Etr3i2FNT4iCRxpXvmlOc6oK2jgmtRkW+E5pOkMwy4XtfjsqjNjJmGSw4ctFZ3XJjkUept56sTxlEPcgeqbCqAsw0dySPAtSqKmHHSUng2CZ5No4FbmeW9KFgKlCqVnuiqW2EaYjoHASRYa/1YMXwWuCh8IV+BPgmuT6OAmwszupWJZSWX3YRrFo8Et7ygUKMqa6473xHap9dVc/tB1oriVg3TEc+4pS2UH64yIXEjg7OCicZcCPDbXRPCkeDmTDIIwpf2zIioVrO5p4MzGTA2+d8JYxQ1bIMYZpBpBQPHUHnp2tzuo+3VmTGOBK0TvRQXGsFNd5wEX7GeandOV0wCKt4hWZzxUNMBzzSuNYQEHo1Ux9lEHa1tW801/Sdj3pXbV6XgVsH2Vs7FSeOu8/Tlpatb9hPw7nYwpDTADA0lkdV8JCkKxuqlkshqBec7QNBV+03uDI52FLvx7Pnd3U/p7ekS1jPh3R2c29kh+IYYOdx51b2bCt0ZynsCOH9AkLdHw9N0qpmOLFW0HQmnozoMjefp7RHzPK0fI7B7k47mLzkse+Kd9s9gdLusdnCmtzjGx1f+dhcEcBd0J4D2r+oMwPWpLgJc/+FkC3D943qA6+xlA8D1t2MEcH3KAzh86hHgAA7gYAAHcAAHcDCAAziAAzgN9gWLSggkkiYtrgAAAABJRU5ErkJggg==';
+// Official kenkobento.png wordmark, used as a temporary placeholder photo
+// for cart lines/order items/receipt thumbnails until real dish photography
+// exists for each bento.
+const LOGO_MARK_SRC = 'img/kenko-bento-logo.png';
 
 /* flat pastel wash + text tone per ingredient category — no gradients */
 const CAT_PASTEL = {
