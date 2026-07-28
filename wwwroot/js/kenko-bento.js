@@ -69,6 +69,7 @@ const I18N = {
     "chefs_pick_customized_label": "Chef's pick · Customized",
     "pick_customize_ingredients": "Swap ingredients",
     "pick_customize_addons": "Add extra",
+    "pick_customize_note": "Note",
     "pick_customize_extra_note": "from customization",
     "cart_swap_replaces": "instead of",
     "cart_continue_delivery": "Continue to delivery time",
@@ -197,6 +198,7 @@ const I18N = {
   "chefs_pick_customized_label": "Bento có sẵn · Đã tùy chỉnh",
   "pick_customize_ingredients": "Đổi nguyên liệu",
   "pick_customize_addons": "Thêm món",
+  "pick_customize_note": "Ghi chú",
   "pick_customize_extra_note": "từ tùy chỉnh",
   "cart_swap_replaces": "thay cho",
   "cart_continue_delivery": "Tiếp tục",
@@ -355,6 +357,7 @@ const I18N = {
     "chefs_pick_customized_label": "おすすめセット・カスタム",
     "pick_customize_ingredients": "具材を変更",
     "pick_customize_addons": "追加する",
+    "pick_customize_note": "備考",
     "pick_customize_extra_note": "カスタム分",
     "cart_swap_replaces": "の代わりに",
     "cart_continue_delivery": "配達時間の選択へ進む",
@@ -482,6 +485,7 @@ const I18N = {
     "chefs_pick_customized_label": "셰프 추천 세트 · 커스텀",
     "pick_customize_ingredients": "재료 변경",
     "pick_customize_addons": "추가하기",
+    "pick_customize_note": "메모",
     "pick_customize_extra_note": "커스텀 추가분",
     "cart_swap_replaces": "대신",
     "cart_continue_delivery": "배달 시간 선택으로 이동",
@@ -609,6 +613,7 @@ const I18N = {
     "chefs_pick_customized_label": "主厨精选 · 已定制",
     "pick_customize_ingredients": "更换食材",
     "pick_customize_addons": "加购",
+    "pick_customize_note": "备注",
     "pick_customize_extra_note": "定制新增",
     "cart_swap_replaces": "替代",
     "cart_continue_delivery": "继续选择送达时间",
@@ -1047,6 +1052,11 @@ function initQtyState(){
   CATS.forEach(cat => DATA[cat].forEach(it => { qty[it.id] = 0; }));
 }
 
+// Note for the bento currently being built in the "view bento" panel —
+// entered there (Grab-style "special request" field on the customize step),
+// then carried onto the cart line once added; see addCustomBentoToCart().
+let customBentoNote = '';
+
 // Like initQtyState, but preserves the customer's current selections for
 // items that are still on the menu (used by the background menu refresh).
 // `oldNameOf` maps id -> display name from before DATA was overwritten, so
@@ -1265,9 +1275,9 @@ function initPickCustomState(pick, editCartId){
       if(c.kind==='swap') swaps[c.origId] = c.newId;
       else if(c.kind==='addon') addons[c.id] = c.qty;
     });
-    pickCustomState = {pickId: pick.id, qty: editLine.qty, swaps, addons, editCartId};
+    pickCustomState = {pickId: pick.id, qty: editLine.qty, swaps, addons, note: editLine.note||'', editCartId};
   } else {
-    pickCustomState = {pickId: pick.id, qty: 1, swaps: {}, addons: {}, editCartId: null};
+    pickCustomState = {pickId: pick.id, qty: 1, swaps: {}, addons: {}, note: '', editCartId: null};
   }
 }
 
@@ -1359,6 +1369,10 @@ function renderPickCustomizer(pick){
     <div class="pick-modal-section-title">${tr_('pick_customize_addons')}</div>
     ${addonsHtml}`;
 
+  document.getElementById('pickModalNote').innerHTML = `
+    <div class="pick-modal-section-title">${tr_('pick_customize_note')}</div>
+    <textarea class="pick-modal-note-input" data-pick-note rows="2" placeholder="${escHtml(tr_('line_note_placeholder'))}">${escHtml(pickCustomState.note||'')}</textarea>`;
+
   document.getElementById('pickModalQtyCount').textContent = pickCustomState.qty;
   renderPickCustomTotals(pick);
 }
@@ -1448,6 +1462,7 @@ function addCustomizedPickToCart(){
         };
       }
       line.qty = qty;
+      line.note = pickCustomState.note || '';
       renderCartBadge();
       renderCartPanel();
       showToast(tr_('toast_cart_updated'));
@@ -1457,7 +1472,7 @@ function addCustomizedPickToCart(){
   }
 
   if(!changes.length){
-    addPickToCart(pick.id, qty);
+    addPickToCart(pick.id, qty, pickCustomState.note || '');
     closePickDetail();
     return;
   }
@@ -1475,7 +1490,7 @@ function addCustomizedPickToCart(){
       carbs: base.carbs+extra.carbs, fat: base.fat+extra.fat, price: base.price+extra.price
     },
     qty,
-    note:'',
+    note: pickCustomState.note || '',
     expanded:false
   });
   renderCartBadge();
@@ -1583,7 +1598,15 @@ function renderPanel(){
     <div class="stat-box"><b>${t.fat.toFixed(1)}g</b><span>${tr_('label_fat')}</span></div>
   </div>`;
 
-  body.innerHTML = groupsHtml + totalsHtml;
+  // Note field only makes sense once there's an actual bento to attach it
+  // to — hidden while the panel is empty, same as the totals above it.
+  const noteHtml = hasAny ? `
+    <div class="panel-note">
+      <div class="pick-modal-section-title">${tr_('pick_customize_note')}</div>
+      <textarea id="panelNoteInput" rows="2" placeholder="${escHtml(tr_('line_note_placeholder'))}">${escHtml(customBentoNote)}</textarea>
+    </div>` : '';
+
+  body.innerHTML = groupsHtml + totalsHtml + noteHtml;
 
   document.getElementById('clearBtn').disabled = !hasAny;
   document.getElementById('downloadBtn').disabled = !hasAny;
@@ -1889,10 +1912,11 @@ function addCustomBentoToCart(){
     nutrition:snap.totals,
     qty:1,
     lines:snap.lines,
-    note:'',
+    note:customBentoNote,
     expanded:false
   });
   CATS.forEach(cat=>DATA[cat].forEach(it=>{ qty[it.id]=0; }));
+  customBentoNote = '';
   renderAll();
   renderCartBadge();
   showToast(tr_('toast_added'));
@@ -1900,13 +1924,15 @@ function addCustomBentoToCart(){
   openCartPanel();
 }
 
-function addPickToCart(pickId, qty){
+function addPickToCart(pickId, qty, note){
   const pick = PICKS.find(p=>p.id===pickId);
   if(!pick) return;
   const existing = cart.find(c=>c.type==='pick' && c.pickId===pickId);
-  if(existing){ existing.qty += qty; }
-  else{
-    cart.push({cartId:'p'+Date.now()+Math.floor(Math.random()*1000), type:'pick', pickId:pick.id, label:pick.name, qty, note:'', expanded:false});
+  if(existing){
+    existing.qty += qty;
+    if(note) existing.note = note;
+  } else {
+    cart.push({cartId:'p'+Date.now()+Math.floor(Math.random()*1000), type:'pick', pickId:pick.id, label:pick.name, qty, note:note||'', expanded:false});
   }
   renderCartBadge();
   showToast(tr_('toast_added'));
@@ -2633,6 +2659,14 @@ document.addEventListener('input', e=>{
   if(noteField){
     const line = cart.find(c=>c.cartId===noteField.getAttribute('data-cart-note'));
     if(line) line.note = noteField.value;
+  }
+  // Build-your-own "view bento" panel note — held on customBentoNote until
+  // Add to cart, same reasoning as above (no re-render mid-typing).
+  if(e.target && e.target.id==='panelNoteInput'){ customBentoNote = e.target.value; }
+  // Chef's Pick modal note — held on pickCustomState until Add to cart /
+  // Save changes.
+  if(e.target && e.target.hasAttribute && e.target.hasAttribute('data-pick-note') && pickCustomState){
+    pickCustomState.note = e.target.value;
   }
 });
 
