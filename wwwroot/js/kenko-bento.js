@@ -130,6 +130,7 @@ const I18N = {
     "cart_show_ing": "Show ingredients",
     "cart_hide_ing": "Hide ingredients",
     "cart_edit_details": "View details & edit",
+    "line_note_placeholder": "Note for this bento (e.g. no chili, extra sauce)...",
     "cart_save_changes": "Save changes",
     "cart_remove": "Remove",
     "custom_bento_label": "Custom bento",
@@ -154,6 +155,7 @@ const I18N = {
     "order_items": "Items",
     "order_contact": "Contact",
     "order_notes": "Notes",
+    "line_note_label": "Note",
     "new_order_btn": "Start a new request",
     "order_default_name": "there",
     "toast_added": "Added to cart",
@@ -269,6 +271,7 @@ const I18N = {
   "cart_show_ing": "Xem nguyên liệu",
   "cart_hide_ing": "Ẩn nguyên liệu",
   "cart_edit_details": "Xem chi tiết & sửa",
+  "line_note_placeholder": "Ghi chú cho món này (vd: không cay, thêm sốt...)",
   "cart_save_changes": "Lưu thay đổi",
   "cart_remove": "Xóa",
 
@@ -305,6 +308,7 @@ const I18N = {
   "order_items": "Sản phẩm",
   "order_contact": "Liên hệ",
   "order_notes": "Ghi chú",
+  "line_note_label": "Ghi chú",
 
   "new_order_btn": "Tạo yêu cầu mới",
 
@@ -412,6 +416,7 @@ const I18N = {
     "cart_show_ing": "具材を見る",
     "cart_hide_ing": "具材を隠す",
     "cart_edit_details": "詳細を見る・編集",
+    "line_note_placeholder": "この弁当へのご要望（例：辛さ控えめ、ソース多めなど）",
     "cart_save_changes": "変更を保存",
     "cart_remove": "削除",
     "custom_bento_label": "カスタム弁当",
@@ -436,6 +441,7 @@ const I18N = {
     "order_items": "点数",
     "order_contact": "連絡先",
     "order_notes": "備考",
+    "line_note_label": "備考",
     "new_order_btn": "新しいリクエストを始める",
     "order_default_name": "お客様",
     "toast_added": "カートに追加しました",
@@ -537,6 +543,7 @@ const I18N = {
     "cart_show_ing": "재료 보기",
     "cart_hide_ing": "재료 숨기기",
     "cart_edit_details": "상세 보기 및 수정",
+    "line_note_placeholder": "이 도시락에 대한 요청사항 (예: 맵지 않게, 소스 추가)",
     "cart_save_changes": "변경사항 저장",
     "cart_remove": "삭제",
     "custom_bento_label": "커스텀 벤토",
@@ -561,6 +568,7 @@ const I18N = {
     "order_items": "품목 수",
     "order_contact": "연락처",
     "order_notes": "메모",
+    "line_note_label": "메모",
     "new_order_btn": "새 요청 시작하기",
     "order_default_name": "고객님",
     "toast_added": "장바구니에 담았습니다",
@@ -662,6 +670,7 @@ const I18N = {
     "cart_show_ing": "查看食材",
     "cart_hide_ing": "隐藏食材",
     "cart_edit_details": "查看详情并修改",
+    "line_note_placeholder": "此便当的备注（例如：不要辣、多加酱）",
     "cart_save_changes": "保存修改",
     "cart_remove": "删除",
     "custom_bento_label": "自选便当",
@@ -686,6 +695,7 @@ const I18N = {
     "order_items": "商品数",
     "order_contact": "联系方式",
     "order_notes": "备注",
+    "line_note_label": "备注",
     "new_order_btn": "开始新请求",
     "order_default_name": "您",
     "toast_added": "已加入购物车",
@@ -1465,6 +1475,7 @@ function addCustomizedPickToCart(){
       carbs: base.carbs+extra.carbs, fat: base.fat+extra.fat, price: base.price+extra.price
     },
     qty,
+    note:'',
     expanded:false
   });
   renderCartBadge();
@@ -1714,6 +1725,9 @@ function buildOrderReceiptHtml(order){
     if(line.ingredients && line.ingredients.length){
       groups += `<div style="padding:0 0 6px 38px;font-size:11.5px;color:var(--rk-ink-soft);">${line.ingredients.map(ing=>ing.name+' x'+ing.qty).join(', ')}</div>`;
     }
+    if(line.note){
+      groups += `<div style="padding:0 0 8px 38px;font-size:11.5px;color:var(--rk-primary);font-style:italic;">${tr_('line_note_label')}: ${escHtml(line.note)}</div>`;
+    }
   });
 
   return `<div class="r-pad">
@@ -1760,6 +1774,10 @@ function sendOrderConfirmationEmail(order){
   const sideItem = categoryItems.side.join(' | ');
   const sauceItem = categoryItems.sauce.join(' | ');
   const itemsSummary = order.lines.map(l=>`${l.qty}x ${l.label}`).join(', ');
+  // Per-bento notes (build-your-own and Chef's Pick alike) — kept separate
+  // from itemsSummary/customerNote so the daily items-summary rollup in the
+  // order admin can still aggregate by plain dish name.
+  const itemNotes = order.lines.filter(l=>l.note).map(l=>`${l.label}: ${l.note}`).join(' | ');
 
   html2canvas(receipt, {scale:2, backgroundColor:'#FFFFFF'}).then(canvas=>{
     const imageBase64 = canvas.toDataURL('image/jpeg', 0.92);
@@ -1788,6 +1806,7 @@ function sendOrderConfirmationEmail(order){
         deliverySlotId: order.contact.slot || '',
         itemCount: order.itemCount,
         itemsSummary: itemsSummary,
+        itemNotes: itemNotes,
         proteinItem: proteinItem,
         carbsItem: carbsItem,
         sideItem: sideItem,
@@ -1870,6 +1889,7 @@ function addCustomBentoToCart(){
     nutrition:snap.totals,
     qty:1,
     lines:snap.lines,
+    note:'',
     expanded:false
   });
   CATS.forEach(cat=>DATA[cat].forEach(it=>{ qty[it.id]=0; }));
@@ -1886,7 +1906,7 @@ function addPickToCart(pickId, qty){
   const existing = cart.find(c=>c.type==='pick' && c.pickId===pickId);
   if(existing){ existing.qty += qty; }
   else{
-    cart.push({cartId:'p'+Date.now()+Math.floor(Math.random()*1000), type:'pick', pickId:pick.id, label:pick.name, qty, expanded:false});
+    cart.push({cartId:'p'+Date.now()+Math.floor(Math.random()*1000), type:'pick', pickId:pick.id, label:pick.name, qty, note:'', expanded:false});
   }
   renderCartBadge();
   showToast(tr_('toast_added'));
@@ -2025,6 +2045,12 @@ function cartLineTemplate(line){
   const toggle = canExpand ? `<span class="cart-line-toggle" data-toggle-line="${line.cartId}">${line.expanded?tr_('cart_hide_ing'):tr_('cart_show_ing')}</span>` : '';
   const editHint = isEditablePick ? `<span class="cart-line-toggle">${tr_('cart_edit_details')}</span>` : '';
   const editAttrs = isEditablePick ? ` data-cart-edit-pick="${line.pickId}" data-cart-edit-cartid="${line.cartId}"` : '';
+  // Every bento — build-your-own or Chef's Pick, customized or not — gets its
+  // own note field (kitchen-facing, e.g. "no chili"), separate from the
+  // single order-level note on the contact step. Click/focus on it must not
+  // bubble into the edit-pick-detail handler on editable (Chef's Pick) lines
+  // — see the data-cart-note guard in the document click listener.
+  const noteField = `<textarea class="cart-line-note" data-cart-note="${line.cartId}" rows="1" placeholder="${escHtml(tr_('line_note_placeholder'))}">${escHtml(line.note||'')}</textarea>`;
   return `<div class="cart-line${isEditablePick?' is-editable':''}"${editAttrs}>
     <span class="cart-line-thumb"><img src="${LOGO_MARK_SRC}" alt="${displayLabel}"></span>
     <div class="cart-line-main">
@@ -2033,6 +2059,7 @@ function cartLineTemplate(line){
       ${toggle}
       ${editHint}
       ${breakdown}
+      ${noteField}
     </div>
     <div class="cart-line-right">
       <div class="cart-line-price">${fmtPrice(n.price*line.qty)}</div>
@@ -2325,23 +2352,24 @@ function syncContactFields(){
 
 function snapshotCartLines(){
   return cart.map(line=>{
+    const note = line.note || '';
     if(line.type==='pick'){
       const pick = PICKS.find(p=>p.id===line.pickId);
       const label = pick ? pickName(pick) : line.label;
-      return {type: line.type, label, qty: line.qty, nutrition: lineNutrition(line), ingredients: null};
+      return {type: line.type, label, qty: line.qty, nutrition: lineNutrition(line), ingredients: null, note};
     }
     if(line.type==='pick-custom'){
       const ingredients = line.changes.map(c=>{
         if(c.kind==='swap') return {name: `${c.toName} (${tr_('cart_swap_replaces')} ${c.fromName})`, qty:1, cat:c.cat};
         return {name: c.name, qty: c.qty, cat: c.cat};
       });
-      return {type: line.type, label: line.label, qty: line.qty, nutrition: lineNutrition(line), ingredients};
+      return {type: line.type, label: line.label, qty: line.qty, nutrition: lineNutrition(line), ingredients, note};
     }
     const ingredients = line.lines.map(l=>{
       const found = findItem(l.id);
       return {name: found ? itemName(found.item) : l.name, qty: l.qty, cat: found ? found.cat : l.cat};
     });
-    return {type: line.type, label: tr_('custom_bento_label'), qty: line.qty, nutrition: lineNutrition(line), ingredients};
+    return {type: line.type, label: tr_('custom_bento_label'), qty: line.qty, nutrition: lineNutrition(line), ingredients, note};
   });
 }
 
@@ -2531,6 +2559,12 @@ document.addEventListener('click', e=>{
   const removeBtn = e.target.closest('[data-remove]');
   if(removeBtn){ removeCartLine(removeBtn.getAttribute('data-remove')); return; }
 
+  // Clicking/focusing the per-line note field must not fall through to the
+  // edit-pick-detail handler below — it's a descendant of an is-editable
+  // (Chef's Pick) cart-line, which would otherwise pop the customize modal
+  // open every time someone tries to type a note.
+  if(e.target.closest('[data-cart-note]')) return;
+
   // Clicking a Chef's Pick cart line (plain or already customized) opens the
   // same detail popup used to build one, pre-filled with its current swaps/
   // add-ons so it can be reviewed or edited further.
@@ -2592,6 +2626,14 @@ document.addEventListener('change', e=>{
 document.addEventListener('input', e=>{
   if(e.target && e.target.id==='picksSearch'){ pickSearchQuery = e.target.value; renderPicks(); }
   if(e.target && e.target.id==='ckAddress'){ scheduleDistanceLookup(e.target.value); scheduleAddressSuggestions(e.target.value); }
+  // Update the line's note directly on the model without re-rendering the
+  // cart panel — a re-render on every keystroke would rebuild the textarea
+  // and steal focus/cursor position mid-typing.
+  const noteField = e.target.closest && e.target.closest('[data-cart-note]');
+  if(noteField){
+    const line = cart.find(c=>c.cartId===noteField.getAttribute('data-cart-note'));
+    if(line) line.note = noteField.value;
+  }
 });
 
 // Scroll events don't bubble, but a capturing listener on document still sees
