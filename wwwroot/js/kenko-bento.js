@@ -1157,7 +1157,7 @@ function cardTemplate(item,cat){
       <span class="ing-macro"><b>${item.carbs}g</b><small>${tr_('label_carbs')}</small></span>
       <span class="ing-macro"><b>${item.fat}g</b><small>${tr_('label_fat')}</small></span>
     </span>
-    ${stepperHtml}
+    ${selected ? stepperHtml : '<span class="ing-quickadd" aria-hidden="true">+</span>'}
   </div>`;
 }
 

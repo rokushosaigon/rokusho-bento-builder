@@ -266,6 +266,10 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
   display:none;align-items:center;justify-content:center;
 }
 .ing-card.has-qty .qty-flag{display:flex;}
+/* Grab-style quick-add "+" on the mobile row layout below — hidden on
+   desktop, where tapping anywhere on the card already adds one (this is
+   purely a visual affordance; the whole .ing-card stays the tap target). */
+.ing-quickadd{display:none;}
 .icon-svg{width:16px;height:16px;}
 .icon-svg path,.icon-svg circle,.icon-svg rect,.icon-svg ellipse{
   fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;
@@ -299,6 +303,28 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
   .step-btn[disabled]:hover{border-color:var(--rk-line);color:var(--rk-ink);}
 }
 .step-count{min-width:16px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums;}
+
+/* ---------- mobile menu list (GrabFood-style rows, desktop keeps the card grid) ---------- */
+@media(max-width:760px){
+  .card-grid{grid-template-columns:1fr;gap:10px;}
+  .ing-card{
+    display:grid;
+    grid-template-columns:68px 1fr auto;
+    grid-template-areas:"media name stepper" "media price stepper" "media kcal stepper";
+    align-items:center;column-gap:12px;row-gap:1px;padding:10px;
+  }
+  .ing-media{grid-area:media;width:68px;aspect-ratio:1/1;padding:16%;}
+  .ing-name{grid-area:name;min-height:0;font-size:13.5px;}
+  .ing-price{grid-area:price;}
+  .ing-kcal{grid-area:kcal;}
+  .ing-macros{display:none;}
+  .ing-stepper{grid-area:stepper;border-top:none;margin-top:0;padding-top:0;}
+  .ing-quickadd{
+    grid-area:stepper;display:flex;align-items:center;justify-content:center;
+    width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rk-primary);color:var(--rk-primary);
+    font-size:19px;font-weight:600;line-height:1;-webkit-tap-highlight-color:transparent;
+  }
+}
 
 /* ---------- floating bento bar (bento button + live totals + quick cart) ---------- */
 .bento-bar{
@@ -380,9 +406,25 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
   display:flex;flex-direction:column;border-left:1px solid var(--rk-line);
 }
 .side-panel.is-open{transform:translateX(0);}
+/* GrabFood-style bottom sheet on mobile — same overlay/open-class mechanics,
+   just sliding up from the bottom edge instead of in from the right, with a
+   rounded top and a drag-handle affordance instead of a full-height drawer. */
+@media(max-width:760px){
+  .side-panel{
+    top:auto;left:0;right:0;bottom:0;height:auto;max-height:88vh;width:100%;
+    border-left:none;border-top:1px solid var(--rk-line);border-radius:20px 20px 0 0;
+    transform:translateY(100%);transition:transform .3s ease;
+  }
+  .side-panel.is-open{transform:translateY(0);}
+  .panel-head{padding-top:20px;}
+  .panel-head::before{
+    content:'';position:absolute;top:8px;left:50%;transform:translateX(-50%);
+    width:36px;height:4px;border-radius:999px;background:var(--rk-line);
+  }
+}
 .panel-head{
   display:flex;align-items:center;justify-content:space-between;padding:22px 24px;
-  border-bottom:1px solid var(--rk-line);flex:none;
+  border-bottom:1px solid var(--rk-line);flex:none;position:relative;
 }
 .panel-head h3{font-size:21px;}
 .panel-close{background:none;border:1.5px solid var(--rk-line);border-radius:50%;width:34px;height:34px;font-size:16px;color:var(--rk-ink-soft);}
@@ -651,6 +693,20 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   display:flex;flex-direction:column;overflow:hidden;
 }
 .pick-modal.is-open{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,-50%) scale(1);}
+/* Same bottom-sheet treatment as .side-panel — Grab opens item detail/
+   customize screens as a sheet from the bottom on mobile, not a centered
+   dialog. */
+@media(max-width:760px){
+  .pick-modal{
+    top:auto;left:0;right:0;bottom:0;transform:translateY(100%);
+    width:100%;max-width:100%;max-height:90vh;border-radius:20px 20px 0 0;
+  }
+  .pick-modal.is-open{transform:translateY(0);}
+  .pick-modal::before{
+    content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);
+    width:36px;height:4px;border-radius:999px;background:rgba(31,29,27,.25);z-index:2;
+  }
+}
 .pick-modal-scroll{flex:1;min-height:0;overflow-y:auto;}
 .pick-modal-close{
   position:absolute;top:14px;right:14px;background:var(--rk-white);border:1.5px solid var(--rk-line);
@@ -811,14 +867,11 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   .step-desc{font-size:13px;max-width:none;}
   .step-badge{font-size:11.5px;padding:4px 11px;}
 
-  .card-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
   .pick-card{flex-basis:86%;min-width:0;}
   .picks-carousel-arrow{width:30px;height:30px;font-size:15px;}
-  .ing-card{padding:10px 10px 12px;gap:8px;}
-  .ing-name{font-size:12.5px;min-height:30px;}
-  .ing-macros{gap:6px;padding-top:6px;}
-  .ing-macro b{font-size:11.5px;}
-  .ing-macro small{font-size:9px;}
+  .ing-card{grid-template-columns:60px 1fr auto;padding:9px;column-gap:10px;}
+  .ing-media{width:60px;}
+  .ing-name{font-size:12.5px;}
 
   /* touch targets grow slightly on phones without crowding the grid */
   .step-btn{width:30px;height:30px;font-size:16px;}
