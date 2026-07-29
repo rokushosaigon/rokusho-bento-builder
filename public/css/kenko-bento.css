@@ -127,11 +127,17 @@ a{color:inherit;text-decoration:none;}
   background:var(--rk-primary);color:var(--rk-white);font-size:10.5px;font-weight:700;
   display:flex;align-items:center;justify-content:center;
 }
+/* Mobile: nav links move into the same row/cluster as the language +
+   cart controls instead of wrapping onto their own row below — logo stays
+   pinned left (margin-right:auto soaks up the rest of the row) since the
+   flex:1/flex:1 centering trick above only works with a nav on each side. */
 @media(max-width:880px){
-  .site-header-inner{flex-wrap:wrap;}
-  .logo{order:1;}
-  .header-right{order:2;}
-  .main-nav{order:3;display:flex;flex:0 0 100%;justify-content:center;gap:22px;margin-top:12px;font-size:13.5px;}
+  .site-header-inner{flex-wrap:nowrap;}
+  .logo{order:1;flex:none;justify-content:flex-start;margin-right:auto;}
+  .logo-img{height:52px;}
+  .main-nav{order:2;flex:none;gap:10px;font-size:12.5px;}
+  .nav-cta{padding:6px 13px;font-size:12.5px;}
+  .header-right{order:3;flex:none;gap:8px;margin-left:10px;}
 }
 
 /* ---------- mode pills ---------- */
@@ -538,6 +544,10 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 }
 .footer-directions-btn:hover{background:var(--rk-primary);color:var(--rk-white);}
 .footer-directions-btn svg{width:14px;height:14px;}
+.footer-demo-notice{
+  background:var(--rk-yuzu-pale);color:var(--rk-yuzu-deep);text-align:center;
+  font-size:12px;font-weight:600;padding:10px 16px;
+}
 .footer-bottom{
   border-top:1px solid var(--rk-line);padding:18px 24px;max-width:1180px;margin:0 auto;
   display:flex;justify-content:space-between;font-size:12.5px;color:var(--rk-ink-soft);flex-wrap:wrap;gap:8px;
@@ -569,27 +579,23 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .panel-actions-primary .btn{width:100%;}
 .cart-step-label{font-size:12px;color:var(--rk-ink-soft);margin-top:2px;}
 .cart-line{display:flex;align-items:flex-start;gap:10px;background:var(--rk-white);border:1px solid var(--rk-line);border-radius:12px;padding:12px;margin-bottom:10px;}
-.cart-line.is-editable{cursor:pointer;transition:border-color .15s;}
-.cart-line.is-editable:hover{border-color:var(--rk-primary);}
+.cart-line.is-editable{cursor:pointer;transition:border-color .15s;-webkit-tap-highlight-color:transparent;}
+@media(hover:hover){
+  .cart-line.is-editable:hover{border-color:var(--rk-primary);}
+}
+.cart-line.is-editable:active{border-color:var(--rk-primary);}
 .cart-line-thumb{width:52px;height:52px;border-radius:10px;flex:none;overflow:hidden;background:var(--rk-paper-deep);}
 .cart-line-thumb img{width:100%;height:100%;object-fit:contain;padding:5px;opacity:.9;}
 .cart-line-main{flex:1;min-width:0;}
 .cart-line-label{font-size:14px;font-weight:600;}
+.cart-line-note-flag{font-size:11px;margin-left:5px;opacity:.8;}
 .cart-line-sub{font-size:12px;color:var(--rk-ink-soft);margin-top:2px;}
 .cart-line-toggle{font-size:11.5px;color:var(--rk-primary);font-weight:600;margin-top:4px;display:inline-block;}
 .cart-line-breakdown{margin-top:8px;padding-top:8px;border-top:1px dashed var(--rk-line);font-size:12px;color:var(--rk-ink-soft);}
 .cart-line-breakdown div{display:flex;justify-content:space-between;padding:2px 0;}
-.cart-line-note{
-  display:block;width:100%;margin-top:8px;padding:7px 10px;font:inherit;font-size:12px;
-  border:1px solid var(--rk-line);border-radius:8px;background:var(--rk-paper);color:var(--rk-ink);
-  resize:vertical;min-height:32px;cursor:text;
-}
-.cart-line-note::placeholder{color:var(--rk-ink-soft);}
-.cart-line-note:focus{outline:none;border-color:var(--rk-primary);background:var(--rk-white);box-shadow:0 0 0 3px var(--rk-primary-pale);}
 .cart-line-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex:none;}
 .cart-line-price{font-size:14.5px;font-weight:700;font-family:var(--font-mono);color:var(--rk-primary);margin-bottom:-4px;}
 .cart-line-kcal{font-size:11.5px;font-weight:600;color:var(--rk-ink-soft);font-family:var(--font-mono);}
-.cart-line-remove{font-size:11px;color:var(--rk-ink-soft);text-decoration:underline;background:none;border:none;padding:0;cursor:pointer;font-family:inherit;}
 .cart-summary-row{display:flex;justify-content:space-between;font-size:13.5px;padding:6px 0;color:var(--rk-ink-soft);}
 .cart-nutrition-title{font-size:12.5px;font-weight:600;color:var(--rk-ink-soft);text-transform:uppercase;letter-spacing:.04em;margin:16px 0 10px;}
 .cart-summary-row.total{color:var(--rk-ink);font-weight:700;font-size:16px;border-top:1px solid var(--rk-line);margin-top:6px;padding-top:12px;}
@@ -696,13 +702,17 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
      to something much wider than intended. */
   .pick-media{aspect-ratio:1/1;width:68px;flex:none;padding:12px;border-bottom:none;border-right:1px solid var(--rk-line);}
   .pick-media-img{width:100%;max-width:44px;height:auto;}
-  .pick-body{padding:8px 12px;gap:2px;}
+  /* min-width:0 overrides the flex default of min-width:auto — without it a
+     flex child never shrinks past its unwrapped content width, which is
+     what was defeating text-overflow:ellipsis below (the row would rather
+     overflow than let the tagline actually truncate). */
+  .pick-body{padding:8px 12px;gap:3px;min-width:0;justify-content:center;}
   .pick-name{font-size:14px;min-height:0;-webkit-line-clamp:1;line-clamp:1;}
   .pick-price{font-size:14px;margin-top:0;}
   /* One truncated line instead of hidden outright — enough context to tell
      rows apart without the row growing to fit 2-3 lines like on desktop. */
   .pick-tagline{
-    display:block;min-height:0;font-size:12px;margin-top:1px;
+    display:block;min-height:0;font-size:12px;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:initial;
   }
   .pick-nutrition{display:none;}
@@ -760,14 +770,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 }
 .pick-modal-note-input::placeholder{color:var(--rk-ink-soft);}
 .pick-modal-note-input:focus{outline:none;border-color:var(--rk-primary);background:var(--rk-white);box-shadow:0 0 0 3px var(--rk-primary-pale);}
-.pick-swap-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.pick-swap-row .line-badge{width:30px;height:30px;flex:none;}
-.pick-swap-row .line-badge .icon-svg{width:16px;height:16px;}
-.pick-swap-select{
-  flex:1;min-width:0;border:1px solid var(--rk-line);border-radius:var(--radius-s);padding:8px 10px;
-  font-family:inherit;font-size:13px;background:var(--rk-white);color:var(--rk-ink);
-}
-.pick-swap-select:focus-visible{outline:2px solid var(--rk-primary);outline-offset:1px;}
 .pick-addon-group{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--rk-line);}
 .pick-addon-group:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
 /* Bolder/darker than the generic .pick-modal-section-title above it, so
@@ -879,12 +881,12 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
    ============================================================ */
 @media(max-width:480px){
   .site-header-inner{padding-left:16px;padding-right:16px;}
-  .header-right{gap:8px;}
-  .main-nav{gap:16px;font-size:12.5px;margin-top:10px;}
-  .nav-cta{padding:7px 16px;}
+  .header-right{gap:6px;margin-left:6px;}
+  .main-nav{gap:6px;font-size:11.5px;}
+  .nav-cta{padding:6px 10px;font-size:11.5px;}
   .lang-select{padding:6px 5px;font-size:11.5px;}
-  .logo-img{height:62px;}
-  .cart-btn{padding:8px 12px;}
+  .logo-img{height:44px;}
+  .cart-btn{padding:7px 10px;}
   .cart-icon{width:18px;height:18px;}
 
   .mode-pills{padding:16px 16px 6px;gap:8px;}

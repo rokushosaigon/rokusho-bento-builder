@@ -67,7 +67,6 @@ const I18N = {
     "ing_detail_done": "Done",
     "chefs_pick_label": "Chef's pick",
     "chefs_pick_customized_label": "Chef's pick · Customized",
-    "pick_customize_ingredients": "Swap ingredients",
     "pick_customize_addons": "Add extra",
     "pick_customize_note": "Note",
     "pick_customize_extra_note": "from customization",
@@ -131,9 +130,9 @@ const I18N = {
     "cart_show_ing": "Show ingredients",
     "cart_hide_ing": "Hide ingredients",
     "cart_edit_details": "View details & edit",
+    "cart_add_note": "Add a note",
     "line_note_placeholder": "Note for this bento (e.g. no chili, extra sauce)...",
     "cart_save_changes": "Save changes",
-    "cart_remove": "Remove",
     "custom_bento_label": "Custom bento",
     "ingredient_singular": "ingredient",
     "ingredient_plural": "ingredients",
@@ -176,6 +175,7 @@ const I18N = {
     "footer_follow": "Follow",
     "footer_directions": "Get directions",
     "footer_reviews": "Google reviews",
+    "footer_demo_notice": "This website is currently a demo and is not yet used for commercial purposes.",
     "footer_copyright": "© 2026 Kenko Bento by Rokusho. All rights reserved.",
     "footer_privacy": "Privacy policy · Terms",
     "lang_switcher_label": "Language"
@@ -196,7 +196,6 @@ const I18N = {
   "ing_detail_done": "Xong",
   "chefs_pick_label": "Bento có sẵn",
   "chefs_pick_customized_label": "Bento có sẵn · Đã tùy chỉnh",
-  "pick_customize_ingredients": "Đổi nguyên liệu",
   "pick_customize_addons": "Thêm món",
   "pick_customize_note": "Ghi chú",
   "pick_customize_extra_note": "từ tùy chỉnh",
@@ -273,9 +272,9 @@ const I18N = {
   "cart_show_ing": "Xem nguyên liệu",
   "cart_hide_ing": "Ẩn nguyên liệu",
   "cart_edit_details": "Xem chi tiết & sửa",
+  "cart_add_note": "Thêm ghi chú",
   "line_note_placeholder": "Ghi chú cho món này (vd: không cay, thêm sốt...)",
   "cart_save_changes": "Lưu thay đổi",
-  "cart_remove": "Xóa",
 
   "custom_bento_label": "Bento tự chọn",
 
@@ -335,6 +334,7 @@ const I18N = {
   "footer_directions": "Chỉ đường",
   "footer_reviews": "Đánh giá trên Google",
 
+  "footer_demo_notice": "Website đang trong quá trình demo, chưa được sử dụng cho mục đích thương mại.",
   "footer_copyright": "© 2026 Kenko Bento by Rokusho. Bảo lưu mọi quyền.",
   "footer_privacy": "Chính sách bảo mật · Điều khoản",
 
@@ -355,7 +355,6 @@ const I18N = {
     "ing_detail_done": "完了",
     "chefs_pick_label": "おすすめセット",
     "chefs_pick_customized_label": "おすすめセット・カスタム",
-    "pick_customize_ingredients": "具材を変更",
     "pick_customize_addons": "追加する",
     "pick_customize_note": "備考",
     "pick_customize_extra_note": "カスタム分",
@@ -419,9 +418,9 @@ const I18N = {
     "cart_show_ing": "具材を見る",
     "cart_hide_ing": "具材を隠す",
     "cart_edit_details": "詳細を見る・編集",
+    "cart_add_note": "備考を追加",
     "line_note_placeholder": "この弁当へのご要望（例：辛さ控えめ、ソース多めなど）",
     "cart_save_changes": "変更を保存",
-    "cart_remove": "削除",
     "custom_bento_label": "カスタム弁当",
     "ingredient_singular": "具材",
     "ingredient_plural": "具材",
@@ -464,6 +463,7 @@ const I18N = {
     "footer_follow": "フォロー",
     "footer_directions": "道順を見る",
     "footer_reviews": "Googleクチコミ",
+    "footer_demo_notice": "本サイトは現在デモ段階であり、商用目的にはまだ使用されていません。",
     "footer_copyright": "© 2026 Kenko Bento by Rokusho. All rights reserved.",
     "footer_privacy": "プライバシーポリシー・利用規約",
     "lang_switcher_label": "言語"
@@ -483,7 +483,6 @@ const I18N = {
     "ing_detail_done": "완료",
     "chefs_pick_label": "셰프 추천 세트",
     "chefs_pick_customized_label": "셰프 추천 세트 · 커스텀",
-    "pick_customize_ingredients": "재료 변경",
     "pick_customize_addons": "추가하기",
     "pick_customize_note": "메모",
     "pick_customize_extra_note": "커스텀 추가분",
@@ -547,9 +546,9 @@ const I18N = {
     "cart_show_ing": "재료 보기",
     "cart_hide_ing": "재료 숨기기",
     "cart_edit_details": "상세 보기 및 수정",
+    "cart_add_note": "메모 추가",
     "line_note_placeholder": "이 도시락에 대한 요청사항 (예: 맵지 않게, 소스 추가)",
     "cart_save_changes": "변경사항 저장",
-    "cart_remove": "삭제",
     "custom_bento_label": "커스텀 벤토",
     "ingredient_singular": "재료",
     "ingredient_plural": "재료",
@@ -592,6 +591,7 @@ const I18N = {
     "footer_follow": "팔로우",
     "footer_directions": "길찾기",
     "footer_reviews": "Google 리뷰",
+    "footer_demo_notice": "이 웹사이트는 현재 데모 단계이며 아직 상업적 목적으로 사용되지 않습니다.",
     "footer_copyright": "© 2026 Kenko Bento by Rokusho. All rights reserved.",
     "footer_privacy": "개인정보 처리방침 · 이용약관",
     "lang_switcher_label": "언어"
@@ -611,7 +611,6 @@ const I18N = {
     "ing_detail_done": "完成",
     "chefs_pick_label": "主厨精选",
     "chefs_pick_customized_label": "主厨精选 · 已定制",
-    "pick_customize_ingredients": "更换食材",
     "pick_customize_addons": "加购",
     "pick_customize_note": "备注",
     "pick_customize_extra_note": "定制新增",
@@ -675,9 +674,9 @@ const I18N = {
     "cart_show_ing": "查看食材",
     "cart_hide_ing": "隐藏食材",
     "cart_edit_details": "查看详情并修改",
+    "cart_add_note": "添加备注",
     "line_note_placeholder": "此便当的备注（例如：不要辣、多加酱）",
     "cart_save_changes": "保存修改",
-    "cart_remove": "删除",
     "custom_bento_label": "自选便当",
     "ingredient_singular": "种食材",
     "ingredient_plural": "种食材",
@@ -720,6 +719,7 @@ const I18N = {
     "footer_follow": "关注",
     "footer_directions": "获取路线",
     "footer_reviews": "Google 评价",
+    "footer_demo_notice": "本网站目前处于演示阶段，尚未用于商业用途。",
     "footer_copyright": "© 2026 Kenko Bento by Rokusho。保留所有权利。",
     "footer_privacy": "隐私政策 · 条款",
     "lang_switcher_label": "语言"
@@ -1158,7 +1158,7 @@ function cardTemplate(item,cat){
       <span class="ing-macro"><b>${item.carbs}g</b><small>${tr_('label_carbs')}</small></span>
       <span class="ing-macro"><b>${item.fat}g</b><small>${tr_('label_fat')}</small></span>
     </span>
-    ${selected ? stepperHtml : '<span class="ing-quickadd" aria-hidden="true">+</span>'}
+    ${selected ? stepperHtml : `<span class="ing-quickadd" data-ing-quickadd="${item.id}" data-ing-quickadd-cat="${cat}" aria-label="${tr_('add_to_cart_short')}">+</span>`}
   </div>`;
 }
 
@@ -1333,22 +1333,6 @@ function renderPickCustomTotals(pick){
 }
 
 function renderPickCustomizer(pick){
-  const swapsHtml = pick.items.map(origId=>{
-    const found = findItem(origId);
-    if(!found) return '';
-    const cat = found.cat;
-    const pastel = CAT_PASTEL[cat];
-    const currentId = pickCustomState.swaps[origId] || origId;
-    const options = DATA[cat].map(it=>`<option value="${it.id}" ${it.id===currentId?'selected':''}>${itemName(it)}</option>`).join('');
-    return `<div class="pick-swap-row">
-      <span class="line-badge" style="background:${pastel.bg};color:${pastel.text}">${iconSvg(found.item.icon)}</span>
-      <select class="pick-swap-select" data-swap-original="${origId}">${options}</select>
-    </div>`;
-  }).join('');
-  document.getElementById('pickModalSwaps').innerHTML = `
-    <div class="pick-modal-section-title">${tr_('pick_customize_ingredients')}</div>
-    ${swapsHtml}`;
-
   const addonsHtml = CATS.map(cat=>{
     const rows = DATA[cat].map(it=>{
       const q = pickCustomState.addons[it.id] || 0;
@@ -1377,16 +1361,6 @@ function renderPickCustomizer(pick){
 
   document.getElementById('pickModalQtyCount').textContent = pickCustomState.qty;
   renderPickCustomTotals(pick);
-}
-
-// Re-renders just the swap <select> a customer just changed, in place —
-// rebuilding the whole swaps section here would reset scroll position and
-// interrupt the native <select> dropdown while it's still open.
-function updatePickSwap(origId, newId){
-  if(newId === origId) delete pickCustomState.swaps[origId];
-  else pickCustomState.swaps[origId] = newId;
-  const pick = PICKS.find(p=>p.id===pickCustomState.pickId);
-  if(pick) renderPickCustomTotals(pick);
 }
 
 function adjustPickAddon(itemId, dir){
@@ -2017,13 +1991,6 @@ function adjustCartLineQty(cartId, dir){
   renderCartPanel();
 }
 
-function removeCartLine(cartId){
-  const idx = cart.findIndex(c=>c.cartId===cartId);
-  if(idx>-1) cart.splice(idx,1);
-  renderCartBadge();
-  renderCartPanel();
-}
-
 /* ============================================================
    CHECKOUT — contact info + confirmation
    ============================================================ */
@@ -2112,6 +2079,30 @@ function closeCartPanel(){
 }
 function goToCartStep(step){ cartStep = step; renderCartPanel(); }
 
+// Lightweight note-only sheet for build-your-own cart lines — Chef's Pick
+// lines reopen their full customize modal instead (see openPickDetail),
+// which already has its own note field built in.
+let cartNoteCartId = null;
+function openCartLineNote(cartId){
+  const line = cart.find(c=>c.cartId===cartId);
+  if(!line) return;
+  cartNoteCartId = cartId;
+  document.getElementById('cartNoteInput').value = line.note || '';
+  document.getElementById('cartNoteSheet').classList.add('is-open');
+  document.getElementById('cartNoteSheet').setAttribute('aria-hidden','false');
+  document.getElementById('cartNoteOverlay').classList.add('is-open');
+  document.body.style.overflow='hidden';
+}
+function closeCartLineNote(){
+  document.getElementById('cartNoteSheet').classList.remove('is-open');
+  document.getElementById('cartNoteSheet').setAttribute('aria-hidden','true');
+  document.getElementById('cartNoteOverlay').classList.remove('is-open');
+  const cartOpen = document.getElementById('cartPanel').classList.contains('is-open');
+  document.body.style.overflow = cartOpen ? 'hidden' : '';
+  cartNoteCartId = null;
+  renderCartPanel();
+}
+
 function cartLineTemplate(line){
   const isPick = line.type==='pick';
   const isPickCustom = line.type==='pick-custom';
@@ -2137,23 +2128,25 @@ function cartLineTemplate(line){
     }).join('')}</div>`;
   }
   const toggle = canExpand ? `<span class="cart-line-toggle" data-toggle-line="${line.cartId}">${line.expanded?tr_('cart_hide_ing'):tr_('cart_show_ing')}</span>` : '';
-  const editHint = isEditablePick ? `<span class="cart-line-toggle">${tr_('cart_edit_details')}</span>` : '';
-  const editAttrs = isEditablePick ? ` data-cart-edit-pick="${line.pickId}" data-cart-edit-cartid="${line.cartId}"` : '';
-  // Every bento — build-your-own or Chef's Pick, customized or not — gets its
-  // own note field (kitchen-facing, e.g. "no chili"), separate from the
-  // single order-level note on the contact step. Click/focus on it must not
-  // bubble into the edit-pick-detail handler on editable (Chef's Pick) lines
-  // — see the data-cart-note guard in the document click listener.
-  const noteField = `<textarea class="cart-line-note" data-cart-note="${line.cartId}" rows="1" placeholder="${escHtml(tr_('line_note_placeholder'))}">${escHtml(line.note||'')}</textarea>`;
-  return `<div class="cart-line${isEditablePick?' is-editable':''}"${editAttrs}>
+  // Every line — build-your-own or Chef's Pick, customized or not — is
+  // tappable to open its note in a sheet (kitchen-facing, e.g. "no chili"):
+  // Chef's Pick lines reopen the full customize modal (already has a note
+  // field), build-your-own lines open a lighter note-only sheet since they
+  // have no other detail view to reuse. A small "•" marker after the sub
+  // line signals an existing note without showing its text inline.
+  const editHint = `<span class="cart-line-toggle">${isEditablePick ? tr_('cart_edit_details') : tr_('cart_add_note')}</span>`;
+  const editAttrs = isEditablePick
+    ? ` data-cart-edit-pick="${line.pickId}" data-cart-edit-cartid="${line.cartId}"`
+    : ` data-cart-edit-note="${line.cartId}"`;
+  const noteFlag = line.note ? `<span class="cart-line-note-flag" title="${escHtml(line.note)}">📝</span>` : '';
+  return `<div class="cart-line is-editable"${editAttrs}>
     <span class="cart-line-thumb"><img src="${LOGO_MARK_SRC}" alt="${displayLabel}"></span>
     <div class="cart-line-main">
-      <div class="cart-line-label">${displayLabel}</div>
+      <div class="cart-line-label">${displayLabel}${noteFlag}</div>
       <div class="cart-line-sub">${sub} · ${Math.round(n.kcal)} kcal</div>
       ${toggle}
       ${editHint}
       ${breakdown}
-      ${noteField}
     </div>
     <div class="cart-line-right">
       <div class="cart-line-price">${fmtPrice(n.price*line.qty)}</div>
@@ -2163,7 +2156,6 @@ function cartLineTemplate(line){
         <span class="step-count">${line.qty}</span>
         <button type="button" class="step-btn plus" data-cartline="${line.cartId}" data-dir="1" aria-label="Increase quantity">+</button>
       </span>
-      <button type="button" class="cart-line-remove" data-remove="${line.cartId}">${tr_('cart_remove')}</button>
     </div>
   </div>`;
 }
@@ -2566,6 +2558,11 @@ document.addEventListener('click', e=>{
     return;
   }
   if(e.target.id==='pickModalAddBtn'){ addCustomizedPickToCart(); return; }
+  // Mobile row's quick-add "+" — bumps quantity straight away, checked
+  // before the whole-card handler below so it doesn't also open the detail
+  // sheet (same pattern as the Chef's Pick quick-add).
+  const ingQuickadd = e.target.closest('[data-ing-quickadd]');
+  if(ingQuickadd){ incrementItem(ingQuickadd.getAttribute('data-ing-quickadd-cat'), ingQuickadd.getAttribute('data-ing-quickadd')); return; }
   const selectBtn = e.target.closest('[data-select]');
   if(selectBtn){
     const cat = selectBtn.getAttribute('data-select-cat'), id = selectBtn.getAttribute('data-select');
@@ -2641,15 +2638,6 @@ document.addEventListener('click', e=>{
     return;
   }
 
-  const removeBtn = e.target.closest('[data-remove]');
-  if(removeBtn){ removeCartLine(removeBtn.getAttribute('data-remove')); return; }
-
-  // Clicking/focusing the per-line note field must not fall through to the
-  // edit-pick-detail handler below — it's a descendant of an is-editable
-  // (Chef's Pick) cart-line, which would otherwise pop the customize modal
-  // open every time someone tries to type a note.
-  if(e.target.closest('[data-cart-note]')) return;
-
   // Clicking a Chef's Pick cart line (plain or already customized) opens the
   // same detail popup used to build one, pre-filled with its current swaps/
   // add-ons so it can be reviewed or edited further.
@@ -2658,6 +2646,14 @@ document.addEventListener('click', e=>{
     openPickDetail(cartEditPick.getAttribute('data-cart-edit-pick'), cartEditPick.getAttribute('data-cart-edit-cartid'));
     return;
   }
+  // Build-your-own cart lines have no other detail view to reuse, so they
+  // get a lighter note-only sheet instead.
+  const cartEditNote = e.target.closest('.cart-line[data-cart-edit-note]');
+  if(cartEditNote){
+    openCartLineNote(cartEditNote.getAttribute('data-cart-edit-note'));
+    return;
+  }
+  if(e.target.id==='cartNoteClose' || e.target.id==='cartNoteOverlay' || e.target.id==='cartNoteDoneBtn'){ closeCartLineNote(); return; }
 
   if(e.target.id==='calPrev'){ calendarViewDate.setMonth(calendarViewDate.getMonth()-1); renderCartPanel(); return; }
   if(e.target.id==='calNext'){ calendarViewDate.setMonth(calendarViewDate.getMonth()+1); renderCartPanel(); return; }
@@ -2702,22 +2698,16 @@ document.addEventListener('keydown', e=>{
 
 document.addEventListener('change', e=>{
   if(e.target && e.target.id==='langSelect'){ setLanguage(e.target.value); return; }
-  const swapSelect = e.target.closest && e.target.closest('.pick-swap-select');
-  if(swapSelect && pickCustomState){
-    updatePickSwap(swapSelect.getAttribute('data-swap-original'), swapSelect.value);
-  }
 });
 
 document.addEventListener('input', e=>{
   if(e.target && e.target.id==='picksSearch'){ pickSearchQuery = e.target.value; renderPicks(); }
   if(e.target && e.target.id==='ckAddress'){ scheduleDistanceLookup(e.target.value); scheduleAddressSuggestions(e.target.value); }
-  // Update the line's note directly on the model without re-rendering the
-  // cart panel — a re-render on every keystroke would rebuild the textarea
-  // and steal focus/cursor position mid-typing.
-  const noteField = e.target.closest && e.target.closest('[data-cart-note]');
-  if(noteField){
-    const line = cart.find(c=>c.cartId===noteField.getAttribute('data-cart-note'));
-    if(line) line.note = noteField.value;
+  // Cart line note sheet — updates the line directly, same reasoning as
+  // above (no re-render mid-typing).
+  if(e.target && e.target.id==='cartNoteInput' && cartNoteCartId){
+    const line = cart.find(c=>c.cartId===cartNoteCartId);
+    if(line) line.note = e.target.value;
   }
   // Build-your-own "view bento" panel note — held on customBentoNote until
   // Add to cart, same reasoning as above (no re-render mid-typing).

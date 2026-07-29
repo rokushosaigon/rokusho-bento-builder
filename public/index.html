@@ -77,7 +77,6 @@
       <a href="#sauce" class="step-tab" data-target="sauce"><span class="num">4</span><span data-i18n="tab_sauce">Sauce</span></a>
     </div>
     <div class="nav-stats">
-      <span class="nav-stat nav-stat-price"><b class="stat-price">0đ</b><small data-i18n="label_price">Price</small></span>
       <span class="nav-stat"><b class="stat-kcal">0</b><small data-i18n="label_kcal">Kcal</small></span>
       <span class="nav-stat"><b class="stat-protein">0</b><small data-i18n="label_protein">Protein</small></span>
       <span class="nav-stat"><b class="stat-carbs">0</b><small data-i18n="label_carbs">Carbs</small></span>
@@ -230,7 +229,6 @@
       <span class="pick-modal-group" id="pickModalGroup"></span>
       <h3 class="pick-modal-name" id="pickModalName"></h3>
       <p class="pick-modal-desc" id="pickModalDesc"></p>
-      <div id="pickModalSwaps"></div>
       <div id="pickModalAddons"></div>
       <div id="pickModalNote"></div>
     </div>
@@ -268,6 +266,21 @@
       </span>
       <button type="button" class="btn btn-solid" id="ingDetailDoneBtn" data-i18n="ing_detail_done">Done</button>
     </div>
+  </div>
+</div>
+
+<div class="overlay" id="cartNoteOverlay"></div>
+<div class="pick-modal ing-detail-sheet" id="cartNoteSheet" role="dialog" aria-modal="true" aria-hidden="true">
+  <button type="button" class="pick-modal-close" id="cartNoteClose" aria-label="Close">✕</button>
+  <div class="pick-modal-scroll">
+    <div class="pick-modal-body" style="padding-top:26px;">
+      <h3 class="pick-modal-name" data-i18n="custom_bento_label">Custom bento</h3>
+      <div class="pick-modal-section-title" data-i18n="pick_customize_note">Note</div>
+      <textarea class="pick-modal-note-input" id="cartNoteInput" rows="3" data-i18n-placeholder="line_note_placeholder"></textarea>
+    </div>
+  </div>
+  <div class="pick-modal-footer">
+    <button type="button" class="btn btn-solid" id="cartNoteDoneBtn" data-i18n="ing_detail_done">Done</button>
   </div>
 </div>
 
@@ -336,6 +349,7 @@
       </div>
     </div>
   </div>
+  <div class="footer-demo-notice" data-i18n="footer_demo_notice">This website is currently a demo and is not yet used for commercial purposes.</div>
   <div class="footer-bottom">
     <span data-i18n="footer_copyright">© 2026 Kenko Bento by Rokusho. All rights reserved.</span>
     <span data-i18n="footer_privacy">Privacy policy · Terms</span>
