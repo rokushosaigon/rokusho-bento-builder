@@ -684,6 +684,28 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .pick-macro b{font-size:13px;font-weight:600;color:var(--rk-ink);line-height:1.3;}
 .pick-macro small{font-size:9.5px;color:var(--rk-ink-soft);text-transform:uppercase;letter-spacing:.03em;}
 
+/* ---------- chef's picks — mobile: same row list as build-your-own,
+   instead of a horizontal-scroll carousel. Tapping a row already opens the
+   full detail sheet (openPickDetail), so the row itself only needs a
+   thumbnail, name and price — same job as .ing-card on the builder tab. ---------- */
+@media(max-width:760px){
+  .picks-carousel-wrap{display:block;}
+  .picks-carousel-arrow{display:none;}
+  .picks-grid{display:flex;flex-direction:column;gap:10px;overflow-x:visible;scroll-snap-type:none;}
+  .pick-card{flex:none;width:100%;min-width:0;flex-direction:row;align-items:center;scroll-snap-align:none;}
+  /* Fixed-px padding, not the desktop rule's percent — percentage padding on
+     a flex item resolves against the flex *container's* width (the whole
+     row), not this 68px box, so a %-based value here would blow it back up
+     to something much wider than intended. */
+  .pick-media{aspect-ratio:1/1;width:68px;flex:none;padding:12px;border-bottom:none;border-right:1px solid var(--rk-line);}
+  .pick-media-img{width:100%;max-width:44px;height:auto;}
+  .pick-body{padding:8px 12px;gap:2px;}
+  .pick-name{font-size:14px;min-height:0;-webkit-line-clamp:1;line-clamp:1;}
+  .pick-price{font-size:14px;margin-top:0;}
+  .pick-tagline{display:none;}
+  .pick-nutrition{display:none;}
+}
+
 /* ---------- chef's picks — bento detail popup ---------- */
 .pick-modal{
   position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.96);
@@ -721,6 +743,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .pick-modal-group{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
 .pick-modal-name{font-size:23px;margin-top:8px;}
 .pick-modal-desc{font-size:14px;color:var(--rk-ink-soft);margin-top:10px;}
+.ing-detail-price{font-size:20px;font-weight:700;color:var(--rk-primary);font-family:var(--font-mono);margin-top:6px;}
 
 .pick-modal-section-title{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--rk-ink-soft);margin:20px 0 10px;}
 .pick-modal-note-input{

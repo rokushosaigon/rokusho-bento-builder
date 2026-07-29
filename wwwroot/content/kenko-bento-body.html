@@ -235,6 +235,29 @@
   </div>
 </div>
 
+<div class="overlay" id="ingDetailOverlay"></div>
+<div class="pick-modal ing-detail-sheet" id="ingDetailSheet" role="dialog" aria-modal="true" aria-hidden="true">
+  <button type="button" class="pick-modal-close" id="ingDetailClose" aria-label="Close">✕</button>
+  <div class="pick-modal-scroll">
+    <div class="pick-modal-media" id="ingDetailMedia"></div>
+    <div class="pick-modal-body">
+      <h3 class="pick-modal-name" id="ingDetailName"></h3>
+      <div class="ing-detail-price" id="ingDetailPrice"></div>
+      <div class="totals-grid" id="ingDetailMacros"></div>
+    </div>
+  </div>
+  <div class="pick-modal-footer">
+    <div class="pick-modal-footer-row">
+      <span class="stepper">
+        <button type="button" class="step-btn minus" id="ingDetailMinus" data-dir="-1" aria-label="Decrease quantity">–</button>
+        <span class="step-count" id="ingDetailQty">0</span>
+        <button type="button" class="step-btn plus" id="ingDetailPlus" data-dir="1" aria-label="Increase quantity">+</button>
+      </span>
+      <button type="button" class="btn btn-solid" id="ingDetailDoneBtn" data-i18n="ing_detail_done">Done</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 <div id="receipt" aria-hidden="true"></div>
 

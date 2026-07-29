@@ -64,6 +64,7 @@ const I18N = {
     "picks_filter_all": "All",
     "picks_no_results": "No bentos match your search.",
     "add_to_cart_short": "Add to cart",
+    "ing_detail_done": "Done",
     "chefs_pick_label": "Chef's pick",
     "pick_card_hint": "Tap to view details & order",
     "chefs_pick_customized_label": "Chef's pick · Customized",
@@ -193,6 +194,7 @@ const I18N = {
   "picks_filter_all": "Tất cả",
   "picks_no_results": "Không tìm thấy bento phù hợp.",
   "add_to_cart_short": "Thêm vào giỏ",
+  "ing_detail_done": "Xong",
   "chefs_pick_label": "Bento có sẵn",
   "pick_card_hint": "Bấm để xem chi tiết & đặt hàng",
   "chefs_pick_customized_label": "Bento có sẵn · Đã tùy chỉnh",
@@ -352,6 +354,7 @@ const I18N = {
     "picks_filter_all": "すべて",
     "picks_no_results": "該当する弁当が見つかりません。",
     "add_to_cart_short": "カートに追加",
+    "ing_detail_done": "完了",
     "chefs_pick_label": "おすすめセット",
     "pick_card_hint": "タップして詳細を見る・注文",
     "chefs_pick_customized_label": "おすすめセット・カスタム",
@@ -480,6 +483,7 @@ const I18N = {
     "picks_filter_all": "전체",
     "picks_no_results": "검색 결과와 일치하는 벤토가 없습니다.",
     "add_to_cart_short": "장바구니 담기",
+    "ing_detail_done": "완료",
     "chefs_pick_label": "셰프 추천 세트",
     "pick_card_hint": "탭하여 상세 보기 및 주문",
     "chefs_pick_customized_label": "셰프 추천 세트 · 커스텀",
@@ -608,6 +612,7 @@ const I18N = {
     "picks_filter_all": "全部",
     "picks_no_results": "没有找到符合条件的便当。",
     "add_to_cart_short": "加入购物车",
+    "ing_detail_done": "完成",
     "chefs_pick_label": "主厨精选",
     "pick_card_hint": "点击查看详情并下单",
     "chefs_pick_customized_label": "主厨精选 · 已定制",
@@ -1114,6 +1119,7 @@ function setItemQty(cat, id, newQty){
     qty[SOBA_SAUCE_LOCK] = 1;
   }
   renderAll();
+  if(ingDetailId===id) syncIngredientDetailQty();
 }
 
 // Tapping an ingredient card adds one more of it each time — the +/- stepper
@@ -1530,6 +1536,72 @@ function closePickDetail(){
   const byoOpen = document.getElementById('bentoPanel').classList.contains('is-open');
   document.body.style.overflow = (cartOpen || byoOpen) ? 'hidden' : '';
   pickCustomState = null;
+}
+
+/* ---------- mobile ingredient detail sheet ----------
+   On mobile, tapping a build-your-own row opens this instead of adding
+   directly — same "tap row -> full-detail bottom sheet" pattern Chef's
+   Picks already uses (openPickDetail above), now that the compact row
+   layout (see kenko-bento.css @media max-width:760px) drops the macro
+   breakdown from the row itself. Desktop keeps the old instant-add tap. */
+function isMobileViewport(){
+  return window.matchMedia('(max-width:760px)').matches;
+}
+let ingDetailCat = null, ingDetailId = null;
+function openIngredientDetail(cat, id){
+  const item = DATA[cat] && DATA[cat].find(it=>it.id===id);
+  if(!item) return;
+  ingDetailCat = cat;
+  ingDetailId = id;
+  renderIngredientDetailSheet();
+  document.getElementById('ingDetailSheet').classList.add('is-open');
+  document.getElementById('ingDetailSheet').setAttribute('aria-hidden','false');
+  document.getElementById('ingDetailOverlay').classList.add('is-open');
+  document.querySelector('#ingDetailSheet .pick-modal-scroll').scrollTop = 0;
+  document.body.style.overflow='hidden';
+}
+function closeIngredientDetail(){
+  document.getElementById('ingDetailSheet').classList.remove('is-open');
+  document.getElementById('ingDetailSheet').setAttribute('aria-hidden','true');
+  document.getElementById('ingDetailOverlay').classList.remove('is-open');
+  const cartOpen = document.getElementById('cartPanel').classList.contains('is-open');
+  const byoOpen = document.getElementById('bentoPanel').classList.contains('is-open');
+  document.body.style.overflow = (cartOpen || byoOpen) ? 'hidden' : '';
+  ingDetailCat = null;
+  ingDetailId = null;
+}
+function renderIngredientDetailSheet(){
+  const item = DATA[ingDetailCat].find(it=>it.id===ingDetailId);
+  if(!item) return;
+  const name = itemName(item);
+  const pastel = CAT_PASTEL[ingDetailCat];
+  const media = document.getElementById('ingDetailMedia');
+  media.innerHTML = `<span class="ing-illustration" role="img" aria-label="${name}">${iconSvg(item.icon)}</span>`;
+  media.style.background = pastel.bg;
+  media.style.color = pastel.text;
+  document.getElementById('ingDetailName').textContent = name;
+  document.getElementById('ingDetailPrice').textContent = fmtPrice(item.price);
+  document.getElementById('ingDetailMacros').innerHTML = `
+    <div class="stat-box"><b>${item.kcal}</b><span>${tr_('label_kcal')}</span></div>
+    <div class="stat-box"><b>${item.protein}g</b><span>${tr_('label_protein')}</span></div>
+    <div class="stat-box"><b>${item.carbs}g</b><span>${tr_('label_carbs')}</span></div>
+    <div class="stat-box"><b>${item.fat}g</b><span>${tr_('label_fat')}</span></div>`;
+  // Reuses the existing [data-ing-qty] delegated click handler (same one the
+  // card's own inline stepper uses) rather than a separate handler here.
+  ['ingDetailMinus','ingDetailPlus'].forEach(btnId=>{
+    const btn = document.getElementById(btnId);
+    btn.setAttribute('data-ing-qty', item.id);
+    btn.setAttribute('data-ing-cat', ingDetailCat);
+  });
+  syncIngredientDetailQty();
+}
+// Called from setItemQty whenever the open sheet's own item changes — keeps
+// the sheet's stepper in sync whether the change came from its own +/-
+// buttons or (rarer) the underlying row re-rendering behind it.
+function syncIngredientDetailQty(){
+  const q = qty[ingDetailId]||0;
+  document.getElementById('ingDetailQty').textContent = q;
+  document.getElementById('ingDetailMinus').disabled = q<=0;
 }
 
 let lastBentoItemTotal = 0;
@@ -2521,7 +2593,12 @@ document.addEventListener('click', e=>{
   if(e.target.id==='pickModalAddBtn'){ addCustomizedPickToCart(); return; }
   const selectBtn = e.target.closest('[data-select]');
   if(selectBtn){
-    incrementItem(selectBtn.getAttribute('data-select-cat'), selectBtn.getAttribute('data-select'));
+    const cat = selectBtn.getAttribute('data-select-cat'), id = selectBtn.getAttribute('data-select');
+    // Mobile: tapping a row opens the full-detail sheet instead of adding
+    // straight away (its own stepper — caught by [data-ing-qty] above —
+    // still adjusts instantly). Desktop keeps the original tap-to-add.
+    if(isMobileViewport()) openIngredientDetail(cat, id);
+    else incrementItem(cat, id);
     return;
   }
   if(e.target.closest('[data-retry-menu]')){
@@ -2568,6 +2645,7 @@ document.addEventListener('click', e=>{
   if(pickCardEl){ openPickDetail(pickCardEl.getAttribute('data-pick-id')); return; }
 
   if(e.target.id==='pickModalClose' || e.target.id==='pickModalOverlay'){ closePickDetail(); return; }
+  if(e.target.id==='ingDetailClose' || e.target.id==='ingDetailOverlay' || e.target.id==='ingDetailDoneBtn'){ closeIngredientDetail(); return; }
 
   const modePill = e.target.closest('.mode-pill');
   if(modePill){ switchView(modePill.getAttribute('data-view')); return; }
