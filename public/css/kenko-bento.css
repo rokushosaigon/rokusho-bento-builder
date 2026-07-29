@@ -389,6 +389,12 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 }
 .quick-action-btn:hover{transform:scale(1.07);}
 .quick-action-btn svg{width:24px;height:24px;}
+/* Mobile drops the floating Messenger/Zalo/WhatsApp/hotline cluster entirely
+   — the bottom bento bar + bottom sheets already fill that screen real
+   estate, and the buttons crowded the corner on small screens. */
+@media(max-width:760px){
+  .quick-actions{display:none;}
+}
 .quick-action-messenger{background:var(--rk-ink);}
 .quick-action-zalo{background:var(--rk-ink);}
 .quick-action-whatsapp{background:var(--rk-ink);}
@@ -899,10 +905,6 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   /* touch targets grow slightly on phones without crowding the grid */
   .step-btn{width:30px;height:30px;font-size:16px;}
   .stepper{gap:8px;}
-
-  .quick-actions{top:auto;bottom:84px;right:10px;transform:none;flex-direction:row;gap:8px;}
-  .quick-action-btn{width:40px;height:40px;}
-  .quick-action-btn svg{width:19px;height:19px;}
 
   .bento-bar{
     left:0;right:0;bottom:0;z-index:45;
