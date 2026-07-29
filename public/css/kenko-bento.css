@@ -35,8 +35,12 @@
   --grad-side:var(--pastel-green);
   --grad-sauce:var(--pastel-blue);
 
-  --font-display:'Newsreader',serif;
-  --font-body:'Manrope','Helvetica Neue',sans-serif;
+  /* Both display and body now use the same geometric sans as the "kenko
+     bento" logo wordmark (Poppins is the closest Google Fonts match to its
+     circular counters and flat-cut terminals) — one consistent typeface
+     site-wide instead of pairing a serif display face against it. */
+  --font-display:'Poppins',sans-serif;
+  --font-body:'Poppins','Helvetica Neue',sans-serif;
   --font-mono:'JetBrains Mono','SF Mono',monospace;
 
   --radius-s:6px;
@@ -58,7 +62,7 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 img,svg{display:block;max-width:100%;}
-h1,h2,h3{font-family:var(--font-display);font-weight:400;margin:0;color:var(--rk-ink);letter-spacing:-0.02em;line-height:1.1;}
+h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0;color:var(--rk-ink);letter-spacing:-0.02em;line-height:1.1;}
 p{margin:0;}
 button{font-family:inherit;cursor:pointer;}
 a{color:inherit;text-decoration:none;}
@@ -649,22 +653,9 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 /* Replaces the default mobile tap-highlight/outline flash with a soft
    press-down cue — scale + lifted shadow — instead of a visible border. */
 .pick-card:active{transform:scale(.98);box-shadow:0 6px 16px rgba(17,17,17,.12);}
-/* one-time attention cue on the first pick a customer sees, pointing out
-   that the card itself is tappable — see showPickHint() in JS, which adds
-   .is-spotlight and removes it again after 10s */
-@keyframes pick-card-glow{
-  0%,100%{box-shadow:0 0 0 0 rgba(159,47,45,.35);}
-  50%{box-shadow:0 0 0 9px rgba(159,47,45,0);}
-}
-.pick-card.is-spotlight{animation:pick-card-glow 1.8s ease-in-out infinite;}
-.pick-card-hint{
-  position:absolute;top:10px;left:10px;right:10px;z-index:2;
-  background:var(--rk-ink);color:var(--rk-paper);font-size:11.5px;font-weight:600;text-align:center;
-  padding:7px 10px;border-radius:999px;box-shadow:0 2px 10px rgba(17,17,17,.22);pointer-events:none;
-  opacity:0;animation:pick-hint-in .3s ease forwards, pick-hint-out .3s ease 9.6s forwards;
-}
-@keyframes pick-hint-in{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
-@keyframes pick-hint-out{to{opacity:0;}}
+/* Mobile-only quick-add "+" (see .pick-quickadd click handling in JS) —
+   desktop keeps tap-anywhere-opens-detail as the only interaction. */
+.pick-quickadd{display:none;}
 @media(max-width:880px){ .pick-card{flex-basis:calc((100% - 2*16px)/3);} }
 @media(max-width:760px){ .pick-card{flex-basis:calc((100% - 16px)/2);min-width:180px;} }
 .pick-media{
@@ -708,8 +699,18 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   .pick-body{padding:8px 12px;gap:2px;}
   .pick-name{font-size:14px;min-height:0;-webkit-line-clamp:1;line-clamp:1;}
   .pick-price{font-size:14px;margin-top:0;}
-  .pick-tagline{display:none;}
+  /* One truncated line instead of hidden outright — enough context to tell
+     rows apart without the row growing to fit 2-3 lines like on desktop. */
+  .pick-tagline{
+    display:block;min-height:0;font-size:12px;margin-top:1px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:initial;
+  }
   .pick-nutrition{display:none;}
+  .pick-quickadd{
+    display:flex;align-items:center;justify-content:center;flex:none;align-self:center;margin-right:10px;
+    width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rk-primary);color:var(--rk-primary);
+    font-size:19px;font-weight:600;line-height:1;background:var(--rk-white);-webkit-tap-highlight-color:transparent;
+  }
 }
 
 /* ---------- chef's picks — bento detail popup ---------- */
@@ -767,7 +768,14 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   font-family:inherit;font-size:13px;background:var(--rk-white);color:var(--rk-ink);
 }
 .pick-swap-select:focus-visible{outline:2px solid var(--rk-primary);outline-offset:1px;}
-.pick-addon-group{margin-bottom:6px;}
+.pick-addon-group{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--rk-line);}
+.pick-addon-group:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+/* Bolder/darker than the generic .pick-modal-section-title above it, so
+   Protein/Carbs/Sides/Sauce read as clear group headers while scanning the
+   add-extra list, not just another muted label. */
+.pick-addon-group-title{
+  font-size:13px;font-weight:800;color:var(--rk-ink);letter-spacing:.02em;text-transform:uppercase;margin:14px 0 6px;
+}
 .pick-addon-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--rk-line);}
 .pick-addon-row:last-child{border-bottom:none;}
 .pick-addon-name{flex:1;min-width:0;font-size:13.5px;}

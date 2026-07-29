@@ -66,7 +66,6 @@ const I18N = {
     "add_to_cart_short": "Add to cart",
     "ing_detail_done": "Done",
     "chefs_pick_label": "Chef's pick",
-    "pick_card_hint": "Tap to view details & order",
     "chefs_pick_customized_label": "Chef's pick · Customized",
     "pick_customize_ingredients": "Swap ingredients",
     "pick_customize_addons": "Add extra",
@@ -196,7 +195,6 @@ const I18N = {
   "add_to_cart_short": "Thêm vào giỏ",
   "ing_detail_done": "Xong",
   "chefs_pick_label": "Bento có sẵn",
-  "pick_card_hint": "Bấm để xem chi tiết & đặt hàng",
   "chefs_pick_customized_label": "Bento có sẵn · Đã tùy chỉnh",
   "pick_customize_ingredients": "Đổi nguyên liệu",
   "pick_customize_addons": "Thêm món",
@@ -356,7 +354,6 @@ const I18N = {
     "add_to_cart_short": "カートに追加",
     "ing_detail_done": "完了",
     "chefs_pick_label": "おすすめセット",
-    "pick_card_hint": "タップして詳細を見る・注文",
     "chefs_pick_customized_label": "おすすめセット・カスタム",
     "pick_customize_ingredients": "具材を変更",
     "pick_customize_addons": "追加する",
@@ -485,7 +482,6 @@ const I18N = {
     "add_to_cart_short": "장바구니 담기",
     "ing_detail_done": "완료",
     "chefs_pick_label": "셰프 추천 세트",
-    "pick_card_hint": "탭하여 상세 보기 및 주문",
     "chefs_pick_customized_label": "셰프 추천 세트 · 커스텀",
     "pick_customize_ingredients": "재료 변경",
     "pick_customize_addons": "추가하기",
@@ -614,7 +610,6 @@ const I18N = {
     "add_to_cart_short": "加入购物车",
     "ing_detail_done": "完成",
     "chefs_pick_label": "主厨精选",
-    "pick_card_hint": "点击查看详情并下单",
     "chefs_pick_customized_label": "主厨精选 · 已定制",
     "pick_customize_ingredients": "更换食材",
     "pick_customize_addons": "加购",
@@ -1194,6 +1189,7 @@ function pickCardTemplate(pick){
         <span class="pick-macro"><b>${nutri.fat.toFixed(1)}g</b><small>${tr_('label_fat')}</small></span>
       </div>
     </div>
+    <button type="button" class="pick-quickadd" data-pick-quickadd="${pick.id}" aria-label="${tr_('add_to_cart_short')}">+</button>
   </div>`;
 }
 
@@ -1367,7 +1363,7 @@ function renderPickCustomizer(pick){
       </div>`;
     }).join('');
     return `<div class="pick-addon-group">
-      <div class="pick-modal-section-title">${catLabel(cat)}</div>
+      <div class="pick-addon-group-title">${catLabel(cat)}</div>
       ${rows}
     </div>`;
   }).join('');
@@ -2519,7 +2515,6 @@ function switchView(view){
     requestAnimationFrame(()=>{
       document.querySelectorAll('.picks-carousel-wrap').forEach(updateCarouselArrows);
     });
-    maybeShowPickHint();
   }
   updatePicksFloatCart();
 }
@@ -2540,26 +2535,6 @@ window.addEventListener('scroll', ()=>{
   picksFloatCartTicking = true;
   requestAnimationFrame(()=>{ updatePicksFloatCart(); picksFloatCartTicking = false; });
 }, {passive:true});
-
-// One-time nudge toward the first bento a customer sees on Chef's Picks,
-// since the card's own add-to-cart button is gone now (see popup) — without
-// this, nothing on the card itself signals that tapping it does anything.
-let pickHintShown = false;
-function maybeShowPickHint(){
-  if(pickHintShown) return;
-  const firstCard = document.querySelector('#picksGrid .pick-card');
-  if(!firstCard) return;
-  pickHintShown = true;
-  firstCard.classList.add('is-spotlight');
-  const hint = document.createElement('span');
-  hint.className = 'pick-card-hint';
-  hint.textContent = tr_('pick_card_hint');
-  firstCard.appendChild(hint);
-  setTimeout(()=>{
-    firstCard.classList.remove('is-spotlight');
-    hint.remove();
-  }, 10000);
-}
 
 /* ---------- events ---------- */
 document.addEventListener('click', e=>{
@@ -2638,9 +2613,15 @@ document.addEventListener('click', e=>{
   const carNext = e.target.closest('[data-carousel-next]');
   if(carNext){ scrollCarousel(carNext.getAttribute('data-carousel-next'), 1); return; }
 
-  // Clicking anywhere on a pick card opens its detail popup — this runs after
-  // the stepper/add-to-cart checks above, which already return early, so
-  // clicks on those controls never reach here.
+  // Mobile row's quick-add "+" (see .pick-quickadd in kenko-bento.css) —
+  // adds the plain pick straight away, checked before the whole-card click
+  // below so it doesn't also pop the detail sheet open.
+  const pickQuickadd = e.target.closest('[data-pick-quickadd]');
+  if(pickQuickadd){ addPickToCart(pickQuickadd.getAttribute('data-pick-quickadd'), 1); return; }
+
+  // Clicking anywhere else on a pick card opens its detail popup — this runs
+  // after the stepper/add-to-cart checks above, which already return early,
+  // so clicks on those controls never reach here.
   const pickCardEl = e.target.closest('.pick-card');
   if(pickCardEl){ openPickDetail(pickCardEl.getAttribute('data-pick-id')); return; }
 
