@@ -983,9 +983,7 @@ const CAT_LABEL = {protein:'Protein', carbs:'Carbs', side:'Sides', sauce:'Sauce'
    reused from DATA) so their nutrition is computed live from
    real ingredient values, never hand-typed.
    Populated by loadMenuAndInit() from the "Chef's Picks" tab via
-   BentoMenuAPI.gs; empty until that fetch resolves. Pick ids are
-   generated per-group ("pick-high-protein-1", ...), so PICK_I18N
-   translations need to be re-added against the new ids.
+   BentoMenuAPI.gs; empty until that fetch resolves.
    ============================================================ */
 let PICKS = [];
 
@@ -998,7 +996,6 @@ const GROUP_META = {
   'vegetarian':{label:'Vegetarian', desc:'Meat and seafood free, built around onsen egg for protein.', color:'#1F6C9F', pastelBg:'#E1F3FE'}
 };
 
-const PICK_I18N = {};
 const GROUP_I18N = {
   'special': {
     vi:{label:'Đặc Biệt', desc:'Món đặc biệt xoay vòng từ đầu bếp, nằm ngoài 4 nhóm thường ngày.'},
@@ -1032,19 +1029,17 @@ const GROUP_I18N = {
   }
 };
 
+// Name and ingredient-list (tagline) translations both come straight from
+// the "Chef's Picks" sheet (VI/JA/KO/ZH columns — see BentoMenuAPI.gs), so
+// every pick auto-updates as soon as a translator fills in the sheet cell,
+// rather than needing a matching hand-maintained code entry per id.
 function pickName(pick){
-  const tr = PICK_I18N[pick.id];
-  return (LANG!=='en' && tr && tr[LANG] && tr[LANG].name) || pick.name;
+  const fromSheet = pick['name_'+LANG];
+  return (LANG!=='en' && fromSheet) || pick.name;
 }
-// Ingredient-list translations now come straight from the "Chef's Picks"
-// sheet (VI/JA/KO/ZH columns added next to Ingredient — see BentoMenuAPI.gs),
-// rather than the hand-maintained PICK_I18N map, so every pick auto-updates
-// instead of needing a matching code entry per id.
 function pickTagline(pick){
   const fromSheet = pick['tagline_'+LANG];
-  if(LANG!=='en' && fromSheet) return fromSheet;
-  const tr = PICK_I18N[pick.id];
-  return (LANG!=='en' && tr && tr[LANG] && tr[LANG].tagline) || pick.tagline;
+  return (LANG!=='en' && fromSheet) || pick.tagline;
 }
 function groupLabel(group){
   const tr = GROUP_I18N[group];
