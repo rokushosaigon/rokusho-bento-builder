@@ -1618,6 +1618,12 @@ function syncIngredientDetailQty(){
 }
 
 let lastBentoItemTotal = 0;
+let currentView = 'byo';
+// The bar only makes sense once there's something to check out, and only
+// on the Build Your Own view (Chef's picks has its own floating cart button).
+function setBentoBarVisibility(totalItems){
+  document.getElementById('bentoBar').style.display = (currentView==='byo' && totalItems>0) ? '' : 'none';
+}
 function renderStats(){
   const t = computeTotals();
   document.querySelectorAll('.stat-kcal').forEach(el=>el.textContent = Math.round(t.kcal));
@@ -1628,6 +1634,7 @@ function renderStats(){
 
   const totalItems = CATS.reduce((s,c)=>s+categoryCount(c),0);
   document.getElementById('fabCount').textContent = totalItems;
+  setBentoBarVisibility(totalItems);
 
   if(totalItems > lastBentoItemTotal){
     const fab = document.querySelector('.bento-bar-main');
@@ -2539,10 +2546,11 @@ function startNewOrder(){
 
 /* ---------- view switching (Build your own / Chef's picks) ---------- */
 function switchView(view){
+  currentView = view;
   document.querySelectorAll('.mode-pill').forEach(p=>p.classList.toggle('is-active', p.getAttribute('data-view')===view));
   document.getElementById('byoView').style.display = view==='byo' ? '' : 'none';
   document.getElementById('picksView').style.display = view==='picks' ? '' : 'none';
-  document.getElementById('bentoBar').style.display = view==='byo' ? '' : 'none';
+  setBentoBarVisibility(CATS.reduce((s,c)=>s+categoryCount(c),0));
   // The picks carousels were first measured while this view was display:none
   // (everything reads 0 in a hidden subtree), so their overflow/arrow state
   // needs a fresh measurement now that real layout is available.
