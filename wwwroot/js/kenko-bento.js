@@ -140,6 +140,7 @@ const I18N = {
     "back_btn": "Back",
     "contact_title": "Your details",
     "label_phone": "Phone number",
+    "label_country_code": "Country code",
     "phone_placeholder": "e.g. 0900000001",
     "label_title_field": "Title",
     "title_mr": "Mr",
@@ -162,6 +163,7 @@ const I18N = {
     "toast_added": "Added to cart",
     "toast_cart_updated": "Cart updated",
     "toast_fill_fields": "Please fill in your name, phone number and delivery address.",
+    "toast_invalid_phone": "Please enter a valid phone number for the selected country.",
     "toast_slow_down": "Please wait a few seconds before submitting again.",
     "soba_sauce_confirm": "Soba only pairs with mentsuyu sauce. Are you sure you want to change the sauce?",
     "menu_load_error": "Couldn't load the menu right now.",
@@ -289,6 +291,7 @@ const I18N = {
   "contact_title": "Thông tin liên hệ",
 
   "label_phone": "Số điện thoại",
+  "label_country_code": "Mã quốc gia",
   "phone_placeholder": "Ví dụ: 0901234567",
 
   "label_title_field": "Danh xưng",
@@ -321,6 +324,7 @@ const I18N = {
   "toast_added": "Đã thêm vào giỏ hàng",
   "toast_cart_updated": "Đã cập nhật giỏ hàng",
   "toast_fill_fields": "Vui lòng nhập đầy đủ họ tên, số điện thoại và địa chỉ nhận hàng.",
+  "toast_invalid_phone": "Vui lòng nhập số điện thoại hợp lệ theo quốc gia đã chọn.",
   "soba_sauce_confirm": "Mì soba chỉ hợp với sốt Mentsuyu. Bạn có chắc muốn đổi sang sốt khác không?",
   "toast_slow_down": "Vui lòng đợi vài giây trước khi gửi lại.",
   "menu_load_error": "Không tải được thực đơn lúc này.",
@@ -432,6 +436,7 @@ const I18N = {
     "back_btn": "戻る",
     "contact_title": "お客様情報",
     "label_phone": "電話番号",
+    "label_country_code": "国番号",
     "phone_placeholder": "例:0900000001",
     "label_title_field": "敬称",
     "title_mr": "男性",
@@ -454,6 +459,7 @@ const I18N = {
     "toast_added": "カートに追加しました",
     "toast_cart_updated": "カートを更新しました",
     "toast_fill_fields": "お名前・電話番号・配達先住所をご入力ください。",
+    "toast_invalid_phone": "選択した国に合った有効な電話番号を入力してください。",
     "soba_sauce_confirm": "そばはめんつゆとの相性が一番です。ソースを変更してもよろしいですか？",
     "toast_slow_down": "数秒待ってから再度お試しください。",
     "menu_load_error": "只今メニューを読み込めませんでした。",
@@ -562,6 +568,7 @@ const I18N = {
     "back_btn": "뒤로",
     "contact_title": "고객 정보",
     "label_phone": "전화번호",
+    "label_country_code": "국가 코드",
     "phone_placeholder": "예: 0900000001",
     "label_title_field": "호칭",
     "title_mr": "남성",
@@ -584,6 +591,7 @@ const I18N = {
     "toast_added": "장바구니에 담았습니다",
     "toast_cart_updated": "장바구니를 업데이트했습니다",
     "toast_fill_fields": "이름, 전화번호, 배달 주소를 입력해 주세요.",
+    "toast_invalid_phone": "선택한 국가에 맞는 올바른 전화번호를 입력해 주세요.",
     "soba_sauce_confirm": "소바는 멘츠유 소스와 가장 잘 어울립니다. 소스를 변경하시겠습니까?",
     "toast_slow_down": "몇 초 후에 다시 시도해 주세요.",
     "menu_load_error": "지금은 메뉴를 불러올 수 없습니다.",
@@ -692,6 +700,7 @@ const I18N = {
     "back_btn": "返回",
     "contact_title": "您的详细信息",
     "label_phone": "电话号码",
+    "label_country_code": "国家区号",
     "phone_placeholder": "例如：0900000001",
     "label_title_field": "称呼",
     "title_mr": "先生",
@@ -714,6 +723,7 @@ const I18N = {
     "toast_added": "已加入购物车",
     "toast_cart_updated": "购物车已更新",
     "toast_fill_fields": "请填写姓名、电话号码和送达地址。",
+    "toast_invalid_phone": "请输入与所选国家相符的有效电话号码。",
     "soba_sauce_confirm": "荞麦面最适合搭配蘸面汁（Mentsuyu）。确定要更换酱汁吗？",
     "toast_slow_down": "请稍等几秒后再试。",
     "menu_load_error": "暂时无法加载菜单。",
@@ -2048,8 +2058,96 @@ function adjustCartLineQty(cartId, dir){
 /* ============================================================
    CHECKOUT — contact info + confirmation
    ============================================================ */
+
+// Phone country codes — [ISO 3166-1 alpha-2, dial code, English name].
+// Flags are derived from the alpha-2 code (regional-indicator codepoints)
+// rather than pasted in, so this list is just the data.
+const PHONE_COUNTRIES_RAW = [
+  ['VN','84','Vietnam'],
+  ['AF','93','Afghanistan'],['AL','355','Albania'],['DZ','213','Algeria'],['AD','376','Andorra'],
+  ['AO','244','Angola'],['AR','54','Argentina'],['AM','374','Armenia'],['AU','61','Australia'],
+  ['AT','43','Austria'],['AZ','994','Azerbaijan'],['BS','1','Bahamas'],['BH','973','Bahrain'],
+  ['BD','880','Bangladesh'],['BB','1','Barbados'],['BY','375','Belarus'],['BE','32','Belgium'],
+  ['BZ','501','Belize'],['BJ','229','Benin'],['BT','975','Bhutan'],['BO','591','Bolivia'],
+  ['BA','387','Bosnia and Herzegovina'],['BW','267','Botswana'],['BR','55','Brazil'],
+  ['BN','673','Brunei'],['BG','359','Bulgaria'],['BF','226','Burkina Faso'],['BI','257','Burundi'],
+  ['KH','855','Cambodia'],['CM','237','Cameroon'],['CA','1','Canada'],['CV','238','Cape Verde'],
+  ['CF','236','Central African Republic'],['TD','235','Chad'],['CL','56','Chile'],['CN','86','China'],
+  ['CO','57','Colombia'],['KM','269','Comoros'],['CD','243','Congo (DRC)'],['CG','242','Congo (Republic)'],
+  ['CR','506','Costa Rica'],['HR','385','Croatia'],['CU','53','Cuba'],['CY','357','Cyprus'],
+  ['CZ','420','Czech Republic'],['DK','45','Denmark'],['DJ','253','Djibouti'],['DO','1','Dominican Republic'],
+  ['EC','593','Ecuador'],['EG','20','Egypt'],['SV','503','El Salvador'],['EE','372','Estonia'],
+  ['ET','251','Ethiopia'],['FJ','679','Fiji'],['FI','358','Finland'],['FR','33','France'],
+  ['GA','241','Gabon'],['GM','220','Gambia'],['GE','995','Georgia'],['DE','49','Germany'],
+  ['GH','233','Ghana'],['GR','30','Greece'],['GT','502','Guatemala'],['GN','224','Guinea'],
+  ['HT','509','Haiti'],['HN','504','Honduras'],['HK','852','Hong Kong'],['HU','36','Hungary'],
+  ['IS','354','Iceland'],['IN','91','India'],['ID','62','Indonesia'],['IR','98','Iran'],
+  ['IQ','964','Iraq'],['IE','353','Ireland'],['IL','972','Israel'],['IT','39','Italy'],
+  ['CI','225','Ivory Coast'],['JM','1','Jamaica'],['JP','81','Japan'],['JO','962','Jordan'],
+  ['KZ','7','Kazakhstan'],['KE','254','Kenya'],['KW','965','Kuwait'],['KG','996','Kyrgyzstan'],
+  ['LA','856','Laos'],['LV','371','Latvia'],['LB','961','Lebanon'],['LS','266','Lesotho'],
+  ['LR','231','Liberia'],['LY','218','Libya'],['LI','423','Liechtenstein'],['LT','370','Lithuania'],
+  ['LU','352','Luxembourg'],['MO','853','Macau'],['MG','261','Madagascar'],['MW','265','Malawi'],
+  ['MY','60','Malaysia'],['MV','960','Maldives'],['ML','223','Mali'],['MT','356','Malta'],
+  ['MU','230','Mauritius'],['MX','52','Mexico'],['MD','373','Moldova'],['MC','377','Monaco'],
+  ['MN','976','Mongolia'],['ME','382','Montenegro'],['MA','212','Morocco'],['MZ','258','Mozambique'],
+  ['MM','95','Myanmar'],['NA','264','Namibia'],['NP','977','Nepal'],['NL','31','Netherlands'],
+  ['NZ','64','New Zealand'],['NI','505','Nicaragua'],['NE','227','Niger'],['NG','234','Nigeria'],
+  ['KP','850','North Korea'],['MK','389','North Macedonia'],['NO','47','Norway'],['OM','968','Oman'],
+  ['PK','92','Pakistan'],['PA','507','Panama'],['PG','675','Papua New Guinea'],['PY','595','Paraguay'],
+  ['PE','51','Peru'],['PH','63','Philippines'],['PL','48','Poland'],['PT','351','Portugal'],
+  ['QA','974','Qatar'],['RO','40','Romania'],['RU','7','Russia'],['RW','250','Rwanda'],
+  ['SA','966','Saudi Arabia'],['SN','221','Senegal'],['RS','381','Serbia'],['SG','65','Singapore'],
+  ['SK','421','Slovakia'],['SI','386','Slovenia'],['SO','252','Somalia'],['ZA','27','South Africa'],
+  ['KR','82','South Korea'],['SS','211','South Sudan'],['ES','34','Spain'],['LK','94','Sri Lanka'],
+  ['SD','249','Sudan'],['SR','597','Suriname'],['SE','46','Sweden'],['CH','41','Switzerland'],
+  ['SY','963','Syria'],['TW','886','Taiwan'],['TJ','992','Tajikistan'],['TZ','255','Tanzania'],
+  ['TH','66','Thailand'],['TL','670','Timor-Leste'],['TG','228','Togo'],['TT','1','Trinidad and Tobago'],
+  ['TN','216','Tunisia'],['TR','90','Turkey'],['TM','993','Turkmenistan'],['UG','256','Uganda'],
+  ['UA','380','Ukraine'],['AE','971','United Arab Emirates'],['GB','44','United Kingdom'],
+  ['US','1','United States'],['UY','598','Uruguay'],['UZ','998','Uzbekistan'],['VE','58','Venezuela'],
+  ['YE','967','Yemen'],['ZM','260','Zambia'],['ZW','263','Zimbabwe']
+];
+function flagEmoji(cc){
+  return String.fromCodePoint(...cc.split('').map(ch=>127397+ch.charCodeAt(0)));
+}
+const PHONE_COUNTRIES = PHONE_COUNTRIES_RAW.map(([cc,dial,name])=>({cc,dial,name,flag:flagEmoji(cc)}));
+
+// National number length per country — [min,max] digits, the way a local
+// person would type their own number (leading trunk 0 included where that's
+// the norm, e.g. Vietnam's 10-digit mobiles). Anything not listed here falls
+// back to a lenient generic range rather than blocking the order outright.
+const PHONE_LEN_DEFAULT = [6,14];
+const PHONE_LEN = {
+  VN:[10,10], US:[10,10], CA:[10,10], GB:[10,11], FR:[9,9], DE:[10,11], IT:[9,10],
+  ES:[9,9], PT:[9,9], NL:[9,9], BE:[8,9], CH:[9,9], AT:[10,11], SE:[7,9], NO:[8,8],
+  DK:[8,8], FI:[9,10], PL:[9,9], CZ:[9,9], IE:[9,9], GR:[10,10], RU:[10,10], UA:[9,9],
+  JP:[10,11], KR:[9,11], CN:[11,11], TW:[9,10], HK:[8,8], MO:[8,8], MN:[8,8],
+  IN:[10,10], PK:[10,10], BD:[10,10], LK:[9,9], NP:[10,10],
+  TH:[9,10], SG:[8,8], MY:[9,10], ID:[9,12], PH:[10,11], MM:[8,10], KH:[8,9],
+  LA:[8,10], BN:[7,7], TL:[7,8],
+  AE:[9,9], SA:[9,9], QA:[8,8], KW:[8,8], BH:[8,8], OM:[8,8], IL:[9,9], TR:[10,10], JO:[9,9], LB:[7,8],
+  AU:[9,9], NZ:[8,9],
+  MX:[10,10], BR:[10,11], AR:[10,11], CL:[9,9], CO:[10,10], PE:[9,9],
+  ZA:[9,9], NG:[10,10], EG:[10,10], KE:[9,9], MA:[9,9]
+};
+function phoneLenFor(cc){ return PHONE_LEN[cc] || PHONE_LEN_DEFAULT; }
+function isValidPhoneDigits(cc, digits){
+  const [min,max] = phoneLenFor(cc);
+  return digits.length>=min && digits.length<=max;
+}
+// Only prefixes non-VN numbers with their dial code — VN stays as the plain
+// 10-digit string customers and CUSTOMER_DB have always used, so existing
+// lookups and staff habits aren't disturbed.
+function formattedPhone(){
+  const digits = (checkoutData.phone||'').replace(/\D/g,'');
+  if(!checkoutData.countryCode || checkoutData.countryCode==='VN') return digits;
+  const country = PHONE_COUNTRIES.find(c=>c.cc===checkoutData.countryCode);
+  return country ? `+${country.dial} ${digits}` : digits;
+}
+
 let cartStep = 'review'; // review | datetime | contact | done
-let checkoutData = {date:'', dateLabel:'', slot:'', slotLabel:'', phone:'', name:'', title:'Mr', address:'', email:'', notes:''};
+let checkoutData = {date:'', dateLabel:'', slot:'', slotLabel:'', phone:'', countryCode:'VN', name:'', title:'Mr', address:'', email:'', notes:''};
 let lastOrder = null;
 let calendarViewDate = null;
 
@@ -2268,13 +2366,24 @@ function renderCartDatetime(body, footer){
     </div>`;
 }
 
+// A rough "0123456789"-style example matching the selected country's
+// expected digit count, so the placeholder hints at the right length.
+function phonePlaceholderFor(cc){
+  const [,max] = phoneLenFor(cc);
+  return '0'.repeat(max);
+}
 function renderCartContact(body, footer){
   document.getElementById('cartPanelTitle').textContent = tr_('contact_title');
   document.getElementById('cartStepLabel').textContent = tr_('step3of3');
   body.innerHTML = `
     <div class="form-field">
       <label>${tr_('label_phone')}</label>
-      <input type="tel" id="ckPhone" placeholder="${tr_('phone_placeholder')}" value="${checkoutData.phone}">
+      <div class="ck-phone-row">
+        <select id="ckPhoneCountry" class="ck-phone-country" aria-label="${tr_('label_country_code')}">
+          ${PHONE_COUNTRIES.map(c=>`<option value="${c.cc}" ${checkoutData.countryCode===c.cc?'selected':''}>${c.flag} +${c.dial} ${escHtml(c.name)}</option>`).join('')}
+        </select>
+        <input type="tel" id="ckPhone" placeholder="${phonePlaceholderFor(checkoutData.countryCode)}" value="${checkoutData.phone}">
+      </div>
     </div>
     <p class="autofill-note" id="ckAutofillNote" style="display:none">${tr_('autofill_note')}</p>
     <div class="form-row" style="margin-bottom:14px">
@@ -2483,6 +2592,7 @@ function renderCartPanel(){
 function syncContactFields(){
   const get = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
   if(document.getElementById('ckPhone')) checkoutData.phone = get('ckPhone');
+  if(document.getElementById('ckPhoneCountry')) checkoutData.countryCode = get('ckPhoneCountry') || 'VN';
   if(document.getElementById('ckName')) checkoutData.name = get('ckName');
   if(document.getElementById('ckTitle')) checkoutData.title = get('ckTitle') || 'Mr';
   if(document.getElementById('ckAddress')) checkoutData.address = get('ckAddress');
@@ -2519,6 +2629,10 @@ function confirmOrder(){
     showToast(tr_('toast_fill_fields'));
     return;
   }
+  if(!isValidPhoneDigits(checkoutData.countryCode, checkoutData.phone.replace(/\D/g,''))){
+    showToast(tr_('toast_invalid_phone'));
+    return;
+  }
   const now = Date.now();
   if(now - lastOrderSubmitAt < ORDER_SUBMIT_COOLDOWN_MS){
     showToast(tr_('toast_slow_down'));
@@ -2531,7 +2645,7 @@ function confirmOrder(){
     nutrition: cartNutritionTotals(),
     dateLabel: checkoutData.dateLabel,
     slotLabel: checkoutData.slotLabel,
-    contact: {...checkoutData},
+    contact: {...checkoutData, phone: formattedPhone()},
     lines: snapshotCartLines()
   };
   cart.length = 0;
@@ -2761,7 +2875,9 @@ document.addEventListener('click', e=>{
 });
 
 document.addEventListener('focusout', e=>{
-  if(e.target && e.target.id==='ckPhone') lookupCustomer(e.target.value);
+  // CUSTOMER_DB is keyed by plain VN-format numbers only — a lookup against
+  // a foreign number would never hit, so don't bother firing it.
+  if(e.target && e.target.id==='ckPhone' && checkoutData.countryCode==='VN') lookupCustomer(e.target.value);
 });
 
 document.addEventListener('keydown', e=>{
@@ -2771,12 +2887,22 @@ document.addEventListener('keydown', e=>{
 document.addEventListener('change', e=>{
   if(e.target && e.target.id==='langSelect'){ setLanguage(e.target.value); return; }
   if(e.target && e.target.id==='picksMobileSelect'){ pickGroupFilter = e.target.value; renderPicks(); return; }
+  if(e.target && e.target.id==='ckPhoneCountry'){
+    checkoutData.countryCode = e.target.value;
+    const phoneInput = document.getElementById('ckPhone');
+    if(phoneInput) phoneInput.placeholder = phonePlaceholderFor(checkoutData.countryCode);
+    return;
+  }
 });
 
 document.addEventListener('input', e=>{
   if(e.target && e.target.id==='picksSearch'){ pickSearchQuery = e.target.value; renderPicks(); }
   if(e.target && e.target.id==='picksSearchMobile'){ pickSearchQuery = e.target.value; renderPicks(); }
   if(e.target && e.target.id==='ckAddress'){ scheduleDistanceLookup(e.target.value); scheduleAddressSuggestions(e.target.value); }
+  if(e.target && e.target.id==='ckPhone'){
+    const digitsOnly = e.target.value.replace(/\D/g,'');
+    if(digitsOnly !== e.target.value) e.target.value = digitsOnly;
+  }
   // Cart line note sheet — updates the line directly, same reasoning as
   // above (no re-render mid-typing).
   if(e.target && e.target.id==='cartNoteInput' && cartNoteCartId){
