@@ -62,6 +62,7 @@ const I18N = {
     "picks_desc": "House bentos across four collections — pick a quantity and send it straight to your cart.",
     "picks_search_placeholder": "Search bentos…",
     "picks_filter_all": "All",
+    "picks_veg_quick": "Vegetarian",
     "picks_no_results": "No bentos match your search.",
     "add_to_cart_short": "Add to cart",
     "ing_detail_done": "Done",
@@ -191,6 +192,7 @@ const I18N = {
   "picks_desc": "Các set Bento bán chạy do đầu bếp tuyển chọn. Chỉ cần chọn số lượng và thêm vào giỏ hàng.",
   "picks_search_placeholder": "Tìm bento…",
   "picks_filter_all": "Tất cả",
+  "picks_veg_quick": "Chay",
   "picks_no_results": "Không tìm thấy bento phù hợp.",
   "add_to_cart_short": "Thêm vào giỏ",
   "ing_detail_done": "Xong",
@@ -350,6 +352,7 @@ const I18N = {
     "picks_desc": "4つのコレクションから選べる弁当 — 数量を選んでそのままカートへ。",
     "picks_search_placeholder": "弁当を検索…",
     "picks_filter_all": "すべて",
+    "picks_veg_quick": "ベジタリアン",
     "picks_no_results": "該当する弁当が見つかりません。",
     "add_to_cart_short": "カートに追加",
     "ing_detail_done": "完了",
@@ -478,6 +481,7 @@ const I18N = {
     "picks_desc": "4가지 컬렉션으로 구성된 시그니처 벤토 — 수량을 선택하고 바로 장바구니에 담아보세요.",
     "picks_search_placeholder": "벤토 검색…",
     "picks_filter_all": "전체",
+    "picks_veg_quick": "채식",
     "picks_no_results": "검색 결과와 일치하는 벤토가 없습니다.",
     "add_to_cart_short": "장바구니 담기",
     "ing_detail_done": "완료",
@@ -606,6 +610,7 @@ const I18N = {
     "picks_desc": "四大系列招牌便当 —— 选择数量，直接加入购物车。",
     "picks_search_placeholder": "搜索便当…",
     "picks_filter_all": "全部",
+    "picks_veg_quick": "素食",
     "picks_no_results": "没有找到符合条件的便当。",
     "add_to_cart_short": "加入购物车",
     "ing_detail_done": "完成",
@@ -1213,6 +1218,16 @@ function renderPicksChips(){
     const label = g==='all' ? tr_('picks_filter_all') : groupLabel(g);
     return `<button type="button" class="picks-chip${pickGroupFilter===g?' is-active':''}" data-group-filter="${g}">${label}</button>`;
   }).join('');
+
+  // Mobile's compact toolbar mirrors the same filter state via a dropdown
+  // (all groups) plus a one-tap Vegetarian shortcut, instead of the
+  // full chip row.
+  const select = document.getElementById('picksMobileSelect');
+  select.innerHTML = chips.map(g=>{
+    const label = g==='all' ? tr_('picks_filter_all') : groupLabel(g);
+    return `<option value="${g}" ${pickGroupFilter===g?'selected':''}>${label}</option>`;
+  }).join('');
+  document.getElementById('picksMobileVeg').classList.toggle('is-active', pickGroupFilter==='vegetarian');
 }
 
 // Each collection renders as its own horizontally-scrolling row (up to 4
@@ -2605,6 +2620,14 @@ document.addEventListener('click', e=>{
   const groupChip = e.target.closest('[data-group-filter]');
   if(groupChip){ pickGroupFilter = groupChip.getAttribute('data-group-filter'); renderPicks(); return; }
 
+  if(e.target.id==='picksMobileSearchBtn' || e.target.closest('#picksMobileSearchBtn')){
+    const row = document.getElementById('picksMobileSearchRow');
+    const nowOpen = row.classList.toggle('is-open');
+    if(nowOpen) document.getElementById('picksSearchMobile').focus();
+    else { document.getElementById('picksSearchMobile').value = ''; pickSearchQuery = ''; renderPicks(); }
+    return;
+  }
+
   const carPrev = e.target.closest('[data-carousel-prev]');
   if(carPrev){ scrollCarousel(carPrev.getAttribute('data-carousel-prev'), -1); return; }
   const carNext = e.target.closest('[data-carousel-next]');
@@ -2698,10 +2721,12 @@ document.addEventListener('keydown', e=>{
 
 document.addEventListener('change', e=>{
   if(e.target && e.target.id==='langSelect'){ setLanguage(e.target.value); return; }
+  if(e.target && e.target.id==='picksMobileSelect'){ pickGroupFilter = e.target.value; renderPicks(); return; }
 });
 
 document.addEventListener('input', e=>{
   if(e.target && e.target.id==='picksSearch'){ pickSearchQuery = e.target.value; renderPicks(); }
+  if(e.target && e.target.id==='picksSearchMobile'){ pickSearchQuery = e.target.value; renderPicks(); }
   if(e.target && e.target.id==='ckAddress'){ scheduleDistanceLookup(e.target.value); scheduleAddressSuggestions(e.target.value); }
   // Cart line note sheet — updates the line directly, same reasoning as
   // above (no re-render mid-typing).

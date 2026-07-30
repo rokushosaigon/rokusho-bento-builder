@@ -179,6 +179,24 @@
       <p data-i18n="picks_desc">House bentos across four collections — pick a quantity and send it straight to your cart.</p>
     </div>
   </section>
+
+  <div class="picks-mobile-nav" id="picksMobileNav">
+    <div class="picks-mobile-title" data-i18n="picks_title">Chef's picks</div>
+    <div class="picks-mobile-row">
+      <select class="picks-mobile-select" id="picksMobileSelect" aria-label="Filter"></select>
+      <button type="button" class="picks-mobile-veg" id="picksMobileVeg" data-group-filter="vegetarian" data-i18n="picks_veg_quick">Vegetarian</button>
+      <button type="button" class="picks-mobile-search-btn" id="picksMobileSearchBtn" aria-label="Search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      </button>
+    </div>
+    <div class="picks-mobile-search-row" id="picksMobileSearchRow">
+      <div class="picks-search-wrap">
+        <svg class="picks-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="search" id="picksSearchMobile" class="picks-search" data-i18n-placeholder="picks_search_placeholder" placeholder="Search bentos…">
+      </div>
+    </div>
+  </div>
+
   <div class="picks-main">
     <div class="picks-toolbar">
       <div class="picks-search-wrap">

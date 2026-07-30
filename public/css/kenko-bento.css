@@ -127,17 +127,14 @@ a{color:inherit;text-decoration:none;}
   background:var(--rk-primary);color:var(--rk-white);font-size:10.5px;font-weight:700;
   display:flex;align-items:center;justify-content:center;
 }
-/* Mobile: nav links move into the same row/cluster as the language +
-   cart controls instead of wrapping onto their own row below — logo stays
-   pinned left (margin-right:auto soaks up the rest of the row) since the
-   flex:1/flex:1 centering trick above only works with a nav on each side. */
+/* Mobile: nav links dropped entirely (mode-pills right below already cover
+   Build your own / Chef's picks) — just logo left, language + cart right. */
 @media(max-width:880px){
-  .site-header-inner{flex-wrap:nowrap;}
-  .logo{order:1;flex:none;justify-content:flex-start;margin-right:auto;}
-  .logo-img{height:52px;}
-  .main-nav{order:2;flex:none;gap:10px;font-size:12.5px;}
-  .nav-cta{padding:6px 13px;font-size:12.5px;}
-  .header-right{order:3;flex:none;gap:8px;margin-left:10px;}
+  .site-header-inner{flex-wrap:nowrap;justify-content:space-between;}
+  .logo{order:1;flex:none;justify-content:flex-start;}
+  .logo-img{height:68px;}
+  .main-nav{display:none;}
+  .header-right{order:3;flex:none;gap:8px;}
 }
 
 /* ---------- mode pills ---------- */
@@ -228,6 +225,9 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 }
 .step-head h2{font-size:26px;}
 .step-desc{font-size:14px;color:var(--rk-ink-soft);max-width:420px;}
+/* Category descriptions ("Grilled the Japanese way...") are desktop-only —
+   mobile drops them to keep each step header to its title + count. */
+@media(max-width:760px){ .step-desc{display:none;} }
 .step-counter{font-size:13px;font-weight:600;color:var(--rk-ink-soft);}
 .step-counter b{color:var(--rk-primary);}
 
@@ -636,6 +636,39 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   border:1px dashed var(--rk-line);border-radius:var(--radius-m);
 }
 
+/* ---------- chef's picks — mobile: single sticky toolbar replacing the
+   hero title + separate search/chip row, freezes at the top on scroll
+   (same sticky mechanics as .step-nav on the builder tab). ---------- */
+.picks-mobile-nav{display:none;}
+@media(max-width:760px){
+  .picks-hero{display:none;}
+  .picks-toolbar{display:none;}
+  .picks-mobile-nav{
+    display:block;position:sticky;top:0;z-index:30;background:rgba(251,251,250,.96);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--rk-line);padding:14px 16px 12px;
+  }
+  .picks-mobile-title{font-family:var(--font-display);font-size:19px;font-weight:600;}
+  .picks-mobile-row{display:flex;align-items:center;gap:8px;margin-top:10px;}
+  .picks-mobile-select{
+    flex:1;min-width:0;border:1px solid var(--rk-line);border-radius:var(--radius-s);background:var(--rk-white);
+    color:var(--rk-ink);font-family:inherit;font-size:13px;padding:9px 10px;
+  }
+  .picks-mobile-veg{
+    flex:none;font-family:inherit;border:1.5px solid var(--rk-line);border-radius:999px;padding:8px 14px;
+    font-size:12.5px;font-weight:600;color:var(--rk-ink-soft);background:transparent;white-space:nowrap;transition:.15s;
+  }
+  .picks-mobile-veg.is-active{background:var(--rk-ink);border-color:var(--rk-ink);color:var(--rk-paper);}
+  .picks-mobile-search-btn{
+    flex:none;width:38px;height:38px;border-radius:50%;border:1px solid var(--rk-line);background:var(--rk-white);
+    display:flex;align-items:center;justify-content:center;color:var(--rk-ink-soft);-webkit-tap-highlight-color:transparent;
+  }
+  .picks-mobile-search-btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;}
+  .picks-mobile-search-row{display:none;margin-top:10px;}
+  .picks-mobile-search-row.is-open{display:block;}
+  .picks-mobile-search-row .picks-search-wrap{max-width:none;}
+  .picks-main{padding-top:18px;}
+}
+
 /* ---------- chef's picks — horizontal carousel, up to 4 cards in view ---------- */
 .picks-carousel-wrap{display:flex;align-items:center;gap:8px;}
 .picks-carousel-arrow{
@@ -699,9 +732,14 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   /* Fixed-px padding, not the desktop rule's percent — percentage padding on
      a flex item resolves against the flex *container's* width (the whole
      row), not this 68px box, so a %-based value here would blow it back up
-     to something much wider than intended. */
-  .pick-media{aspect-ratio:1/1;width:68px;flex:none;padding:12px;border-bottom:none;border-right:1px solid var(--rk-line);}
+     to something much wider than intended. Rounded + detached from the row
+     edge like .ing-media, instead of a flush square with a divider line. */
+  .pick-media{
+    aspect-ratio:1/1;width:68px;flex:none;padding:12px;margin:8px 0 8px 8px;
+    border-bottom:none;border-right:none;border-radius:var(--radius-s);overflow:hidden;
+  }
   .pick-media-img{width:100%;max-width:44px;height:auto;}
+  .picks-group-head p{display:none;}
   /* min-width:0 overrides the flex default of min-width:auto — without it a
      flex child never shrinks past its unwrapped content width, which is
      what was defeating text-overflow:ellipsis below (the row would rather
@@ -881,11 +919,9 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
    ============================================================ */
 @media(max-width:480px){
   .site-header-inner{padding-left:16px;padding-right:16px;}
-  .header-right{gap:6px;margin-left:6px;}
-  .main-nav{gap:6px;font-size:11.5px;}
-  .nav-cta{padding:6px 10px;font-size:11.5px;}
+  .header-right{gap:6px;}
   .lang-select{padding:6px 5px;font-size:11.5px;}
-  .logo-img{height:44px;}
+  .logo-img{height:56px;}
   .cart-btn{padding:7px 10px;}
   .cart-icon{width:18px;height:18px;}
 
@@ -947,6 +983,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   .totals-grid .stat-box b{font-size:15px;}
 
   .footer-top{padding:40px 16px 28px;gap:26px;}
+  .footer-brand .logo-img{height:92px;}
   .footer-bottom{padding:16px;}
 
   .form-row{grid-template-columns:1fr 1fr;gap:8px;}
