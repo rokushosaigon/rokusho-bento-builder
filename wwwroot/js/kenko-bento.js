@@ -163,7 +163,7 @@ const I18N = {
     "toast_cart_updated": "Cart updated",
     "toast_fill_fields": "Please fill in your name, phone number and delivery address.",
     "toast_slow_down": "Please wait a few seconds before submitting again.",
-    "toast_soba_sauce_lock": "Soba only pairs with mentsuyu sauce.",
+    "soba_sauce_confirm": "Soba only pairs with mentsuyu sauce. Are you sure you want to change the sauce?",
     "menu_load_error": "Couldn't load the menu right now.",
     "menu_load_retry": "Retry",
     "toast_menu_updated_items_removed": "The menu just changed — some of your selected items are no longer available and were removed.",
@@ -321,7 +321,7 @@ const I18N = {
   "toast_added": "Đã thêm vào giỏ hàng",
   "toast_cart_updated": "Đã cập nhật giỏ hàng",
   "toast_fill_fields": "Vui lòng nhập đầy đủ họ tên, số điện thoại và địa chỉ nhận hàng.",
-  "toast_soba_sauce_lock": "Mì soba chỉ dùng kèm sốt Mentsuyu.",
+  "soba_sauce_confirm": "Mì soba chỉ hợp với sốt Mentsuyu. Bạn có chắc muốn đổi sang sốt khác không?",
   "toast_slow_down": "Vui lòng đợi vài giây trước khi gửi lại.",
   "menu_load_error": "Không tải được thực đơn lúc này.",
   "menu_load_retry": "Thử lại",
@@ -454,7 +454,7 @@ const I18N = {
     "toast_added": "カートに追加しました",
     "toast_cart_updated": "カートを更新しました",
     "toast_fill_fields": "お名前・電話番号・配達先住所をご入力ください。",
-    "toast_soba_sauce_lock": "そばはめんつゆのみと組み合わせられます。",
+    "soba_sauce_confirm": "そばはめんつゆとの相性が一番です。ソースを変更してもよろしいですか？",
     "toast_slow_down": "数秒待ってから再度お試しください。",
     "menu_load_error": "只今メニューを読み込めませんでした。",
     "menu_load_retry": "再試行",
@@ -584,7 +584,7 @@ const I18N = {
     "toast_added": "장바구니에 담았습니다",
     "toast_cart_updated": "장바구니를 업데이트했습니다",
     "toast_fill_fields": "이름, 전화번호, 배달 주소를 입력해 주세요.",
-    "toast_soba_sauce_lock": "소바는 멘츠유 소스와만 함께 제공됩니다.",
+    "soba_sauce_confirm": "소바는 멘츠유 소스와 가장 잘 어울립니다. 소스를 변경하시겠습니까?",
     "toast_slow_down": "몇 초 후에 다시 시도해 주세요.",
     "menu_load_error": "지금은 메뉴를 불러올 수 없습니다.",
     "menu_load_retry": "다시 시도",
@@ -714,7 +714,7 @@ const I18N = {
     "toast_added": "已加入购物车",
     "toast_cart_updated": "购物车已更新",
     "toast_fill_fields": "请填写姓名、电话号码和送达地址。",
-    "toast_soba_sauce_lock": "荞麦面仅可搭配蘸面汁（Mentsuyu）。",
+    "soba_sauce_confirm": "荞麦面最适合搭配蘸面汁（Mentsuyu）。确定要更换酱汁吗？",
     "toast_slow_down": "请稍等几秒后再试。",
     "menu_load_error": "暂时无法加载菜单。",
     "menu_load_retry": "重试",
@@ -1109,13 +1109,14 @@ function categoryCount(cat){
 }
 
 // Soba is only served with mentsuyu (cold noodle dipping sauce) — picking soba
-// locks the sauce step to it, and switching sauce away is blocked while soba is selected.
+// auto-selects it. Trying to add a different sauce afterwards asks for
+// confirmation instead of blocking outright: "Yes" lets the swap happen like
+// any normal sauce pick, "No" leaves mentsuyu selected untouched.
 const SOBA_SAUCE_LOCK = 'mentsuyu';
 function setItemQty(cat, id, newQty){
   newQty = Math.max(0, newQty);
   if(cat==='sauce' && qty['soba']>0 && id!==SOBA_SAUCE_LOCK && newQty>0){
-    showToast(tr_('toast_soba_sauce_lock'));
-    return;
+    if(!confirm(tr_('soba_sauce_confirm'))) return;
   }
   const wasSelected = qty[id] > 0;
   qty[id] = newQty;

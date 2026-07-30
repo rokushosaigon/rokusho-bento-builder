@@ -87,9 +87,17 @@ a{color:inherit;text-decoration:none;}
 @keyframes rk-loader-spin{to{transform:rotate(360deg);}}
 
 /* ---------- header ---------- */
-.site-header{background:var(--rk-paper);border-bottom:1px solid var(--rk-line);}
+/* mode-pills lives inside <header> too (see markup) so it can merge onto
+   the same row as the mobile header once the logo is gone; the border that
+   used to sit on .site-header itself (making it span the two-row block)
+   moves to .site-header-inner instead, so on desktop it still draws right
+   under the logo/nav/cart row, before mode-pills' own separate row below —
+   same spot as before. It's centered to max-width:1180 rather than true
+   edge-to-edge, but .site-header and the page background are the same
+   color, so that's not visible in practice. */
+.site-header{background:var(--rk-paper);}
 .site-header-inner{
-  display:flex;align-items:center;
+  display:flex;align-items:center;border-bottom:1px solid var(--rk-line);
   padding:calc(22px + env(safe-area-inset-top)) 24px 22px;max-width:1180px;margin:0 auto;
 }
 /* Square stacked wordmark (kenko / bento / by rokusho baked into the art) —
@@ -131,18 +139,18 @@ a{color:inherit;text-decoration:none;}
   background:var(--rk-primary);color:var(--rk-white);font-size:10.5px;font-weight:700;
   display:flex;align-items:center;justify-content:center;
 }
-/* Mobile: nav links AND the logo dropped entirely (mode-pills right below
-   already cover Build your own / Chef's picks, and stand in as the page's
-   top-left anchor once the logo is gone) — just language + cart right.
-   Removing the logo also shrinks the header's content height on its own
-   (its tallest child used to be the 68px logo), which pulls mode-pills up
-   right underneath it; the padding tweaks here tighten that gap further. */
+/* Mobile: nav links AND the logo dropped entirely, and mode-pills (Build
+   your own / Chef's picks) moves up onto the header's own row, taking the
+   logo's old spot at the top-left — language + cart stay top-right. Both
+   .site-header-inner and .mode-pills become flex items of <header> itself
+   for this range; .site-header-inner keeps just the language/cart pair. */
 @media(max-width:880px){
-  .site-header-inner{flex-wrap:nowrap;justify-content:flex-end;padding-top:14px;padding-bottom:14px;}
+  .site-header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--rk-line);padding-top:env(safe-area-inset-top);}
+  .site-header-inner{border-bottom:none;flex:none;margin:0;max-width:none;padding:14px 16px 14px 0;}
   .site-header-inner .logo{display:none;}
   .main-nav{display:none;}
   .header-right{order:3;flex:none;gap:8px;}
-  .mode-pills{padding-top:12px;}
+  .mode-pills{order:-1;flex:1 1 auto;min-width:0;margin:0;max-width:none;padding:14px 0 14px 16px;}
 }
 
 /* ---------- mode pills ---------- */
@@ -197,6 +205,10 @@ a{color:inherit;text-decoration:none;}
   position:sticky;top:0;z-index:30;background:rgba(251,251,250,.92);
   backdrop-filter:blur(8px);border-bottom:1px solid var(--rk-line);
 }
+/* "Your bento" title — mirrors Chef's Picks' .picks-mobile-title, frozen
+   together with the tabs below it in the same sticky .step-nav; hidden on
+   desktop where the tabs alone are already a clear enough sticky nav. */
+.step-nav-title{display:none;}
 .step-nav-inner{
   max-width:1180px;margin:0 auto;padding:0 24px;
   display:flex;align-items:center;justify-content:space-between;gap:16px;
@@ -224,6 +236,7 @@ a{color:inherit;text-decoration:none;}
 /* on narrow phones the running totals move to their own row instead of hiding —
    people need to see the full macro tally at every step, not just on desktop */
 @media(max-width:760px){
+  .step-nav-title{display:block;font-family:var(--font-display);font-size:19px;font-weight:600;padding:14px 16px 2px;}
   .step-nav-inner{flex-wrap:wrap;padding:0 16px;row-gap:0;}
   .step-tabs{order:1;flex:1 1 100%;}
   .step-tab{padding:13px 12px;font-size:13.5px;}
@@ -961,14 +974,14 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
    element accounts for the notch / home-indicator safe area.
    ============================================================ */
 @media(max-width:480px){
-  .site-header-inner{padding-left:16px;padding-right:16px;}
+  .site-header-inner{padding-right:16px;}
   .header-right{gap:6px;}
   .lang-select{padding:6px 5px;font-size:11.5px;}
   .logo-img{height:56px;}
   .cart-btn{padding:7px 10px;}
   .cart-icon{width:18px;height:18px;}
 
-  .mode-pills{padding:10px 16px 6px;gap:8px;}
+  .mode-pills{padding:10px 0 10px 16px;gap:6px;}
   .mode-pill{padding:8px 15px;font-size:13px;}
 
   .hero h1{font-size:19px;}

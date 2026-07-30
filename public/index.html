@@ -44,12 +44,11 @@
       </button>
     </div>
   </div>
+  <div class="mode-pills">
+    <button type="button" class="mode-pill is-active" data-view="byo" data-i18n="mode_byo">Build your own</button>
+    <button type="button" class="mode-pill" data-view="picks" data-i18n="mode_picks">Chef's picks</button>
+  </div>
 </header>
-
-<div class="mode-pills">
-  <button type="button" class="mode-pill is-active" data-view="byo" data-i18n="mode_byo">Build your own</button>
-  <button type="button" class="mode-pill" data-view="picks" data-i18n="mode_picks">Chef's picks</button>
-</div>
 
 <div id="byoView">
 <section class="hero">
@@ -69,6 +68,7 @@
 
 <div class="builder-wrap">
 <nav class="step-nav" id="stepNav">
+  <div class="step-nav-title" data-i18n="panel_your_bento">Your bento</div>
   <div class="step-nav-inner">
     <div class="step-tabs" id="stepTabs">
       <a href="#protein" class="step-tab" data-target="protein"><span class="num">1</span><span data-i18n="tab_protein">Protein</span></a>
