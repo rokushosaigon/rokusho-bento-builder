@@ -541,6 +541,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .footer-hours-label-row{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;}
 .footer-hours-label{font-size:12.5px;font-weight:700;color:var(--rk-ink);text-transform:uppercase;letter-spacing:.03em;}
 .footer-hours-time{display:block;font-size:14px;color:var(--rk-ink-soft);margin-top:3px;}
+.footer-subhead{display:none;}
 .delivery-row{display:flex;justify-content:center;gap:8px;margin-top:6px;flex-wrap:wrap;}
 .delivery-pill{border:1px solid var(--rk-line);border-radius:999px;padding:6px 14px;font-size:12.5px;color:var(--rk-ink-soft);}
 .footer-map-wrap{margin-top:14px;display:flex;flex-direction:column;align-items:center;}
@@ -567,8 +568,33 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 }
 .placeholder-note{font-size:11px;color:var(--rk-ink-soft);opacity:.7;margin-top:10px;}
 
+/* Mobile footer: learns the left-aligned, stacked-sections arrangement
+   from soumaki.com.vn's mobile footer (contact block, then a labeled
+   sub-section per group, bottom links left-aligned) rather than the
+   desktop's centered 3-column layout — not a visual copy (no color/
+   font match), just the same information hierarchy. */
 @media(max-width:760px){
-  .footer-top{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr;text-align:left;gap:34px;padding:40px 20px 30px;}
+  .footer-brand{align-items:flex-start;}
+  .footer-tagline{max-width:none;}
+  .footer-col{align-items:flex-start;}
+  #footerContact a[href^="tel:"]{
+    font-size:13px;font-weight:700;letter-spacing:.02em;color:var(--rk-ink-soft);margin-bottom:4px;
+  }
+  #footerContact a[href^="mailto:"]{
+    font-size:20px;font-weight:700;color:var(--rk-ink);margin-bottom:16px;
+  }
+  .footer-hours-label-row{justify-content:flex-start;}
+  .footer-map-wrap{align-items:flex-start;}
+  .footer-map-rating{justify-content:flex-start;}
+  .footer-social-row{display:flex;flex-wrap:wrap;column-gap:18px;row-gap:8px;}
+  .footer-social-row a{margin-bottom:0;text-decoration:underline;}
+  .footer-subhead{
+    display:block;font-family:var(--font-body);font-size:11px;text-transform:uppercase;
+    letter-spacing:.08em;color:var(--rk-ink-soft);margin:18px 0 8px;
+  }
+  .delivery-row{justify-content:flex-start;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:8px;}
 }
 
 /* receipt (off-screen, used only for image export) */
