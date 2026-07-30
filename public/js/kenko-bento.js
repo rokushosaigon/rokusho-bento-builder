@@ -1240,7 +1240,7 @@ function renderPicks(){
   document.getElementById('picksGrid').innerHTML = groupsWithItems.length ? groupsWithItems.map(g=>{
     const meta = GROUP_META[g];
     const items = filtered.filter(p=>p.group===g);
-    return `<div class="picks-group">
+    return `<div class="picks-group" data-group="${g}">
       <div class="picks-group-head">
         <span class="picks-group-dot" style="background:${meta.color}"></span>
         <div><h3>${groupLabel(g)}</h3><p>${groupDesc(g)}</p></div>
@@ -1258,6 +1258,30 @@ function renderPicks(){
   requestAnimationFrame(()=>{
     document.querySelectorAll('.picks-carousel-wrap').forEach(updateCarouselArrows);
   });
+  observePicksGroups();
+}
+
+// Mobile's category dropdown auto-follows whichever group is scrolled to —
+// separate from picking a value in the dropdown itself (which filters the
+// list down to just that group): this only updates what the dropdown
+// *shows*, via .value (no 'change' event, so it never triggers a filter).
+// Re-run after every renderPicks() since .picks-group elements are
+// recreated wholesale each time.
+let picksGroupObserver = null;
+function observePicksGroups(){
+  if(picksGroupObserver) picksGroupObserver.disconnect();
+  const groupEls = document.querySelectorAll('.picks-group[data-group]');
+  if(!groupEls.length) return;
+  picksGroupObserver = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting) return;
+      const g = entry.target.getAttribute('data-group');
+      const select = document.getElementById('picksMobileSelect');
+      if(select && select.value !== g) select.value = g;
+      document.getElementById('picksMobileVeg').classList.toggle('is-active', g==='vegetarian');
+    });
+  }, {rootMargin:'-130px 0px -65% 0px', threshold:0});
+  groupEls.forEach(el=>picksGroupObserver.observe(el));
 }
 
 function updateCarouselArrows(wrap){
