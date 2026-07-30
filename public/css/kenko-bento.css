@@ -951,11 +951,19 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--rk-primary);outline:none;}
 .form-row{display:grid;grid-template-columns:1fr 2fr;gap:10px;}
 .ck-phone-row{display:flex;gap:8px;}
-.form-field .ck-phone-country{
-  flex:0 0 100px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  padding-left:10px;padding-right:26px;background-position:right 7px center;background-size:14px;
+.ck-phone-dial-wrap{
+  flex:0 0 76px;display:flex;align-items:center;gap:4px;min-width:0;
+  border:1.5px solid var(--rk-line);border-radius:10px;padding:10px 10px;background:var(--rk-white);
 }
-.ck-phone-row input{flex:1;min-width:0;}
+.ck-phone-dial-wrap:focus-within{border-color:var(--rk-primary);}
+.ck-phone-flag{font-size:16px;line-height:1;flex:none;}
+.ck-phone-plus{color:var(--rk-ink-soft);font-size:14px;flex:none;}
+.form-field .ck-phone-dial{
+  flex:1;width:auto;min-width:0;border:none;padding:0;font-size:14px;font-family:inherit;color:var(--rk-ink);
+  background:transparent;
+}
+.ck-phone-dial:focus{outline:none;}
+.ck-phone-row input#ckPhone{flex:1;min-width:0;}
 .form-field input.is-invalid{border-color:var(--rk-primary);}
 .ck-phone-error{margin-top:6px;font-size:12px;color:var(--rk-primary);}
 .order-done{text-align:center;padding:20px 4px 10px;}

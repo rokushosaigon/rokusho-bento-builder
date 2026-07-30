@@ -2126,13 +2126,29 @@ const PHONE_LEN = {
   MX:[10,10], BR:[10,11], AR:[10,11], CL:[9,9], CO:[10,10], PE:[9,9],
   ZA:[9,9], NG:[10,10], EG:[10,10], KE:[9,9], MA:[9,9]
 };
+// A few dial codes are shared by several countries (+1: US/Canada/several
+// Caribbean nations, +7: Russia/Kazakhstan) — pick the country someone
+// typing that code almost always means, for flag + digit-length purposes.
+const PHONE_DIAL_PRIORITY = {'1':'US', '7':'RU'};
+function countryForDial(dial){
+  if(!dial) return null;
+  if(PHONE_DIAL_PRIORITY[dial]){
+    const preferred = PHONE_COUNTRIES.find(c=>c.cc===PHONE_DIAL_PRIORITY[dial]);
+    if(preferred) return preferred;
+  }
+  return PHONE_COUNTRIES.find(c=>c.dial===dial) || null;
+}
 function phoneLenFor(cc){ return PHONE_LEN[cc] || PHONE_LEN_DEFAULT; }
-function isValidPhoneDigits(cc, digits){
-  const [min,max] = phoneLenFor(cc);
+function phoneLenForDial(dial){
+  const country = countryForDial(dial);
+  return country ? phoneLenFor(country.cc) : PHONE_LEN_DEFAULT;
+}
+function isValidPhoneDigits(dial, digits){
+  const [min,max] = phoneLenForDial(dial);
   return digits.length>=min && digits.length<=max;
 }
 // Inline "wrong digit count" warning under the phone field — shown on blur
-// (once there's something to judge) and re-checked whenever the country
+// (once there's something to judge) and re-checked whenever the dial code
 // changes; a blank field is left alone since that's the separate
 // "required field" check on submit, not a format problem.
 function validatePhoneField(){
@@ -2140,8 +2156,8 @@ function validatePhoneField(){
   const errorEl = document.getElementById('ckPhoneError');
   if(!input || !errorEl) return true;
   const digits = input.value.replace(/\D/g,'');
-  const cc = document.getElementById('ckPhoneCountry')?.value || checkoutData.countryCode || 'VN';
-  const valid = !digits || isValidPhoneDigits(cc, digits);
+  const dial = document.getElementById('ckPhoneDial')?.value || checkoutData.dialCode || '84';
+  const valid = !digits || isValidPhoneDigits(dial, digits);
   input.classList.toggle('is-invalid', !valid);
   errorEl.style.display = valid ? 'none' : 'block';
   return valid;
@@ -2151,13 +2167,12 @@ function validatePhoneField(){
 // lookups and staff habits aren't disturbed.
 function formattedPhone(){
   const digits = (checkoutData.phone||'').replace(/\D/g,'');
-  if(!checkoutData.countryCode || checkoutData.countryCode==='VN') return digits;
-  const country = PHONE_COUNTRIES.find(c=>c.cc===checkoutData.countryCode);
-  return country ? `+${country.dial} ${digits}` : digits;
+  if(!checkoutData.dialCode || checkoutData.dialCode==='84') return digits;
+  return `+${checkoutData.dialCode} ${digits}`;
 }
 
 let cartStep = 'review'; // review | datetime | contact | done
-let checkoutData = {date:'', dateLabel:'', slot:'', slotLabel:'', phone:'', countryCode:'VN', name:'', title:'Mr', address:'', email:'', notes:''};
+let checkoutData = {date:'', dateLabel:'', slot:'', slotLabel:'', phone:'', dialCode:'84', name:'', title:'Mr', address:'', email:'', notes:''};
 let lastOrder = null;
 let calendarViewDate = null;
 
@@ -2376,23 +2391,29 @@ function renderCartDatetime(body, footer){
     </div>`;
 }
 
-// A rough "0123456789"-style example matching the selected country's
-// expected digit count, so the placeholder hints at the right length.
-function phonePlaceholderFor(cc){
-  const [,max] = phoneLenFor(cc);
+// A rough "0123456789"-style example matching the dial code's expected
+// digit count, so the placeholder hints at the right length.
+function phonePlaceholderFor(dial){
+  const [,max] = phoneLenForDial(dial);
   return '0'.repeat(max);
 }
+// Unrecognized dial code (not one of ours, or still mid-typing) — shown
+// instead of a specific flag rather than guessing.
+const PHONE_FLAG_UNKNOWN = '🏳️';
 function renderCartContact(body, footer){
   document.getElementById('cartPanelTitle').textContent = tr_('contact_title');
   document.getElementById('cartStepLabel').textContent = tr_('step3of3');
+  const dialMatch = countryForDial(checkoutData.dialCode);
   body.innerHTML = `
     <div class="form-field">
       <label>${tr_('label_phone')}</label>
       <div class="ck-phone-row">
-        <select id="ckPhoneCountry" class="ck-phone-country" aria-label="${tr_('label_country_code')}">
-          ${PHONE_COUNTRIES.map(c=>`<option value="${c.cc}" title="${escHtml(c.name)}" ${checkoutData.countryCode===c.cc?'selected':''}>${c.flag} +${c.dial}</option>`).join('')}
-        </select>
-        <input type="tel" id="ckPhone" placeholder="${phonePlaceholderFor(checkoutData.countryCode)}" value="${checkoutData.phone}">
+        <div class="ck-phone-dial-wrap">
+          <span class="ck-phone-flag" id="ckPhoneFlag">${dialMatch ? dialMatch.flag : PHONE_FLAG_UNKNOWN}</span>
+          <span class="ck-phone-plus">+</span>
+          <input type="tel" id="ckPhoneDial" class="ck-phone-dial" inputmode="numeric" maxlength="4" aria-label="${tr_('label_country_code')}" value="${escHtml(checkoutData.dialCode)}">
+        </div>
+        <input type="tel" id="ckPhone" placeholder="${phonePlaceholderFor(checkoutData.dialCode)}" value="${checkoutData.phone}">
       </div>
       <p class="ck-phone-error" id="ckPhoneError" style="display:none">${tr_('toast_invalid_phone')}</p>
     </div>
@@ -2603,7 +2624,7 @@ function renderCartPanel(){
 function syncContactFields(){
   const get = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
   if(document.getElementById('ckPhone')) checkoutData.phone = get('ckPhone');
-  if(document.getElementById('ckPhoneCountry')) checkoutData.countryCode = get('ckPhoneCountry') || 'VN';
+  if(document.getElementById('ckPhoneDial')) checkoutData.dialCode = get('ckPhoneDial') || '84';
   if(document.getElementById('ckName')) checkoutData.name = get('ckName');
   if(document.getElementById('ckTitle')) checkoutData.title = get('ckTitle') || 'Mr';
   if(document.getElementById('ckAddress')) checkoutData.address = get('ckAddress');
@@ -2889,9 +2910,10 @@ document.addEventListener('focusout', e=>{
   if(e.target && e.target.id==='ckPhone'){
     // CUSTOMER_DB is keyed by plain VN-format numbers only — a lookup
     // against a foreign number would never hit, so don't bother firing it.
-    if(checkoutData.countryCode==='VN') lookupCustomer(e.target.value);
+    if(checkoutData.dialCode==='84') lookupCustomer(e.target.value);
     validatePhoneField();
   }
+  if(e.target && e.target.id==='ckPhoneDial') validatePhoneField();
 });
 
 document.addEventListener('keydown', e=>{
@@ -2901,13 +2923,6 @@ document.addEventListener('keydown', e=>{
 document.addEventListener('change', e=>{
   if(e.target && e.target.id==='langSelect'){ setLanguage(e.target.value); return; }
   if(e.target && e.target.id==='picksMobileSelect'){ pickGroupFilter = e.target.value; renderPicks(); return; }
-  if(e.target && e.target.id==='ckPhoneCountry'){
-    checkoutData.countryCode = e.target.value;
-    const phoneInput = document.getElementById('ckPhone');
-    if(phoneInput) phoneInput.placeholder = phonePlaceholderFor(checkoutData.countryCode);
-    validatePhoneField();
-    return;
-  }
 });
 
 document.addEventListener('input', e=>{
@@ -2919,8 +2934,21 @@ document.addEventListener('input', e=>{
     if(digitsOnly !== e.target.value) e.target.value = digitsOnly;
     // Only clear a standing error while actively typing — re-flagging it
     // waits for the next blur, so it doesn't nag mid-entry.
-    const cc = document.getElementById('ckPhoneCountry')?.value || checkoutData.countryCode || 'VN';
-    if(!digitsOnly || isValidPhoneDigits(cc, digitsOnly)) validatePhoneField();
+    const dial = document.getElementById('ckPhoneDial')?.value || checkoutData.dialCode || '84';
+    if(!digitsOnly || isValidPhoneDigits(dial, digitsOnly)) validatePhoneField();
+  }
+  if(e.target && e.target.id==='ckPhoneDial'){
+    const digitsOnly = e.target.value.replace(/\D/g,'').slice(0,4);
+    if(digitsOnly !== e.target.value) e.target.value = digitsOnly;
+    checkoutData.dialCode = digitsOnly;
+    const match = countryForDial(digitsOnly);
+    const flagEl = document.getElementById('ckPhoneFlag');
+    if(flagEl) flagEl.textContent = match ? match.flag : PHONE_FLAG_UNKNOWN;
+    const phoneInput = document.getElementById('ckPhone');
+    if(phoneInput) phoneInput.placeholder = phonePlaceholderFor(digitsOnly);
+    // Same "only clear, don't flag" rule as the phone field itself while typing.
+    const phoneDigits = phoneInput ? phoneInput.value.replace(/\D/g,'') : '';
+    if(!phoneDigits || isValidPhoneDigits(digitsOnly, phoneDigits)) validatePhoneField();
   }
   // Cart line note sheet — updates the line directly, same reasoning as
   // above (no re-render mid-typing).
