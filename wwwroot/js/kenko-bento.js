@@ -2131,6 +2131,21 @@ function isValidPhoneDigits(cc, digits){
   const [min,max] = phoneLenFor(cc);
   return digits.length>=min && digits.length<=max;
 }
+// Inline "wrong digit count" warning under the phone field — shown on blur
+// (once there's something to judge) and re-checked whenever the country
+// changes; a blank field is left alone since that's the separate
+// "required field" check on submit, not a format problem.
+function validatePhoneField(){
+  const input = document.getElementById('ckPhone');
+  const errorEl = document.getElementById('ckPhoneError');
+  if(!input || !errorEl) return true;
+  const digits = input.value.replace(/\D/g,'');
+  const cc = document.getElementById('ckPhoneCountry')?.value || checkoutData.countryCode || 'VN';
+  const valid = !digits || isValidPhoneDigits(cc, digits);
+  input.classList.toggle('is-invalid', !valid);
+  errorEl.style.display = valid ? 'none' : 'block';
+  return valid;
+}
 // Only prefixes non-VN numbers with their dial code — VN stays as the plain
 // 10-digit string customers and CUSTOMER_DB have always used, so existing
 // lookups and staff habits aren't disturbed.
@@ -2375,10 +2390,11 @@ function renderCartContact(body, footer){
       <label>${tr_('label_phone')}</label>
       <div class="ck-phone-row">
         <select id="ckPhoneCountry" class="ck-phone-country" aria-label="${tr_('label_country_code')}">
-          ${PHONE_COUNTRIES.map(c=>`<option value="${c.cc}" ${checkoutData.countryCode===c.cc?'selected':''}>${c.flag} +${c.dial} ${escHtml(c.name)}</option>`).join('')}
+          ${PHONE_COUNTRIES.map(c=>`<option value="${c.cc}" title="${escHtml(c.name)}" ${checkoutData.countryCode===c.cc?'selected':''}>${c.flag} +${c.dial}</option>`).join('')}
         </select>
         <input type="tel" id="ckPhone" placeholder="${phonePlaceholderFor(checkoutData.countryCode)}" value="${checkoutData.phone}">
       </div>
+      <p class="ck-phone-error" id="ckPhoneError" style="display:none">${tr_('toast_invalid_phone')}</p>
     </div>
     <p class="autofill-note" id="ckAutofillNote" style="display:none">${tr_('autofill_note')}</p>
     <div class="form-row" style="margin-bottom:14px">
@@ -2624,7 +2640,7 @@ function confirmOrder(){
     showToast(tr_('toast_fill_fields'));
     return;
   }
-  if(!isValidPhoneDigits(checkoutData.countryCode, checkoutData.phone.replace(/\D/g,''))){
+  if(!validatePhoneField()){
     showToast(tr_('toast_invalid_phone'));
     return;
   }
@@ -2870,9 +2886,12 @@ document.addEventListener('click', e=>{
 });
 
 document.addEventListener('focusout', e=>{
-  // CUSTOMER_DB is keyed by plain VN-format numbers only — a lookup against
-  // a foreign number would never hit, so don't bother firing it.
-  if(e.target && e.target.id==='ckPhone' && checkoutData.countryCode==='VN') lookupCustomer(e.target.value);
+  if(e.target && e.target.id==='ckPhone'){
+    // CUSTOMER_DB is keyed by plain VN-format numbers only — a lookup
+    // against a foreign number would never hit, so don't bother firing it.
+    if(checkoutData.countryCode==='VN') lookupCustomer(e.target.value);
+    validatePhoneField();
+  }
 });
 
 document.addEventListener('keydown', e=>{
@@ -2886,6 +2905,7 @@ document.addEventListener('change', e=>{
     checkoutData.countryCode = e.target.value;
     const phoneInput = document.getElementById('ckPhone');
     if(phoneInput) phoneInput.placeholder = phonePlaceholderFor(checkoutData.countryCode);
+    validatePhoneField();
     return;
   }
 });
@@ -2897,6 +2917,10 @@ document.addEventListener('input', e=>{
   if(e.target && e.target.id==='ckPhone'){
     const digitsOnly = e.target.value.replace(/\D/g,'');
     if(digitsOnly !== e.target.value) e.target.value = digitsOnly;
+    // Only clear a standing error while actively typing — re-flagging it
+    // waits for the next blur, so it doesn't nag mid-entry.
+    const cc = document.getElementById('ckPhoneCountry')?.value || checkoutData.countryCode || 'VN';
+    if(!digitsOnly || isValidPhoneDigits(cc, digitsOnly)) validatePhoneField();
   }
   // Cart line note sheet — updates the line directly, same reasoning as
   // above (no re-render mid-typing).

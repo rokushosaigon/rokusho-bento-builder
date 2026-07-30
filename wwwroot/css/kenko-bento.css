@@ -952,10 +952,12 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .form-row{display:grid;grid-template-columns:1fr 2fr;gap:10px;}
 .ck-phone-row{display:flex;gap:8px;}
 .form-field .ck-phone-country{
-  flex:0 0 108px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  padding-right:30px;background-position:right 8px center;background-size:14px;
+  flex:0 0 100px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  padding-left:10px;padding-right:26px;background-position:right 7px center;background-size:14px;
 }
 .ck-phone-row input{flex:1;min-width:0;}
+.form-field input.is-invalid{border-color:var(--rk-primary);}
+.ck-phone-error{margin-top:6px;font-size:12px;color:var(--rk-primary);}
 .order-done{text-align:center;padding:20px 4px 10px;}
 .order-done-check{
   width:56px;height:56px;border-radius:50%;background:var(--rk-matcha-pale);color:var(--rk-matcha);
