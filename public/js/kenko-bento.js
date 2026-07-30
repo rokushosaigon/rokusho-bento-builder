@@ -1109,14 +1109,17 @@ function categoryCount(cat){
 }
 
 // Soba is only served with mentsuyu (cold noodle dipping sauce) — picking soba
-// auto-selects it. Trying to add a different sauce afterwards asks for
-// confirmation instead of blocking outright: "Yes" lets the swap happen like
-// any normal sauce pick, "No" leaves mentsuyu selected untouched.
+// auto-selects it. Either picking a different sauce OR removing mentsuyu
+// itself afterwards asks for confirmation instead of blocking outright:
+// "Yes" lets the change go through like a normal sauce pick, "No" leaves
+// mentsuyu selected untouched.
 const SOBA_SAUCE_LOCK = 'mentsuyu';
 function setItemQty(cat, id, newQty){
   newQty = Math.max(0, newQty);
-  if(cat==='sauce' && qty['soba']>0 && id!==SOBA_SAUCE_LOCK && newQty>0){
-    if(!confirm(tr_('soba_sauce_confirm'))) return;
+  if(cat==='sauce' && qty['soba']>0){
+    const isAddingOtherSauce = id!==SOBA_SAUCE_LOCK && newQty>0;
+    const isRemovingMentsuyu = id===SOBA_SAUCE_LOCK && newQty<qty[id];
+    if((isAddingOtherSauce || isRemovingMentsuyu) && !confirm(tr_('soba_sauce_confirm'))) return;
   }
   const wasSelected = qty[id] > 0;
   qty[id] = newQty;
