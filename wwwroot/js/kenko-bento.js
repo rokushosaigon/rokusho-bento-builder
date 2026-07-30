@@ -1152,7 +1152,6 @@ function cardTemplate(item,cat){
     </span>` : '';
   return `<div class="ing-card${selected?' has-qty':''}" data-cat="${cat}" data-id="${item.id}" data-select="${item.id}" data-select-cat="${cat}">
     <span class="ing-media">
-      <span class="qty-flag">${q}</span>
       <span class="ing-illustration" role="img" aria-label="${name}">${iconSvg(item.icon)}</span>
     </span>
     <span class="ing-name">${name}</span>
@@ -2614,6 +2613,15 @@ document.addEventListener('click', e=>{
   }
   if(e.target.id==='addToCartBtn'){
     if(!document.getElementById('addToCartBtn').disabled) addCustomBentoToCart();
+    return;
+  }
+
+  // Mobile's Vegetarian shortcut toggles on/off, unlike the chips/dropdown
+  // (which just set whichever filter was clicked) — tapping it again drops
+  // back to "all" instead of being stuck on Vegetarian with no quick way out.
+  if(e.target.closest('#picksMobileVeg')){
+    pickGroupFilter = pickGroupFilter==='vegetarian' ? 'all' : 'vegetarian';
+    renderPicks();
     return;
   }
 

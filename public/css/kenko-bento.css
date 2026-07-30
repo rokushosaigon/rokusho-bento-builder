@@ -97,7 +97,11 @@ a{color:inherit;text-decoration:none;}
    the old wide-wordmark's slim single-line heights. main-nav/header-right
    share the remaining space equally (flex:1 each) so the logo lands dead
    center instead of tucked in a corner. */
-.logo{order:2;display:flex;align-items:center;justify-content:center;}
+/* Scoped to .site-header-inner, not a bare .logo rule — .logo is reused
+   (unscoped) for the footer brand mark too, which doesn't want the header's
+   order:2/centering behavior and was rendering its logo below the tagline
+   because of it. */
+.site-header-inner .logo{order:2;display:flex;align-items:center;justify-content:center;}
 .logo-img{height:84px;width:auto;display:block;}
 .main-nav{order:1;flex:1;display:flex;align-items:center;gap:18px;font-size:14.5px;color:var(--rk-ink-soft);}
 .main-nav a{transition:.15s;}
@@ -131,7 +135,7 @@ a{color:inherit;text-decoration:none;}
    Build your own / Chef's picks) — just logo left, language + cart right. */
 @media(max-width:880px){
   .site-header-inner{flex-wrap:nowrap;justify-content:space-between;}
-  .logo{order:1;flex:none;justify-content:flex-start;}
+  .site-header-inner .logo{order:1;flex:none;justify-content:flex-start;}
   .logo-img{height:68px;}
   .main-nav{display:none;}
   .header-right{order:3;flex:none;gap:8px;}
@@ -270,12 +274,6 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 .line-row[data-cat="carbs"] .line-badge{background:var(--pastel-yellow);color:var(--pastel-yellow-text);}
 .line-row[data-cat="side"] .line-badge{background:var(--pastel-green);color:var(--pastel-green-text);}
 .line-row[data-cat="sauce"] .line-badge{background:var(--pastel-blue);color:var(--pastel-blue-text);}
-.qty-flag{
-  position:absolute;top:8px;right:8px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;
-  background:var(--rk-ink);color:var(--rk-paper);font-size:11px;font-weight:700;
-  display:none;align-items:center;justify-content:center;
-}
-.ing-card.has-qty .qty-flag{display:flex;}
 /* Grab-style quick-add "+" on the mobile row layout below — hidden on
    desktop, where tapping anywhere on the card already adds one (this is
    purely a visual affordance; the whole .ing-card stays the tap target). */
@@ -408,7 +406,6 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 .quick-action-messenger{background:var(--rk-ink);}
 .quick-action-zalo{background:var(--rk-ink);}
 .quick-action-whatsapp{background:var(--rk-ink);}
-.quick-action-hotline{background:var(--rk-primary);}
 
 /* ---------- bento summary panel ---------- */
 .overlay{
@@ -504,9 +501,20 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 }
 .toast.is-shown{opacity:1;transform:translate(-50%,0);}
 
-/* ---------- footer ---------- */
+/* ---------- footer ----------
+   Rebalanced after soumaki.com.vn's build-your-own page footer: three
+   equal-width, center-aligned columns instead of a wider left-aligned
+   brand column next to a contact column that used to run much taller
+   than the other two (mainly the old embedded map) — dropped the map
+   in favour of just the rating + "Get directions" link, matching how
+   the reference site skips an inline map too. */
 footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top:40px;}
-.footer-top{max-width:1180px;margin:0 auto;padding:54px 24px 36px;display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:34px;}
+.footer-top{
+  max-width:1180px;margin:0 auto;padding:54px 24px 36px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:34px;
+  text-align:center;
+}
+.footer-brand{display:flex;flex-direction:column;align-items:center;}
+.footer-col{display:flex;flex-direction:column;align-items:center;}
 .footer-brand .logo-img{height:76px;margin-bottom:4px;}
 .footer-tagline{margin-top:14px;color:var(--rk-ink-soft);font-size:14px;max-width:300px;}
 .footer-col h4{font-family:var(--font-body);font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--rk-ink-soft);margin-bottom:14px;}
@@ -515,24 +523,14 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .footer-hours{margin-top:4px;}
 .footer-hours-row{margin-bottom:12px;}
 .footer-hours-row:last-child{margin-bottom:0;}
-.footer-hours-label-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.footer-hours-label-row{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;}
 .footer-hours-label{font-size:12.5px;font-weight:700;color:var(--rk-ink);text-transform:uppercase;letter-spacing:.03em;}
 .footer-hours-time{display:block;font-size:14px;color:var(--rk-ink-soft);margin-top:3px;}
-.delivery-row{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;}
+.delivery-row{display:flex;justify-content:center;gap:8px;margin-top:6px;flex-wrap:wrap;}
 .delivery-pill{border:1px solid var(--rk-line);border-radius:999px;padding:6px 14px;font-size:12.5px;color:var(--rk-ink-soft);}
-.footer-map-wrap{margin-top:14px;}
-.footer-map{
-  width:100%;aspect-ratio:16/10;border:1px solid var(--rk-line);border-radius:var(--radius-m);
-  overflow:hidden;background:var(--rk-paper-deep);
-}
-.footer-map iframe{
-  width:100%;height:100%;border:0;display:block;
-  /* mutes Google's default blue/green palette toward the site's warm paper tones —
-     the free Maps embed has no styling API, so this is a CSS-filter approximation */
-  filter:grayscale(.5) sepia(.35) saturate(1.15) hue-rotate(-8deg) contrast(.92) brightness(1.03);
-}
+.footer-map-wrap{margin-top:14px;display:flex;flex-direction:column;align-items:center;}
 .footer-map-rating{
-  display:flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;color:var(--rk-ink);
+  display:flex;align-items:center;gap:6px;font-size:13px;color:var(--rk-ink);
 }
 .footer-map-rating b{font-family:var(--font-mono);font-weight:700;}
 .footer-map-rating .stars{color:var(--rk-yuzu-deep);letter-spacing:1px;font-size:12px;}
