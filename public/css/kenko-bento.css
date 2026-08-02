@@ -893,6 +893,11 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   background:var(--rk-white);color:var(--rk-ink);flex:0 0 auto;white-space:nowrap;
 }
 .date-chip.is-selected{border-color:var(--rk-primary);background:var(--rk-primary-pale);color:var(--rk-primary-deep);}
+.order-type-row{display:flex;gap:8px;margin-bottom:16px;}
+.order-type-row .date-chip{flex:1;text-align:center;}
+.pickup-location-box{border:1px solid var(--rk-line);border-radius:14px;padding:14px;margin-bottom:14px;}
+.pickup-location-box b{display:block;margin-bottom:4px;}
+.pickup-location-box a{font-size:12.5px;}
 .slot-grid{
   display:flex;flex-wrap:nowrap;gap:8px;margin-bottom:14px;
   overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none;

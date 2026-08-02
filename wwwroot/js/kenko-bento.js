@@ -72,7 +72,7 @@ const I18N = {
     "pick_customize_note": "Note",
     "pick_customize_extra_note": "from customization",
     "cart_swap_replaces": "instead of",
-    "cart_continue_delivery": "Continue to delivery time",
+    "cart_continue_delivery": "Continue",
     "delivery_time_title": "Delivery time",
     "step2of3": "Step 2 of 3",
     "step3of3": "Step 3 of 3",
@@ -81,6 +81,12 @@ const I18N = {
     "delivery_date_label": "Delivery date",
     "delivery_slot_label": "Delivery time slot",
     "checkout_slot_note": "Times are an estimate — our rider will arrive within the selected 30-minute window, every day from 11:00 AM to 1:30 PM.",
+    "order_type_pickup": "Pickup",
+    "pickup_time_title": "Pickup time",
+    "pickup_date_label": "Pickup date",
+    "pickup_slot_label": "Pickup time slot",
+    "checkout_pickup_slot_note": "Please arrive within your selected 15-minute window, every day from 11:00 AM to 1:30 PM.",
+    "pickup_location_label": "Pickup location",
     "continue_details": "Continue to your details",
     "label_address": "Delivery address",
     "address_placeholder": "Street, ward, district, city",
@@ -163,6 +169,7 @@ const I18N = {
     "toast_added": "Added to cart",
     "toast_cart_updated": "Cart updated",
     "toast_fill_fields": "Please fill in your name, phone number and delivery address.",
+    "toast_fill_fields_pickup": "Please fill in your name and phone number.",
     "toast_invalid_phone": "Please enter a valid phone number for the selected country.",
     "toast_slow_down": "Please wait a few seconds before submitting again.",
     "soba_sauce_confirm": "Soba only pairs with mentsuyu sauce. Are you sure you want to change the sauce?",
@@ -214,6 +221,12 @@ const I18N = {
   "delivery_date_label": "Ngày giao",
   "delivery_slot_label": "Khung giờ giao",
   "checkout_slot_note": "Thời gian giao mang tính dự kiến trong khung giờ bạn đã chọn (11:00 - 13:30).",
+  "order_type_pickup": "Tự đến lấy",
+  "pickup_time_title": "Thời gian lấy hàng",
+  "pickup_date_label": "Ngày lấy hàng",
+  "pickup_slot_label": "Khung giờ lấy hàng",
+  "checkout_pickup_slot_note": "Vui lòng đến trong khung giờ 15 phút bạn đã chọn, mỗi ngày từ 11:00 - 13:30.",
+  "pickup_location_label": "Địa điểm lấy hàng",
   "continue_details": "Tiếp tục",
   "label_address": "Địa chỉ nhận hàng",
   "address_placeholder": "Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố",
@@ -324,6 +337,7 @@ const I18N = {
   "toast_added": "Đã thêm vào giỏ hàng",
   "toast_cart_updated": "Đã cập nhật giỏ hàng",
   "toast_fill_fields": "Vui lòng nhập đầy đủ họ tên, số điện thoại và địa chỉ nhận hàng.",
+  "toast_fill_fields_pickup": "Vui lòng nhập đầy đủ họ tên và số điện thoại.",
   "toast_invalid_phone": "Vui lòng nhập số điện thoại hợp lệ theo quốc gia đã chọn.",
   "soba_sauce_confirm": "Mì soba chỉ hợp với sốt Mentsuyu. Bạn có chắc muốn đổi sang sốt khác không?",
   "toast_slow_down": "Vui lòng đợi vài giây trước khi gửi lại.",
@@ -368,7 +382,7 @@ const I18N = {
     "pick_customize_note": "備考",
     "pick_customize_extra_note": "カスタム分",
     "cart_swap_replaces": "の代わりに",
-    "cart_continue_delivery": "配達時間の選択へ進む",
+    "cart_continue_delivery": "続ける",
     "delivery_time_title": "配達時間",
     "step2of3": "ステップ 2/3",
     "step3of3": "ステップ 3/3",
@@ -377,6 +391,12 @@ const I18N = {
     "delivery_date_label": "お届け日",
     "delivery_slot_label": "お届け時間帯",
     "checkout_slot_note": "時間は目安です — 配達員は選択された30分の枠内（毎日11:00〜13:30）にお伺いします。",
+    "order_type_pickup": "店頭受け取り",
+    "pickup_time_title": "受け取り時間",
+    "pickup_date_label": "受け取り日",
+    "pickup_slot_label": "受け取り時間帯",
+    "checkout_pickup_slot_note": "選択された15分の枠内（毎日11:00〜13:30）にご来店ください。",
+    "pickup_location_label": "受け取り場所",
     "continue_details": "お客様情報の入力へ",
     "label_address": "配達先住所",
     "address_placeholder": "番地・町名・区・市",
@@ -459,6 +479,7 @@ const I18N = {
     "toast_added": "カートに追加しました",
     "toast_cart_updated": "カートを更新しました",
     "toast_fill_fields": "お名前・電話番号・配達先住所をご入力ください。",
+    "toast_fill_fields_pickup": "お名前と電話番号をご入力ください。",
     "toast_invalid_phone": "選択した国に合った有効な電話番号を入力してください。",
     "soba_sauce_confirm": "そばはめんつゆとの相性が一番です。ソースを変更してもよろしいですか？",
     "toast_slow_down": "数秒待ってから再度お試しください。",
@@ -500,7 +521,7 @@ const I18N = {
     "pick_customize_note": "메모",
     "pick_customize_extra_note": "커스텀 추가분",
     "cart_swap_replaces": "대신",
-    "cart_continue_delivery": "배달 시간 선택으로 이동",
+    "cart_continue_delivery": "계속",
     "delivery_time_title": "배달 시간",
     "step2of3": "3단계 중 2단계",
     "step3of3": "3단계 중 3단계",
@@ -509,6 +530,12 @@ const I18N = {
     "delivery_date_label": "배달 날짜",
     "delivery_slot_label": "배달 시간대",
     "checkout_slot_note": "시간은 예상 기준입니다 — 라이더는 매일 11:00~13:30 사이, 선택하신 30분 구간 내에 도착합니다.",
+    "order_type_pickup": "매장 픽업",
+    "pickup_time_title": "픽업 시간",
+    "pickup_date_label": "픽업 날짜",
+    "pickup_slot_label": "픽업 시간대",
+    "checkout_pickup_slot_note": "매일 11:00~13:30 사이, 선택하신 15분 구간 내에 방문해 주세요.",
+    "pickup_location_label": "픽업 장소",
     "continue_details": "상세 정보 입력으로 이동",
     "label_address": "배달 주소",
     "address_placeholder": "도로명, 동, 구, 시",
@@ -591,6 +618,7 @@ const I18N = {
     "toast_added": "장바구니에 담았습니다",
     "toast_cart_updated": "장바구니를 업데이트했습니다",
     "toast_fill_fields": "이름, 전화번호, 배달 주소를 입력해 주세요.",
+    "toast_fill_fields_pickup": "이름과 전화번호를 입력해 주세요.",
     "toast_invalid_phone": "선택한 국가에 맞는 올바른 전화번호를 입력해 주세요.",
     "soba_sauce_confirm": "소바는 멘츠유 소스와 가장 잘 어울립니다. 소스를 변경하시겠습니까?",
     "toast_slow_down": "몇 초 후에 다시 시도해 주세요.",
@@ -632,7 +660,7 @@ const I18N = {
     "pick_customize_note": "备注",
     "pick_customize_extra_note": "定制新增",
     "cart_swap_replaces": "替代",
-    "cart_continue_delivery": "继续选择送达时间",
+    "cart_continue_delivery": "继续",
     "delivery_time_title": "送达时间",
     "step2of3": "第2步，共3步",
     "step3of3": "第3步，共3步",
@@ -641,6 +669,12 @@ const I18N = {
     "delivery_date_label": "送达日期",
     "delivery_slot_label": "送达时间段",
     "checkout_slot_note": "时间为预估 —— 骑手将在您选择的30分钟时段内送达，每日11:00至13:30。",
+    "order_type_pickup": "到店自取",
+    "pickup_time_title": "取餐时间",
+    "pickup_date_label": "取餐日期",
+    "pickup_slot_label": "取餐时间段",
+    "checkout_pickup_slot_note": "请在您选择的15分钟时段内到店，每日11:00至13:30。",
+    "pickup_location_label": "取餐地点",
     "continue_details": "继续填写详细信息",
     "label_address": "送达地址",
     "address_placeholder": "街道、坊/村、区、城市",
@@ -723,6 +757,7 @@ const I18N = {
     "toast_added": "已加入购物车",
     "toast_cart_updated": "购物车已更新",
     "toast_fill_fields": "请填写姓名、电话号码和送达地址。",
+    "toast_fill_fields_pickup": "请填写姓名和电话号码。",
     "toast_invalid_phone": "请输入与所选国家相符的有效电话号码。",
     "soba_sauce_confirm": "荞麦面最适合搭配蘸面汁（Mentsuyu）。确定要更换酱汁吗？",
     "toast_slow_down": "请稍等几秒后再试。",
@@ -1919,6 +1954,7 @@ function sendOrderConfirmationEmail(order){
         customerEmail: order.contact.email || '',
         customerAddress: order.contact.address || '',
         customerNote: order.contact.notes || '',
+        orderType: order.contact.orderType || 'delivery',
         deliveryDate: order.dateLabel || '',
         deliverySlot: order.slotLabel || '',
         // Raw ISO date + slot id (still on order.contact — it's a spread of
@@ -2172,7 +2208,7 @@ function formattedPhone(){
 }
 
 let cartStep = 'review'; // review | datetime | contact | done
-let checkoutData = {date:'', dateLabel:'', slot:'', slotLabel:'', phone:'', dialCode:'84', name:'', title:'Mr', address:'', email:'', notes:''};
+let checkoutData = {orderType:'delivery', date:'', dateLabel:'', slot:'', slotLabel:'', phone:'', dialCode:'84', name:'', title:'Mr', address:'', email:'', notes:''};
 let lastOrder = null;
 let calendarViewDate = null;
 
@@ -2188,6 +2224,23 @@ const DELIVERY_SLOTS = [
   {id:'12:30', label:'12:30 – 1:00 PM'},
   {id:'13:00', label:'1:00 – 1:30 PM'}
 ];
+
+// Pickup window is the same 11:00 AM – 1:30 PM, split into tighter 15-minute slots.
+const PICKUP_SLOTS = [
+  {id:'11:00', label:'11:00 – 11:15 AM'},
+  {id:'11:15', label:'11:15 – 11:30 AM'},
+  {id:'11:30', label:'11:30 – 11:45 AM'},
+  {id:'11:45', label:'11:45 AM – 12:00 PM'},
+  {id:'12:00', label:'12:00 – 12:15 PM'},
+  {id:'12:15', label:'12:15 – 12:30 PM'},
+  {id:'12:30', label:'12:30 – 12:45 PM'},
+  {id:'12:45', label:'12:45 – 1:00 PM'},
+  {id:'13:00', label:'1:00 – 1:15 PM'},
+  {id:'13:15', label:'1:15 – 1:30 PM'}
+];
+
+const PICKUP_LOCATION_ADDRESS = 'Rokusho Saigon, 02 Thi Sách, Bến Nghé, Quận 1, TP. Hồ Chí Minh';
+const PICKUP_LOCATION_MAPS_URL = 'https://www.google.com/maps?q=Rokusho+Saigon,+02+Thi+S%C3%A1ch,+S%C3%A0i+G%C3%B2n,+H%E1%BB%93+Ch%C3%AD+Minh+700000&ftid=0x31752fdc279436fd:0xda4176c8fd161f4f&entry=gps';
 
 function earliestAllowedDate(){
   const now = new Date();
@@ -2348,7 +2401,7 @@ function renderCartReview(body, footer){
   body.innerHTML = cart.map(cartLineTemplate).join('') +
     (()=>{ const n = cartNutritionTotals(); return `
      <div class="cart-summary-row total"><span>${tr_('cart_subtotal_label')}</span><span>${fmtPrice(n.price)}</span></div>
-     <p class="checkout-note">${tr_('cart_subtotal_note')}</p>
+     ${checkoutData.orderType==='pickup' ? '' : `<p class="checkout-note">${tr_('cart_subtotal_note')}</p>`}
      <div class="cart-nutrition-title">${tr_('cart_nutrition_total')}</div>
      <div class="totals-grid">
        <div class="stat-box"><b>${Math.round(n.kcal)}</b><span>${tr_('label_kcal')}</span></div>
@@ -2361,29 +2414,35 @@ function renderCartReview(body, footer){
 }
 
 function renderCartDatetime(body, footer){
-  document.getElementById('cartPanelTitle').textContent = tr_('delivery_time_title');
+  const isPickup = checkoutData.orderType === 'pickup';
+  document.getElementById('cartPanelTitle').textContent = tr_(isPickup ? 'pickup_time_title' : 'delivery_time_title');
   document.getElementById('cartStepLabel').textContent = tr_('step2of3');
   if(!checkoutData.date){
     const d = earliestAllowedDate();
     checkoutData.date = isoDate(d);
     checkoutData.dateLabel = d.toLocaleDateString(currentLocale(),{weekday:'short',month:'short',day:'numeric'});
   }
-  if(!checkoutData.slot){
-    checkoutData.slot = DELIVERY_SLOTS[0].id;
-    checkoutData.slotLabel = DELIVERY_SLOTS[0].label;
+  const slots = isPickup ? PICKUP_SLOTS : DELIVERY_SLOTS;
+  if(!checkoutData.slot || !slots.find(s=>s.id===checkoutData.slot)){
+    checkoutData.slot = slots[0].id;
+    checkoutData.slotLabel = slots[0].label;
   }
   const cutoffPassed = new Date().getHours() >= 18;
   const note = cutoffPassed ? tr_('checkout_note_late') : tr_('checkout_note_ontime');
 
   body.innerHTML = `
-    <div class="checkout-note">${note}</div>
-    <div class="form-field"><label>${tr_('delivery_date_label')}</label></div>
-    <div class="calendar">${calendarHtml()}</div>
-    <div class="form-field"><label>${tr_('delivery_slot_label')}</label></div>
-    <div class="slot-grid">
-      ${DELIVERY_SLOTS.map(s=>`<button type="button" class="date-chip${checkoutData.slot===s.id?' is-selected':''}" data-slot="${s.id}" data-slot-label="${s.label}">${s.label}</button>`).join('')}
+    <div class="order-type-row">
+      <button type="button" class="date-chip${isPickup?'':' is-selected'}" data-order-type="delivery">${tr_('order_delivery')}</button>
+      <button type="button" class="date-chip${isPickup?' is-selected':''}" data-order-type="pickup">${tr_('order_type_pickup')}</button>
     </div>
-    <p class="checkout-note">${tr_('checkout_slot_note')}</p>
+    <div class="checkout-note">${note}</div>
+    <div class="form-field"><label>${tr_(isPickup ? 'pickup_date_label' : 'delivery_date_label')}</label></div>
+    <div class="calendar">${calendarHtml()}</div>
+    <div class="form-field"><label>${tr_(isPickup ? 'pickup_slot_label' : 'delivery_slot_label')}</label></div>
+    <div class="slot-grid">
+      ${slots.map(s=>`<button type="button" class="date-chip${checkoutData.slot===s.id?' is-selected':''}" data-slot="${s.id}" data-slot-label="${s.label}">${s.label}</button>`).join('')}
+    </div>
+    <p class="checkout-note">${tr_(isPickup ? 'checkout_pickup_slot_note' : 'checkout_slot_note')}</p>
   `;
   footer.innerHTML = `<div style="display:flex;gap:10px;width:100%">
       <button class="btn btn-ghost" id="cartBackBtn" style="flex:1">${tr_('back_btn')}</button>
@@ -2401,9 +2460,26 @@ function phonePlaceholderFor(dial){
 // instead of a specific flag rather than guessing.
 const PHONE_FLAG_UNKNOWN = '🏳️';
 function renderCartContact(body, footer){
+  const isPickup = checkoutData.orderType === 'pickup';
   document.getElementById('cartPanelTitle').textContent = tr_('contact_title');
   document.getElementById('cartStepLabel').textContent = tr_('step3of3');
   const dialMatch = countryForDial(checkoutData.dialCode);
+  const addressBlock = isPickup
+    ? `<div class="form-field">
+        <label>${tr_('pickup_location_label')}</label>
+        <div class="pickup-location-box">
+          <b>${PICKUP_LOCATION_ADDRESS}</b>
+          <a href="${PICKUP_LOCATION_MAPS_URL}" target="_blank" rel="noopener">${tr_('footer_directions')}</a>
+        </div>
+      </div>`
+    : `<div class="form-field">
+      <label>${tr_('label_address')}</label>
+      <div class="ck-address-wrap">
+        <textarea id="ckAddress" rows="2" placeholder="${tr_('address_placeholder')}" autocomplete="off">${checkoutData.address}</textarea>
+        <div class="ck-address-suggestions" id="ckAddressSuggestions"></div>
+      </div>
+      <div class="ck-distance" id="ckDistance"></div>
+    </div>`;
   body.innerHTML = `
     <div class="form-field">
       <label>${tr_('label_phone')}</label>
@@ -2431,14 +2507,7 @@ function renderCartContact(body, footer){
         <input type="text" id="ckName" placeholder="${tr_('fullname_placeholder')}" value="${checkoutData.name}">
       </div>
     </div>
-    <div class="form-field">
-      <label>${tr_('label_address')}</label>
-      <div class="ck-address-wrap">
-        <textarea id="ckAddress" rows="2" placeholder="${tr_('address_placeholder')}" autocomplete="off">${checkoutData.address}</textarea>
-        <div class="ck-address-suggestions" id="ckAddressSuggestions"></div>
-      </div>
-      <div class="ck-distance" id="ckDistance"></div>
-    </div>
+    ${addressBlock}
     <div class="form-field">
       <label>${tr_('label_email')}</label>
       <input type="email" id="ckEmail" placeholder="${tr_('email_placeholder')}" value="${checkoutData.email}">
@@ -2452,7 +2521,7 @@ function renderCartContact(body, footer){
       <button class="btn btn-ghost" id="cartBackBtn" style="flex:1">${tr_('back_btn')}</button>
       <button class="btn btn-solid" id="cartConfirmBtn" style="flex:2">${tr_('confirm_request')}</button>
     </div>`;
-  if(checkoutData.address) scheduleDistanceLookup(checkoutData.address);
+  if(!isPickup && checkoutData.address) scheduleDistanceLookup(checkoutData.address);
 }
 
 function escHtml(s){
@@ -2602,9 +2671,9 @@ function renderCartDone(body, footer){
       <div class="order-summary">
         <div><span>${tr_('cart_subtotal_label')}</span><b>${fmtPrice(lastOrder.nutrition.price)}</b></div>
         <div><span>${tr_('order_items')}</span><b>${lastOrder.itemCount}</b></div>
-        <div><span>${tr_('order_delivery')}</span><b>${lastOrder.dateLabel}, ${lastOrder.slotLabel}</b></div>
+        <div><span>${tr_(lastOrder.contact.orderType==='pickup' ? 'order_type_pickup' : 'order_delivery')}</span><b>${lastOrder.dateLabel}, ${lastOrder.slotLabel}</b></div>
         <div><span>${tr_('order_contact')}</span><b>${doneDisplayTitle} ${lastOrder.contact.name}, ${lastOrder.contact.phone}</b></div>
-        <div><span>${tr_('order_address')}</span><b>${lastOrder.contact.address}</b></div>
+        <div><span>${tr_(lastOrder.contact.orderType==='pickup' ? 'pickup_location_label' : 'order_address')}</span><b>${lastOrder.contact.address}</b></div>
         <div><span>${tr_('order_nutrition_total')}</span><b>${Math.round(lastOrder.nutrition.kcal)} kcal · ${lastOrder.nutrition.protein.toFixed(1)}g ${tr_('label_protein')} · ${lastOrder.nutrition.carbs.toFixed(1)}g ${tr_('label_carbs')} · ${lastOrder.nutrition.fat.toFixed(1)}g ${tr_('label_fat')}</b></div>
         ${lastOrder.contact.notes ? `<div><span>${tr_('order_notes')}</span><b>${lastOrder.contact.notes}</b></div>` : ''}
       </div>
@@ -2657,8 +2726,10 @@ function snapshotCartLines(){
 
 function confirmOrder(){
   syncContactFields();
-  if(!checkoutData.phone || !checkoutData.name || !checkoutData.address){
-    showToast(tr_('toast_fill_fields'));
+  const isPickup = checkoutData.orderType === 'pickup';
+  if(isPickup) checkoutData.address = PICKUP_LOCATION_ADDRESS;
+  if(!checkoutData.phone || !checkoutData.name || (!isPickup && !checkoutData.address)){
+    showToast(tr_(isPickup ? 'toast_fill_fields_pickup' : 'toast_fill_fields'));
     return;
   }
   if(!validatePhoneField()){
@@ -2875,6 +2946,18 @@ document.addEventListener('click', e=>{
 
   if(e.target.id==='calPrev'){ calendarViewDate.setMonth(calendarViewDate.getMonth()-1); renderCartPanel(); return; }
   if(e.target.id==='calNext'){ calendarViewDate.setMonth(calendarViewDate.getMonth()+1); renderCartPanel(); return; }
+
+  const orderTypeChip = e.target.closest('[data-order-type]');
+  if(orderTypeChip){
+    const newType = orderTypeChip.getAttribute('data-order-type');
+    if(newType !== checkoutData.orderType){
+      checkoutData.orderType = newType;
+      checkoutData.slot = '';
+      checkoutData.slotLabel = '';
+      renderCartPanel();
+    }
+    return;
+  }
 
   const calDay = e.target.closest('[data-cal-date]');
   if(calDay && !calDay.disabled){
