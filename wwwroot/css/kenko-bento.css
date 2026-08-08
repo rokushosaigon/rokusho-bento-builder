@@ -776,44 +776,57 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .pick-macro b{font-size:13px;font-weight:600;color:var(--rk-ink);line-height:1.3;}
 .pick-macro small{font-size:9.5px;color:var(--rk-ink-soft);text-transform:uppercase;letter-spacing:.03em;}
 
-/* ---------- chef's picks — mobile: same row list as build-your-own,
-   instead of a horizontal-scroll carousel. Tapping a row already opens the
-   full detail sheet (openPickDetail), so the row itself only needs a
-   thumbnail, name and price — same job as .ing-card on the builder tab. ---------- */
+/* ---------- chef's picks — mobile: flat GrabFood-style list, instead of a
+   horizontal-scroll carousel. Each row is a big square thumbnail, the dish
+   name, a 2-line ingredient description and the price, with a filled "+"
+   pinned to the bottom-right corner. Tapping the row opens the full detail
+   sheet (openPickDetail). Rows are separated by a hairline divider rather
+   than bordered/shadowed cards. ---------- */
 @media(max-width:760px){
   .picks-carousel-wrap{display:block;}
   .picks-carousel-arrow{display:none;}
-  .picks-grid{display:flex;flex-direction:column;gap:10px;overflow-x:visible;scroll-snap-type:none;}
-  .pick-card{flex:none;width:100%;min-width:0;flex-direction:row;align-items:center;scroll-snap-align:none;}
-  /* Fixed-px padding, not the desktop rule's percent — percentage padding on
-     a flex item resolves against the flex *container's* width (the whole
-     row), not this 68px box, so a %-based value here would blow it back up
-     to something much wider than intended. Rounded + detached from the row
-     edge like .ing-media, instead of a flush square with a divider line. */
-  .pick-media{
-    aspect-ratio:1/1;width:68px;flex:none;padding:12px;margin:8px 0 8px 8px;
-    border-bottom:none;border-right:none;border-radius:var(--radius-s);overflow:hidden;
-  }
-  .pick-media-img{width:100%;max-width:44px;height:auto;}
+  .picks-grid{display:flex;flex-direction:column;gap:0;overflow-x:visible;scroll-snap-type:none;}
+  .picks-group{margin-bottom:24px;}
+  .picks-group-head{margin-bottom:12px;}
   .picks-group-head p{display:none;}
-  /* min-width:0 overrides the flex default of min-width:auto — without it a
-     flex child never shrinks past its unwrapped content width, which is
-     what was defeating text-overflow:ellipsis below (the row would rather
-     overflow than let the tagline actually truncate). */
-  .pick-body{padding:8px 12px;gap:3px;min-width:0;justify-content:center;}
-  .pick-name{font-size:14px;min-height:0;-webkit-line-clamp:1;line-clamp:1;}
-  .pick-price{font-size:14px;margin-top:0;}
-  /* One truncated line instead of hidden outright — enough context to tell
-     rows apart without the row growing to fit 2-3 lines like on desktop. */
-  .pick-tagline{
-    display:block;min-height:0;font-size:12px;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:initial;
+  /* Flat rows: no per-item border/shadow, just a divider between them. The
+     "+" is absolutely positioned, so the row keeps position:relative (from
+     the base rule) as its containing block. */
+  .pick-card{
+    flex:none;width:100%;min-width:0;flex-direction:row;align-items:stretch;gap:14px;
+    background:transparent;border:none;border-radius:0;box-shadow:none;
+    border-bottom:1px solid var(--rk-line);padding:16px 0;scroll-snap-align:none;
   }
+  .pick-card:last-child{border-bottom:none;}
+  .pick-card:active{transform:none;box-shadow:none;}
+  /* Larger square thumbnail (fills its box for real photos; the placeholder
+     logo still sits on its pastel background). Fixed-px padding, not the
+     desktop rule's percent — percentage padding on a flex item resolves
+     against the flex container's width (the whole row), not this box. */
+  .pick-media{
+    aspect-ratio:1/1;width:92px;flex:none;padding:14px;margin:0;
+    border:none;border-radius:12px;overflow:hidden;
+  }
+  .pick-media-img{width:100%;max-width:100%;height:auto;}
+  /* min-width:0 overrides the flex default of min-width:auto — without it a
+     flex child never shrinks past its unwrapped content width, which is what
+     defeats text-overflow:ellipsis on the description below. padding-right
+     reserves space so the text never runs under the pinned "+" button. */
+  .pick-body{padding:2px 44px 2px 0;gap:5px;min-width:0;flex:1;justify-content:flex-start;}
+  /* Reorder to name → description → price (the desktop DOM order is
+     name → price → tagline), without touching the markup. */
+  .pick-name{order:1;font-size:15px;font-weight:600;min-height:0;-webkit-line-clamp:1;line-clamp:1;}
+  .pick-tagline{
+    order:2;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;
+    min-height:0;font-size:13px;line-height:1.4;white-space:normal;overflow:hidden;text-overflow:ellipsis;
+  }
+  .pick-price{order:3;font-size:15px;font-weight:700;color:var(--rk-ink);margin-top:2px;}
   .pick-nutrition{display:none;}
   .pick-quickadd{
-    display:flex;align-items:center;justify-content:center;flex:none;align-self:center;margin-right:10px;
-    width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rk-primary);color:var(--rk-primary);
-    font-size:19px;font-weight:600;line-height:1;background:var(--rk-white);-webkit-tap-highlight-color:transparent;
+    display:flex;align-items:center;justify-content:center;flex:none;
+    position:absolute;right:0;bottom:14px;
+    width:34px;height:34px;border-radius:50%;border:none;color:var(--rk-white);background:var(--rk-primary);
+    font-size:20px;font-weight:600;line-height:1;-webkit-tap-highlight-color:transparent;
   }
 }
 
@@ -1023,8 +1036,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   .step-desc{font-size:13px;max-width:none;}
   .step-badge{font-size:11.5px;padding:4px 11px;}
 
-  .pick-card{flex-basis:86%;min-width:0;}
-  .picks-carousel-arrow{width:30px;height:30px;font-size:15px;}
+  .pick-card{flex-basis:auto;width:100%;min-width:0;}
   .ing-card{grid-template-columns:60px 1fr auto;padding:9px;column-gap:10px;}
   .ing-media{width:60px;}
   .ing-name{font-size:12.5px;}
