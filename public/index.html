@@ -196,7 +196,10 @@
   <div class="picks-mobile-nav" id="picksMobileNav">
     <div class="picks-mobile-title" data-i18n="picks_title">Chef's picks</div>
     <div class="picks-mobile-row">
-      <select class="picks-mobile-select" id="picksMobileSelect" aria-label="Filter"></select>
+      <button type="button" class="picks-mobile-groupbtn" id="picksMobileGroupBtn" aria-haspopup="dialog" aria-label="Filter">
+        <span id="picksMobileGroupLabel">All</span>
+        <svg class="picks-mobile-groupbtn-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
       <button type="button" class="picks-mobile-veg" id="picksMobileVeg" data-i18n="picks_veg_quick">Vegetarian</button>
       <button type="button" class="picks-mobile-search-btn" id="picksMobileSearchBtn" aria-label="Search">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
@@ -297,6 +300,13 @@
   <div class="pick-modal-footer">
     <button type="button" class="btn btn-solid" id="cartNoteDoneBtn" data-i18n="ing_detail_done">Done</button>
   </div>
+</div>
+
+<div class="overlay" id="picksGroupOverlay"></div>
+<div class="picks-group-sheet" id="picksGroupSheet" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="picks-group-sheet-handle"></div>
+  <div class="picks-group-sheet-title" data-i18n="picks_group_sheet_title">Choose a collection</div>
+  <div class="picks-group-sheet-list" id="picksGroupList"></div>
 </div>
 
 <div class="toast" id="toast"></div>

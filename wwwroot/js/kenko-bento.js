@@ -63,6 +63,7 @@ const I18N = {
     "picks_search_placeholder": "Search bentos…",
     "picks_filter_all": "All",
     "picks_veg_quick": "Vegetarian",
+    "picks_group_sheet_title": "Choose a collection",
     "picks_no_results": "No bentos match your search.",
     "add_to_cart_short": "Add to cart",
     "ing_detail_done": "Done",
@@ -203,6 +204,7 @@ const I18N = {
   "picks_search_placeholder": "Tìm bento…",
   "picks_filter_all": "Tất cả",
   "picks_veg_quick": "Chay",
+  "picks_group_sheet_title": "Chọn nhóm bento",
   "picks_no_results": "Không tìm thấy bento phù hợp.",
   "add_to_cart_short": "Thêm vào giỏ",
   "ing_detail_done": "Xong",
@@ -373,6 +375,7 @@ const I18N = {
     "picks_search_placeholder": "弁当を検索…",
     "picks_filter_all": "すべて",
     "picks_veg_quick": "ベジタリアン",
+    "picks_group_sheet_title": "コレクションを選択",
     "picks_no_results": "該当する弁当が見つかりません。",
     "add_to_cart_short": "カートに追加",
     "ing_detail_done": "完了",
@@ -512,6 +515,7 @@ const I18N = {
     "picks_search_placeholder": "벤토 검색…",
     "picks_filter_all": "전체",
     "picks_veg_quick": "채식",
+    "picks_group_sheet_title": "컬렉션 선택",
     "picks_no_results": "검색 결과와 일치하는 벤토가 없습니다.",
     "add_to_cart_short": "장바구니 담기",
     "ing_detail_done": "완료",
@@ -651,6 +655,7 @@ const I18N = {
     "picks_search_placeholder": "搜索便当…",
     "picks_filter_all": "全部",
     "picks_veg_quick": "素食",
+    "picks_group_sheet_title": "选择系列",
     "picks_no_results": "没有找到符合条件的便当。",
     "add_to_cart_short": "加入购物车",
     "ing_detail_done": "完成",
@@ -1267,14 +1272,18 @@ function renderPicksChips(){
     return `<button type="button" class="picks-chip${pickGroupFilter===g?' is-active':''}" data-group-filter="${g}">${label}</button>`;
   }).join('');
 
-  // Mobile's compact toolbar mirrors the same filter state via a dropdown
-  // (all groups) plus a one-tap Vegetarian shortcut, instead of the
-  // full chip row.
-  const select = document.getElementById('picksMobileSelect');
-  select.innerHTML = chips.map(g=>{
-    const label = g==='all' ? tr_('picks_filter_all') : groupLabel(g);
-    return `<option value="${g}" ${pickGroupFilter===g?'selected':''}>${label}</option>`;
-  }).join('');
+  // Mobile's compact toolbar mirrors the same filter state via a pill button
+  // that opens a bottom-sheet group picker, plus a one-tap Vegetarian
+  // shortcut, instead of the full chip row.
+  const groupLabelFor = g => g==='all' ? tr_('picks_filter_all') : groupLabel(g);
+  const btnLabel = document.getElementById('picksMobileGroupLabel');
+  if(btnLabel) btnLabel.textContent = groupLabelFor(pickGroupFilter);
+  const list = document.getElementById('picksGroupList');
+  if(list){
+    list.innerHTML = chips.map(g=>
+      `<button type="button" class="picks-group-sheet-option${pickGroupFilter===g?' is-active':''}" data-group-sheet="${g}">${groupLabelFor(g)}</button>`
+    ).join('');
+  }
   document.getElementById('picksMobileVeg').classList.toggle('is-active', pickGroupFilter==='vegetarian');
 }
 
@@ -1325,8 +1334,12 @@ function observePicksGroups(){
     entries.forEach(entry=>{
       if(!entry.isIntersecting) return;
       const g = entry.target.getAttribute('data-group');
-      const select = document.getElementById('picksMobileSelect');
-      if(select && select.value !== g) select.value = g;
+      // Scroll-spy: while browsing "all", the pill label follows whichever
+      // collection is in view (without changing the actual filter).
+      if(pickGroupFilter==='all'){
+        const btnLabel = document.getElementById('picksMobileGroupLabel');
+        if(btnLabel) btnLabel.textContent = groupLabel(g);
+      }
       document.getElementById('picksMobileVeg').classList.toggle('is-active', g==='vegetarian');
     });
   }, {rootMargin:'-130px 0px -65% 0px', threshold:0});
@@ -2309,6 +2322,23 @@ function closeCartPanel(){
 }
 function goToCartStep(step){ cartStep = step; renderCartPanel(); }
 
+// Bottom-sheet group picker for the mobile Chef's Picks toolbar (options are
+// filled in by renderPicksChips).
+function openPicksGroupSheet(){
+  document.getElementById('picksGroupSheet').classList.add('is-open');
+  document.getElementById('picksGroupSheet').setAttribute('aria-hidden','false');
+  document.getElementById('picksGroupOverlay').classList.add('is-open');
+  document.getElementById('picksMobileGroupBtn').classList.add('is-open');
+  document.body.style.overflow='hidden';
+}
+function closePicksGroupSheet(){
+  document.getElementById('picksGroupSheet').classList.remove('is-open');
+  document.getElementById('picksGroupSheet').setAttribute('aria-hidden','true');
+  document.getElementById('picksGroupOverlay').classList.remove('is-open');
+  document.getElementById('picksMobileGroupBtn').classList.remove('is-open');
+  document.body.style.overflow='';
+}
+
 // Lightweight note-only sheet for build-your-own cart lines — Chef's Pick
 // lines reopen their full customize modal instead (see openPickDetail),
 // which already has its own note field built in.
@@ -2886,6 +2916,16 @@ document.addEventListener('click', e=>{
   const groupChip = e.target.closest('[data-group-filter]');
   if(groupChip){ pickGroupFilter = groupChip.getAttribute('data-group-filter'); renderPicks(); return; }
 
+  if(e.target.closest('#picksMobileGroupBtn')){ openPicksGroupSheet(); return; }
+  if(e.target.id==='picksGroupOverlay'){ closePicksGroupSheet(); return; }
+  const groupSheetOpt = e.target.closest('[data-group-sheet]');
+  if(groupSheetOpt){
+    pickGroupFilter = groupSheetOpt.getAttribute('data-group-sheet');
+    renderPicks();
+    closePicksGroupSheet();
+    return;
+  }
+
   if(e.target.id==='picksMobileSearchBtn' || e.target.closest('#picksMobileSearchBtn')){
     const row = document.getElementById('picksMobileSearchRow');
     const nowOpen = row.classList.toggle('is-open');
@@ -3005,7 +3045,6 @@ document.addEventListener('keydown', e=>{
 
 document.addEventListener('change', e=>{
   if(e.target && e.target.id==='langSelect'){ setLanguage(e.target.value); return; }
-  if(e.target && e.target.id==='picksMobileSelect'){ pickGroupFilter = e.target.value; renderPicks(); return; }
 });
 
 document.addEventListener('input', e=>{
@@ -3186,8 +3225,14 @@ function applyMenuUpdate(menu){
   const loader = document.getElementById('pageLoader');
   if(!loader) return;
   const shownAt = Date.now();
-  const MIN_VISIBLE_MS = 550;
+  const MIN_VISIBLE_MS = 400;
+  // Hard cap: never keep the splash up longer than 2s, even if the menu
+  // fetch is slow or never fires rk:menu-ready.
+  const MAX_VISIBLE_MS = 2000;
+  let hidden = false;
   function hideLoader(){
+    if(hidden) return;
+    hidden = true;
     const wait = Math.max(0, MIN_VISIBLE_MS - (Date.now() - shownAt));
     setTimeout(()=>{
       loader.classList.add('is-hidden');
@@ -3195,5 +3240,6 @@ function applyMenuUpdate(menu){
     }, wait);
   }
   window.addEventListener('rk:menu-ready', hideLoader, {once:true});
+  setTimeout(hideLoader, MAX_VISIBLE_MS);
 })();
 
