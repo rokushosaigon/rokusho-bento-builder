@@ -406,11 +406,13 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
   .ing-card{
     display:grid;
     grid-template-columns:68px 1fr auto;
-    grid-template-areas:"media name stepper" "media price stepper" "media kcal stepper";
+    /* Uniform 3-line text column: name, then kcal, then price — so every card
+       is the same height regardless of content. */
+    grid-template-areas:"media name stepper" "media kcal stepper" "media price stepper";
     align-items:center;column-gap:12px;row-gap:1px;padding:10px;
   }
   .ing-media{grid-area:media;width:68px;aspect-ratio:1/1;padding:16%;}
-  .ing-name{grid-area:name;min-height:0;font-size:13.5px;}
+  .ing-name{grid-area:name;min-height:0;font-size:13.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .ing-price{grid-area:price;}
   .ing-kcal{grid-area:kcal;}
   .ing-macros{display:none;}
@@ -817,24 +819,17 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .picks-group-sheet-option.is-active{color:var(--rk-primary);font-weight:700;}
 .picks-group-sheet-option.is-active::after{content:'✓';color:var(--rk-primary);font-weight:700;}
 
-/* ---------- chef's picks — horizontal carousel, up to 4 cards in view ---------- */
-.picks-carousel-wrap{display:flex;align-items:center;gap:8px;}
-.picks-carousel-arrow{
-  flex:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--rk-line);background:var(--rk-white);
-  display:flex;align-items:center;justify-content:center;font-size:17px;color:var(--rk-ink);transition:.15s;
-}
-.picks-carousel-arrow:hover{border-color:var(--rk-primary);color:var(--rk-primary);}
-.picks-carousel-arrow.is-disabled{opacity:.3;pointer-events:none;}
-.picks-carousel-wrap.no-overflow .picks-carousel-arrow{display:none;}
+/* ---------- chef's picks — full grid on desktop (all cards laid out, no
+   horizontal carousel); the carousel arrows are unused. ---------- */
+.picks-carousel-wrap{display:block;}
+.picks-carousel-arrow{display:none;}
 .picks-grid{
-  display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;flex:1;min-width:0;
-  -ms-overflow-style:none;scrollbar-width:none;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;
 }
-.picks-grid::-webkit-scrollbar{display:none;}
 .pick-card{
   position:relative;background:var(--rk-white);border:1px solid var(--rk-line);border-radius:var(--radius-m);
   overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-card);text-align:left;align-items:stretch;
-  cursor:pointer;flex:0 0 calc((100% - 3*16px)/4);min-width:220px;scroll-snap-align:start;
+  cursor:pointer;min-width:0;
   -webkit-tap-highlight-color:transparent;transition:transform .15s ease,box-shadow .15s ease;
 }
 /* Replaces the default mobile tap-highlight/outline flash with a soft
