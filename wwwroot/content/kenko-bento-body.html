@@ -1,3 +1,12 @@
+<div id="introVideo" class="intro-video">
+  <video class="intro-video-bg" id="introVideoBg" autoplay muted playsinline loop preload="auto" aria-hidden="true">
+    <source src="video/intro.mp4" type="video/mp4">
+  </video>
+  <video class="intro-video-el" id="introVideoEl" autoplay muted playsinline preload="auto">
+    <source src="video/intro.mp4" type="video/mp4">
+  </video>
+  <span class="intro-video-skip" id="introVideoSkip" data-i18n="intro_scroll_skip">Tap to skip</span>
+</div>
 <div id="pageLoader" class="page-loader" aria-hidden="true">
   <div class="page-loader-inner">
     <div class="page-loader-logo">
@@ -11,16 +20,20 @@
 <header class="site-header">
   <div class="site-header-inner">
     <div class="logo">
-      <img class="logo-img" src="img/kenko-bento-logo.png" alt="Kenko Bento by Rokusho">
+      <img class="logo-img logo-desktop" src="img/kenko-bento-logo.png" alt="Kenko Bento by Rokusho">
+      <img class="logo-img logo-mobile" src="img/rokusho-logo-header.png" alt="Rokusho">
     </div>
     <nav class="main-nav">
       <a href="#" class="nav-cta" data-i18n="nav_menu">Bento</a>
-      <a href="#footerContact" class="nav-link" data-i18n="nav_about">More</a>
+      <button type="button" class="nav-link" id="contactBtn" data-contact-open data-i18n="nav_contact">Contact</button>
     </nav>
     <div class="header-right">
+      <button class="header-contact-btn" type="button" data-contact-open aria-label="Contact">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </button>
       <select class="lang-select" id="langSelect" aria-label="Language">
-        <option value="en">🇬🇧 EN</option>
-        <option value="vi">🇻🇳 VI</option>
+        <option value="en">EN</option>
+        <option value="vi">VI</option>
       </select>
       <button class="cart-btn" id="cartBtn" type="button" aria-label="Open cart">
         <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1.6" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.6" fill="currentColor" stroke="none"/><path d="M2.5 3h2.4l2.1 11.4a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 7H6"/></svg>
@@ -35,6 +48,10 @@
 </header>
 
 <div id="byoView">
+<button type="button" class="byo-back" id="byoBackBtn" aria-label="Back">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+  <span data-i18n="byo_back">Menu</span>
+</button>
 <section class="hero">
   <div class="hero-text">
     <span class="eyebrow" data-i18n="hero_eyebrow">Calorie calculator</span>
@@ -44,7 +61,7 @@
   <div class="hero-illustration-wrap">
   <div class="hero-illustration">
     <div class="hero-bento">
-      <img class="logo-mark-img" src="img/kenko-bento-logo.png" alt="Kenko Bento by Rokusho">
+      <img class="logo-mark-img" src="img/mix-match.png" onerror="this.onerror=null;this.src='img/kenko-bento-logo.png'" alt="Mix & Match Your Own Bento">
     </div>
   </div>
   </div>
@@ -177,6 +194,29 @@
     </div>
   </section>
 
+  <div class="picks-mobile-intro">
+    <div class="pm-head">
+      <img class="pm-logo" src="img/kenko-bento-logo.png" alt="Kenko Bento">
+      <div class="pm-head-text">
+        <h1 class="pm-brand">Kenko Bento by Rokusho</h1>
+        <p class="pm-desc" data-i18n="brand_intro_desc">Japanese-style healthy bento — build your own or pick a chef's set, delivered fresh.</p>
+      </div>
+    </div>
+    <span class="pm-hours"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span data-i18n="hours_lunch_time">Mon – Sun · 11AM – 1:30PM</span></span>
+  </div>
+
+  <div class="mixmatch-section">
+    <h2 class="mixmatch-section-title" data-i18n="hero_title">Mix & Match Your Own Bento</h2>
+    <div class="pick-card mixmatch-card" data-open-byo="1">
+      <div class="pick-media"><img class="pick-media-img" src="img/mix-match.png" onerror="this.onerror=null;this.src='img/kenko-bento-logo.png'" alt="Your Bento"></div>
+      <div class="pick-body">
+        <div class="pick-name" data-i18n="mixmatch_card_title">Your Bento</div>
+        <div class="pick-tagline" data-i18n="mixmatch_card_desc">Pick your ingredients to fit your taste and needs</div>
+      </div>
+      <span class="pick-quickadd" data-open-byo="1" aria-label="Your Bento">+</span>
+    </div>
+  </div>
+
   <div class="picks-mobile-nav" id="picksMobileNav">
     <div class="picks-mobile-title" data-i18n="picks_title">Chef's picks</div>
     <div class="picks-mobile-row">
@@ -184,7 +224,7 @@
         <span id="picksMobileGroupLabel">All</span>
         <svg class="picks-mobile-groupbtn-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
       </button>
-      <button type="button" class="picks-mobile-veg" id="picksMobileVeg" data-i18n="picks_veg_quick">Vegetarian</button>
+      <button type="button" class="picks-mobile-veg" id="picksMobileVeg" data-i18n="picks_veg_quick">Recommend</button>
       <button type="button" class="picks-mobile-search-btn" id="picksMobileSearchBtn" aria-label="Search">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
       </button>
@@ -210,7 +250,7 @@
 </div>
 
 <div class="quick-actions">
-  <a class="quick-action-btn quick-action-messenger" href="https://m.me/1041737169016337" target="_blank" rel="noopener" aria-label="Chat on Messenger" title="Messenger">
+  <a class="quick-action-btn quick-action-messenger" href="https://m.me/1202123629656207" target="_blank" rel="noopener" aria-label="Chat on Messenger" title="Messenger">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0C5.24 0 0 4.952 0 11.64c0 3.499 1.434 6.521 3.769 8.61a.96.96 0 0 1 .323.683l.065 2.135a.96.96 0 0 0 1.347.85l2.381-1.053a.96.96 0 0 1 .641-.046A13 13 0 0 0 12 23.28c6.76 0 12-4.952 12-11.64S18.76 0 12 0m6.806 7.44c.522-.03.971.567.63 1.094l-4.178 6.457a.707.707 0 0 1-.977.208l-3.87-2.504a.44.44 0 0 0-.49.007l-4.363 3.01c-.637.438-1.415-.317-.995-.966l4.179-6.457a.706.706 0 0 1 .977-.21l3.87 2.505c.15.097.344.094.491-.007l4.362-3.008a.7.7 0 0 1 .364-.13"/></svg>
   </a>
   <a class="quick-action-btn quick-action-zalo" href="https://zalo.me/84783888802" target="_blank" rel="noopener" aria-label="Chat on Zalo" title="Zalo">
@@ -293,6 +333,28 @@
   <div class="picks-group-sheet-list" id="picksGroupList"></div>
 </div>
 
+<div class="overlay" id="contactOverlay"></div>
+<div class="picks-group-sheet contact-sheet" id="contactSheet" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="picks-group-sheet-handle"></div>
+  <div class="picks-group-sheet-title" data-i18n="contact_sheet_title">Contact us</div>
+  <div class="picks-group-sheet-list">
+    <a class="picks-group-sheet-option contact-option" data-contact-close href="tel:0783888802"><span data-i18n="contact_call">Call</span><span class="contact-value">078 388 8802</span></a>
+    <a class="picks-group-sheet-option contact-option" data-contact-close href="https://m.me/1202123629656207" target="_blank" rel="noopener">Messenger</a>
+    <a class="picks-group-sheet-option contact-option" data-contact-close href="https://zalo.me/84783888802" target="_blank" rel="noopener">Zalo</a>
+    <a class="picks-group-sheet-option contact-option" data-contact-close href="https://wa.me/84783888802" target="_blank" rel="noopener">WhatsApp</a>
+  </div>
+</div>
+
+<div class="overlay" id="addedOverlay"></div>
+<div class="picks-group-sheet added-sheet" id="addedSheet" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="picks-group-sheet-handle"></div>
+  <div class="picks-group-sheet-title" data-i18n="added_sheet_title">Added to cart</div>
+  <div class="added-sheet-actions">
+    <button type="button" class="btn btn-solid" id="goCartBtn" data-i18n="added_go_cart">Go to cart</button>
+    <button type="button" class="btn btn-ghost" id="addMoreBtn" data-i18n="added_add_more">Add more bento</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 <div id="receipt" aria-hidden="true"></div>
 
@@ -312,13 +374,13 @@
 <footer>
   <div class="footer-top">
     <div class="footer-brand">
-      <div class="logo"><img class="logo-img" src="img/kenko-bento-logo.png" alt="Kenko Bento by Rokusho"></div>
+      <img class="footer-band-img" src="img/footerband.png" onerror="this.onerror=null;this.src='img/kenko-bento-logo.png'" alt="Kenko Bento by Rokusho">
       <p class="footer-tagline" data-i18n="footer_tagline">Your Japanese-style healthy food companion.</p>
     </div>
     <div class="footer-col" id="footerContact" style="scroll-margin-top:20px">
       <h4 data-i18n="footer_contact">Contact</h4>
       <a href="tel:0783888802">078 388 8802</a>
-      <a href="mailto:info@rokusho.vn">info@rokusho.vn</a>
+      <a href="mailto:info.kenko@rokusho.vn">info.kenko@rokusho.vn</a>
       <div class="footer-hours">
         <div class="footer-hours-row">
           <span class="footer-hours-label" data-i18n="hours_dining_label">Rokusho | Modern Izakaya</span>
@@ -332,12 +394,7 @@
         </div>
       </div>
       <div class="footer-map-wrap">
-        <div class="footer-map-rating">
-          <span class="stars" aria-hidden="true">★★★★★</span>
-          <b>4.9</b>
-          <a href="https://www.google.com/maps?q=Rokusho+Saigon,+02+Thi+S%C3%A1ch,+S%C3%A0i+G%C3%B2n,+H%E1%BB%93+Ch%C3%AD+Minh+700000&ftid=0x31752fdc279436fd:0xda4176c8fd161f4f&entry=gps" target="_blank" rel="noopener" data-i18n="footer_reviews">Google reviews</a>
-        </div>
-        <a class="footer-directions-btn" href="https://www.google.com/maps?q=Rokusho+Saigon,+02+Thi+S%C3%A1ch,+S%C3%A0i+G%C3%B2n,+H%E1%BB%93+Ch%C3%AD+Minh+700000&ftid=0x31752fdc279436fd:0xda4176c8fd161f4f&entry=gps" target="_blank" rel="noopener">
+        <a class="footer-directions-btn" href="https://maps.app.goo.gl/5yLvMW6ecNKBo8sm6" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C7.6 2 4 5.6 4 10c0 5.4 7 11.5 7.3 11.7a1 1 0 0 0 1.4 0C13 21.5 20 15.4 20 10c0-4.4-3.6-8-8-8m0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/></svg>
           <span data-i18n="footer_directions">Get directions</span>
         </a>

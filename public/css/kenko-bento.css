@@ -5,16 +5,20 @@
    should need to touch once real photography arrives.
    ============================================================ */
 :root{
-  --rk-ink:#1F1D1B;            /* primary text / icon ink — never pure black */
-  --rk-ink-soft:#787774;       /* secondary / muted text */
-  --rk-paper:#FBFBFA;          /* page background — warm bone */
-  --rk-paper-deep:#F2F1ED;     /* subtle section tint */
-  --rk-line:#EAEAEA;           /* hairline borders / dividers */
+  /* GrabFood-style layout, Kenko Bento brand colour — pure white ground,
+     near-black text, muted gray secondary text/dividers, with the logo's
+     warm gold reserved for the "+" buttons and primary CTAs. Prices stay
+     dark (see the price classes below); colour used sparingly like Grab. */
+  --rk-ink:#1C1C1E;            /* primary text / icon ink — near-black */
+  --rk-ink-soft:#8A8A8E;       /* secondary / muted text — gray */
+  --rk-paper:#FFFFFF;          /* page background — pure white */
+  --rk-paper-deep:#F6F6F6;     /* subtle section tint — light gray */
+  --rk-line:#ECECEC;           /* hairline borders / dividers — light gray */
   --rk-white:#FFFFFF;
 
-  --rk-primary:#9F2F2D;        /* primary accent — muted brick red, used sparingly for emphasis */
-  --rk-primary-deep:#7A211F;
-  --rk-primary-pale:#FDEBEC;
+  --rk-primary:#B8912A;        /* primary accent — warm gold from the logo */
+  --rk-primary-deep:#96751E;
+  --rk-primary-pale:#F7EFD6;
 
   --rk-matcha:#346538;         /* secondary accent — success / vegan / fresh cues */
   --rk-matcha-pale:#EDF3EC;
@@ -69,6 +73,31 @@ a{color:inherit;text-decoration:none;}
 :focus-visible{outline:2.5px solid var(--rk-primary);outline-offset:3px;}
 
 /* ---------- page loader (shown on every load / reload) ---------- */
+/* ---------- intro splash video ----------
+   Full-screen autoplay (muted) video over the page while it loads. Dismissed
+   on the first scroll/swipe (see the "Scroll to skip" cue), when the clip
+   ends, or immediately if the file is missing / can't play. */
+.intro-video{
+  position:fixed;inset:0;z-index:1100;background:#0d0d0f;overflow:hidden;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:opacity .5s ease;
+}
+.intro-video.is-hidden{opacity:0;pointer-events:none;}
+/* Blurred, scaled copy of the clip fills the letterbox behind the full frame,
+   so the leftover space reads as an intentional backdrop rather than bars. */
+.intro-video-bg{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:blur(30px) brightness(.5);transform:scale(1.15);pointer-events:none;
+}
+/* The whole clip is always visible (letterboxed, never cropped). */
+.intro-video-el{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;}
+.intro-video-skip{
+  position:absolute;z-index:2;bottom:calc(34px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+  padding:9px 18px;border-radius:999px;background:rgba(0,0,0,.42);backdrop-filter:blur(4px);
+  color:#fff;font-family:inherit;font-size:13px;font-weight:600;letter-spacing:.02em;white-space:nowrap;
+  -webkit-tap-highlight-color:transparent;animation:intro-pulse 1.8s ease-in-out infinite;
+}
+@keyframes intro-pulse{0%,100%{opacity:.85;}50%{opacity:1;}}
+
 .page-loader{
   position:fixed;inset:0;z-index:999;background:var(--rk-paper);
   display:flex;align-items:center;justify-content:center;
@@ -110,7 +139,10 @@ a{color:inherit;text-decoration:none;}
    order:2/centering behavior and was rendering its logo below the tagline
    because of it. */
 .site-header-inner .logo{order:2;display:flex;align-items:center;justify-content:center;}
-.logo-img{height:84px;width:auto;display:block;}
+.logo-img{height:84px;width:auto;display:block;border-radius:12px;}
+/* The logo artwork ships on a solid cream square, so round it wherever it
+   appears (header, loader, hero, placeholders) to avoid hard boxy edges. */
+.logo-mark-img{border-radius:16px;}
 .main-nav{order:1;flex:1;display:flex;align-items:center;gap:18px;font-size:14.5px;color:var(--rk-ink-soft);}
 .main-nav a{transition:.15s;}
 .nav-link{font-weight:600;}
@@ -160,6 +192,27 @@ a{color:inherit;text-decoration:none;}
   font-size:13.5px;font-weight:600;color:var(--rk-ink-soft);background:transparent;
 }
 .mode-pill.is-active{background:var(--rk-ink);border-color:var(--rk-ink);color:var(--rk-paper);}
+
+/* Mobile-only affordances for the picks-first flow (shown inside the
+   max-width:760px block): a back button in the builder and the Mix & Match
+   entry card in the list. Hidden by default (desktop keeps the mode-pills). */
+/* Picks-first mobile landing pieces — all hidden on desktop (which keeps the
+   builder + header mode-pills); shown inside the max-width:760px block. */
+.byo-back{display:none;}
+.mixmatch-section{display:none;}
+.picks-mobile-intro{display:none;}
+.header-contact-btn{display:none;}
+.logo-mobile{display:none;}
+
+/* Nav "Contact" is a <button> styled like the other nav links. */
+button.nav-link{background:none;border:none;font:inherit;cursor:pointer;padding:0;}
+/* Contact sheet options reuse the group-sheet row look but are links (no
+   active check-mark); Call shows its number on the right. */
+.contact-option{text-decoration:none;}
+.contact-option .contact-value{color:var(--rk-ink-soft);font-weight:600;}
+/* "Added to cart" prompt — two stacked full-width actions. */
+.added-sheet-actions{display:flex;flex-direction:column;gap:10px;padding:8px 20px 6px;}
+.added-sheet-actions .btn{width:100%;}
 
 /* ---------- hero ---------- */
 .hero{
@@ -231,7 +284,7 @@ a{color:inherit;text-decoration:none;}
 .nav-stat{display:flex;flex-direction:column;align-items:flex-end;line-height:1.25;}
 .nav-stat b{color:var(--rk-ink);font-family:var(--font-mono);font-size:14px;font-weight:600;}
 .nav-stat small{font-size:9.5px;color:var(--rk-ink-soft);text-transform:uppercase;letter-spacing:.03em;}
-.nav-stat-price b{color:var(--rk-primary);}
+.nav-stat-price b{color:var(--rk-ink);}
 
 /* on narrow phones the running totals move to their own row instead of hiding —
    people need to see the full macro tally at every step, not just on desktop */
@@ -291,6 +344,9 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
   position:relative;aspect-ratio:1/1;border-radius:var(--radius-s);overflow:hidden;
   display:flex;align-items:center;justify-content:center;padding:18%;
 }
+/* Real ingredient photo fills the rounded thumbnail (no icon padding / pastel). */
+.ing-media.has-photo{padding:0;}
+.ing-media-img{width:100%;height:100%;object-fit:cover;display:block;}
 .ing-card[data-cat="protein"] .ing-media{background:var(--pastel-red);color:var(--pastel-red-text);}
 .ing-card[data-cat="carbs"] .ing-media{background:var(--pastel-yellow);color:var(--pastel-yellow-text);}
 .ing-card[data-cat="side"] .ing-media{background:var(--pastel-green);color:var(--pastel-green-text);}
@@ -314,9 +370,9 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 .icon-svg path,.icon-svg circle,.icon-svg rect,.icon-svg ellipse{
   fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;
 }
-.ing-name{font-size:13px;font-weight:600;line-height:1.3;min-height:34px;display:flex;align-items:center;}
+.ing-name{font-size:13px;font-weight:400;line-height:1.3;min-height:34px;display:flex;align-items:center;}
 .ing-kcal{font-size:11.5px;color:var(--rk-ink-soft);font-variant-numeric:tabular-nums;font-family:var(--font-mono);}
-.ing-price{font-size:13.5px;font-weight:700;color:var(--rk-primary);font-variant-numeric:tabular-nums;font-family:var(--font-mono);}
+.ing-price{font-size:13.5px;font-weight:700;color:var(--rk-ink);font-variant-numeric:tabular-nums;font-family:var(--font-body);}
 .ing-macros{display:flex;gap:8px;padding-top:8px;border-top:1px solid var(--rk-line);}
 .ing-macro{display:flex;flex-direction:column;flex:1;min-width:0;font-family:var(--font-mono);}
 .ing-macro b{font-size:12px;font-weight:600;color:var(--rk-ink);line-height:1.3;}
@@ -484,7 +540,9 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
   display:flex;align-items:center;gap:10px;background:var(--rk-white);border:1px solid var(--rk-line);
   border-radius:12px;padding:8px 10px;margin-bottom:8px;
 }
-.line-badge{width:34px;height:34px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:var(--rk-white);}
+.line-badge{width:34px;height:34px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:var(--rk-white);overflow:hidden;}
+.line-badge.has-photo{background:none;border-radius:8px;}
+.line-badge img{width:100%;height:100%;object-fit:cover;}
 .line-badge .icon-svg{width:18px;height:18px;}
 .line-row[data-cat="protein"] .line-badge{background:var(--grad-protein);}
 .line-row[data-cat="carbs"] .line-badge{background:var(--grad-carbs);}
@@ -492,7 +550,7 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
 .line-row[data-cat="sauce"] .line-badge{background:var(--grad-sauce);}
 .line-info{flex:1;min-width:0;}
 .line-name{font-size:13.5px;font-weight:600;line-height:1.3;}
-.line-price{font-size:12.5px;font-weight:700;color:var(--rk-primary);font-family:var(--font-mono);}
+.line-price{font-size:12.5px;font-weight:700;color:var(--rk-ink);font-family:var(--font-body);}
 .line-kcal{font-size:11.5px;color:var(--rk-ink-soft);}
 .line-stepper{display:flex;align-items:center;gap:8px;flex:none;}
 .panel-empty{font-size:14px;color:var(--rk-ink-soft);padding:30px 0;text-align:center;}
@@ -504,7 +562,7 @@ main{max-width:1180px;margin:0 auto;padding:0 24px 60px;}
   display:flex;align-items:center;justify-content:space-between;background:var(--rk-primary-pale);
   border-radius:var(--radius-s);padding:12px 14px;margin:14px 0 4px;font-size:14px;font-weight:600;color:var(--rk-ink);
 }
-.panel-price-total b{font-family:var(--font-mono);font-size:19px;color:var(--rk-primary);}
+.panel-price-total b{font-family:var(--font-body);font-size:19px;color:var(--rk-ink);}
 .panel-note{margin-top:18px;}
 .panel-note .pick-modal-section-title{margin:0 0 8px;}
 #panelNoteInput{
@@ -546,6 +604,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   text-align:center;
 }
 .footer-brand{display:flex;flex-direction:column;align-items:center;}
+.footer-band-img{width:100%;max-width:300px;height:auto;border-radius:12px;display:block;margin-bottom:8px;}
 .footer-col{display:flex;flex-direction:column;align-items:center;}
 .footer-brand .logo-img{height:76px;margin-bottom:4px;}
 .footer-tagline{margin-top:14px;color:var(--rk-ink-soft);font-size:14px;max-width:300px;}
@@ -640,8 +699,8 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   .cart-line.is-editable:hover{border-color:var(--rk-primary);}
 }
 .cart-line.is-editable:active{border-color:var(--rk-primary);}
-.cart-line-thumb{width:52px;height:52px;border-radius:10px;flex:none;overflow:hidden;background:var(--rk-paper-deep);}
-.cart-line-thumb img{width:100%;height:100%;object-fit:contain;padding:5px;opacity:.9;}
+.cart-line-thumb{width:52px;height:52px;border-radius:10px;flex:none;overflow:hidden;}
+.cart-line-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
 .cart-line-main{flex:1;min-width:0;}
 .cart-line-label{font-size:14px;font-weight:600;}
 .cart-line-note-flag{font-size:11px;margin-left:5px;opacity:.8;}
@@ -650,7 +709,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .cart-line-breakdown{margin-top:8px;padding-top:8px;border-top:1px dashed var(--rk-line);font-size:12px;color:var(--rk-ink-soft);}
 .cart-line-breakdown div{display:flex;justify-content:space-between;padding:2px 0;}
 .cart-line-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex:none;}
-.cart-line-price{font-size:14.5px;font-weight:700;font-family:var(--font-mono);color:var(--rk-primary);margin-bottom:-4px;}
+.cart-line-price{font-size:14.5px;font-weight:700;font-family:var(--font-body);color:var(--rk-ink);margin-bottom:-4px;}
 .cart-line-kcal{font-size:11.5px;font-weight:600;color:var(--rk-ink-soft);font-family:var(--font-mono);}
 .cart-summary-row{display:flex;justify-content:space-between;font-size:13.5px;padding:6px 0;color:var(--rk-ink-soft);}
 .cart-nutrition-title{font-size:12.5px;font-weight:600;color:var(--rk-ink-soft);text-transform:uppercase;letter-spacing:.04em;margin:16px 0 10px;}
@@ -781,25 +840,34 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 /* Replaces the default mobile tap-highlight/outline flash with a soft
    press-down cue — scale + lifted shadow — instead of a visible border. */
 .pick-card:active{transform:scale(.98);box-shadow:0 6px 16px rgba(17,17,17,.12);}
+/* Recommended bentos (salmon / chicken breast / chirashi) — a gold frame on
+   the photo only, plus a small "like" badge at its top-left corner. */
+.pick-card.is-recommend .pick-media{box-shadow:inset 0 0 0 2px var(--rk-primary);}
+.pick-reco-badge{
+  position:absolute;top:6px;left:6px;z-index:2;display:inline-flex;align-items:center;gap:3px;
+  padding:3px 8px;border-radius:999px;background:var(--rk-primary);color:#fff;
+  font-size:10.5px;font-weight:700;line-height:1;letter-spacing:.02em;box-shadow:0 1px 3px rgba(0,0,0,.18);
+}
 /* Mobile-only quick-add "+" (see .pick-quickadd click handling in JS) —
    desktop keeps tap-anywhere-opens-detail as the only interaction. */
 .pick-quickadd{display:none;}
 @media(max-width:880px){ .pick-card{flex-basis:calc((100% - 2*16px)/3);} }
 @media(max-width:760px){ .pick-card{flex-basis:calc((100% - 16px)/2);min-width:180px;} }
 .pick-media{
-  aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;gap:10px;padding:14%;
-  border-bottom:1px solid var(--rk-line);
+  position:relative;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;gap:10px;padding:14%;overflow:hidden;
 }
-/* Temporary stand-in for real dish photography — same logo used for cart/
-   receipt thumbnails (LOGO_MARK_SRC), sized to sit comfortably in the
-   pastel media strip instead of the per-ingredient icon row it replaced. */
-.pick-media-img{width:56%;max-width:150px;height:auto;opacity:.82;}
+/* No image yet -> the logo sits centered on the card's own background (no
+   coloured layer behind it). A real photo (.has-photo) fills the frame with
+   rounded corners instead. */
+.pick-media-img{width:56%;max-width:150px;height:auto;opacity:.85;border-radius:12px;}
+.pick-media.has-photo{padding:0;}
+.pick-media.has-photo .pick-media-img{width:100%;max-width:none;height:100%;object-fit:cover;opacity:1;}
 .pick-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1;}
 .pick-name{
   font-family:var(--font-display);font-size:18px;letter-spacing:-0.01em;line-height:1.25;
   min-height:2.5em;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
-.pick-price{font-size:17px;font-weight:700;color:var(--rk-primary);font-family:var(--font-mono);margin-top:-4px;}
+.pick-price{font-size:17px;font-weight:700;color:var(--rk-ink);font-family:var(--font-body);margin-top:-4px;}
 .pick-tagline{
   font-size:13px;color:var(--rk-ink-soft);line-height:1.4;
   min-height:4.2em;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
@@ -816,6 +884,56 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
    sheet (openPickDetail). Rows are separated by a hairline divider rather
    than bordered/shadowed cards. ---------- */
 @media(max-width:760px){
+  /* Picks-first flow: no header toggle, builder reached via the Mix & Match
+     card; the builder gets a sticky back button to return to the list. */
+  .mode-pills{display:none;}
+  .byo-back{
+    display:flex;align-items:center;gap:6px;position:sticky;top:0;z-index:20;width:100%;
+    padding:14px 16px;background:var(--rk-paper);border:none;border-bottom:1px solid var(--rk-line);
+    font-family:inherit;font-size:15px;font-weight:600;color:var(--rk-ink);-webkit-tap-highlight-color:transparent;
+  }
+  .byo-back svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* --- Header: logo left, contact + language + cart top-right (padded off
+     the edge). The mode-pills that used to anchor the left are gone, so the
+     inner row spans full width and space-between splits logo vs. actions. --- */
+  .site-header-inner{display:flex;flex:1;width:100%;justify-content:space-between;align-items:center;padding:12px 16px;}
+  .site-header-inner .logo{display:flex;order:0;}
+  /* Mobile header uses the horizontal Rokusho wordmark (transparent, black),
+     not the square Kenko badge. */
+  .logo-desktop{display:none;}
+  .site-header-inner .logo .logo-mobile{display:block;height:26px;width:auto;border-radius:0;}
+  .header-right{order:0;gap:8px;}
+  .header-contact-btn{
+    display:flex;align-items:center;justify-content:center;width:38px;height:38px;flex:none;
+    border:1px solid var(--rk-line);border-radius:50%;background:var(--rk-white);color:var(--rk-ink);
+    -webkit-tap-highlight-color:transparent;
+  }
+  .header-contact-btn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* --- Opening intro (Grab-style): brand name, short description, and a soft
+     badge with the operating hours. --- */
+  .picks-mobile-intro{display:block;padding:16px 16px 4px;}
+  .pm-head{display:flex;align-items:center;gap:14px;}
+  .pm-logo{width:84px;height:84px;flex:none;border-radius:16px;object-fit:cover;}
+  .pm-head-text{flex:1;min-width:0;}
+  .pm-brand{font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-0.01em;line-height:1.2;}
+  .pm-desc{margin-top:4px;font-size:13px;line-height:1.4;color:var(--rk-ink-soft);}
+  .pm-hours{
+    display:inline-flex;align-items:center;gap:7px;margin-top:12px;padding:8px 14px;border-radius:999px;
+    background:var(--rk-matcha-pale);color:var(--rk-matcha);font-size:13px;font-weight:600;
+  }
+  .pm-hours svg{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* --- Mix & Match section: header + the "Your Bento" entry card (opens the
+     builder). Sits above the sticky picks toolbar so the toolbar only pins
+     once the customer scrolls down to the collections. --- */
+  .mixmatch-section{display:block;padding:20px 16px 8px;}
+  .mixmatch-section-title{font-family:var(--font-display);font-size:20px;font-weight:700;margin-bottom:6px;}
+  .mixmatch-section .pick-card{border-bottom:none;padding:12px 0;}
+  .mixmatch-card .pick-media{padding:0;}
+  .mixmatch-card .pick-media-img{width:100%;height:100%;object-fit:cover;opacity:1;}
+
   .picks-carousel-wrap{display:block;}
   .picks-carousel-arrow{display:none;}
   .picks-grid{display:flex;flex-direction:column;gap:0;overflow-x:visible;scroll-snap-type:none;}
@@ -837,7 +955,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
      desktop rule's percent — percentage padding on a flex item resolves
      against the flex container's width (the whole row), not this box. */
   .pick-media{
-    aspect-ratio:1/1;width:92px;flex:none;padding:14px;margin:0;
+    aspect-ratio:1/1;width:108px;flex:none;padding:14px;margin:0;
     border:none;border-radius:12px;overflow:hidden;
   }
   .pick-media-img{width:100%;max-width:100%;height:auto;}
@@ -848,12 +966,12 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   .pick-body{padding:2px 44px 2px 0;gap:5px;min-width:0;flex:1;justify-content:flex-start;}
   /* Reorder to name → description → price (the desktop DOM order is
      name → price → tagline), without touching the markup. */
-  .pick-name{order:1;font-size:15px;font-weight:600;min-height:0;-webkit-line-clamp:1;line-clamp:1;}
+  .pick-name{order:1;font-size:16px;font-weight:400;min-height:0;-webkit-line-clamp:1;line-clamp:1;}
   .pick-tagline{
     order:2;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;
     min-height:0;font-size:13px;line-height:1.4;white-space:normal;overflow:hidden;text-overflow:ellipsis;
   }
-  .pick-price{order:3;font-size:15px;font-weight:700;color:var(--rk-ink);margin-top:2px;}
+  .pick-price{order:3;font-size:16px;font-weight:700;color:var(--rk-ink);margin-top:2px;}
   .pick-nutrition{display:none;}
   .pick-quickadd{
     display:flex;align-items:center;justify-content:center;flex:none;
@@ -892,15 +1010,20 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
   border-radius:50%;width:32px;height:32px;font-size:15px;color:var(--rk-ink-soft);z-index:1;
 }
 .pick-modal-media{
-  aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;gap:16px;padding:16%;
-  border-bottom:1px solid var(--rk-line);border-radius:var(--radius-l) var(--radius-l) 0 0;
+  aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;gap:16px;padding:16%;overflow:hidden;
+  border-radius:var(--radius-l) var(--radius-l) 0 0;
 }
 .pick-modal-media .pick-media-img{width:46%;max-width:190px;}
+/* Detail popup / drawer shows the photo at its own aspect ratio (no 16:10
+   crop) — the frame grows to fit the image, capped so a tall shot doesn't
+   dominate the sheet. */
+.pick-modal-media.has-photo{aspect-ratio:auto;padding:0;background:var(--rk-paper-deep);}
+.pick-modal-media.has-photo .pick-media-img{width:100%;max-width:none;height:auto;max-height:56vh;object-fit:contain;border-radius:0;}
 .pick-modal-body{padding:22px 24px 26px;}
 .pick-modal-group{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
 .pick-modal-name{font-size:23px;margin-top:8px;}
 .pick-modal-desc{font-size:14px;color:var(--rk-ink-soft);margin-top:10px;}
-.ing-detail-price{font-size:20px;font-weight:700;color:var(--rk-primary);font-family:var(--font-mono);margin-top:6px;}
+.ing-detail-price{font-size:20px;font-weight:700;color:var(--rk-ink);font-family:var(--font-body);margin-top:6px;}
 
 .pick-modal-section-title{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--rk-ink-soft);margin:20px 0 10px;}
 .pick-modal-note-input{
@@ -926,7 +1049,7 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 .pick-modal-footer{flex:none;border-top:1px solid var(--rk-line);padding:16px 24px calc(16px + env(safe-area-inset-bottom));background:var(--rk-paper);}
 .pick-modal-footer .totals-grid{margin:0 0 4px;}
 .pick-price-total{display:flex;align-items:baseline;justify-content:center;gap:10px;margin-bottom:10px;}
-.pick-price-total b{font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--rk-primary);}
+.pick-price-total b{font-family:var(--font-body);font-size:22px;font-weight:700;color:var(--rk-ink);}
 .price-extra-note{font-size:12px;color:var(--rk-ink-soft);}
 .pick-extra-kcal{font-size:12px;color:var(--rk-primary);font-weight:600;text-align:center;margin-top:6px;}
 .pick-modal-footer-row{display:flex;align-items:center;gap:12px;margin-top:12px;}

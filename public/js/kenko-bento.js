@@ -39,6 +39,19 @@ function iconSvg(key){ return `<svg viewBox="0 0 48 48" class="icon-svg">${ICONS
 // exists for each bento.
 const LOGO_MARK_SRC = 'img/kenko-bento-logo.png';
 
+// Resolves a sheet "Image" cell to a usable src: a full URL is used as-is, a
+// bare filename is looked up under img/, and an empty cell falls back to the
+// logo placeholder. See itemImg use in pickCardTemplate / openPickDetail.
+function itemImg(image){
+  const v = String(image || '').trim();
+  if(!v) return LOGO_MARK_SRC;
+  if(/^https?:\/\//i.test(v)) return v;
+  // Sheet filenames can contain spaces and "#" (e.g. "High-Protein Bento
+  // #1.png") — encode so the URL stays valid; the file on disk keeps the
+  // literal name.
+  return 'img/' + encodeURIComponent(v);
+}
+
 /* flat pastel wash + text tone per ingredient category — no gradients */
 const CAT_PASTEL = {
   protein:{bg:'#FDEBEC', text:'#9F2F2D'},
@@ -55,14 +68,26 @@ const I18N = {
   "en": {
     "nav_menu": "Your Bento",
     "nav_about": "About Us",
+    "nav_contact": "Contact",
+    "intro_scroll_skip": "Tap the screen to skip",
+    "contact_sheet_title": "Contact us",
+    "contact_call": "Call",
+    "checkout_note_preorder": "Pre-order only: please order at least 1 hour before your selected time.",
+    "added_sheet_title": "Added to cart",
+    "added_add_more": "Add more bento",
+    "added_go_cart": "Go to cart",
     "mode_byo": "Build your own",
     "mode_picks": "Chef's picks",
+    "mixmatch_card_title": "Your Bento",
+    "mixmatch_card_desc": "Pick your ingredients to fit your taste and needs",
+    "brand_intro_desc": "Japanese-style healthy bento — build your own or pick a chef's set, delivered fresh.",
+    "byo_back": "Menu",
     "picks_eyebrow": "Ready in one tap",
     "picks_title": "Chef's picks",
     "picks_desc": "House bentos across four collections — pick a quantity and send it straight to your cart.",
     "picks_search_placeholder": "Search bentos…",
     "picks_filter_all": "All",
-    "picks_veg_quick": "Vegetarian",
+    "picks_veg_quick": "Recommend",
     "picks_group_sheet_title": "Choose a collection",
     "picks_no_results": "No bentos match your search.",
     "add_to_cart_short": "Add to cart",
@@ -101,10 +126,10 @@ const I18N = {
     "order_address": "Address",
     "order_confirmed_title": "Request confirmed",
     "cart_nutrition_total": "Nutrition total",
-    "cart_nutrition_note": "Nutrition values are estimates and may vary slightly in practice.",
+    "cart_nutrition_note": "Nutrition values are for reference only and may change during actual preparation.",
     "order_nutrition_total": "Nutrition total",
     "hero_eyebrow": "Calorie calculator",
-    "hero_title": "Mix & Match Your Bento",
+    "hero_title": "Mix & Match Your Own Bento",
     "hero_desc": "Pick your protein, carbs, sides and sauce in pure Japanese style — delicious, balanced, made exactly your way.",
     "step1_title": "Select protein",
     "step1_desc": "Grilled the Japanese way — locking in flavour and nutrition.",
@@ -125,7 +150,7 @@ const I18N = {
     "label_fat": "Fat",
     "label_price": "Price",
     "cart_subtotal_label": "Subtotal",
-    "cart_subtotal_note": "VAT included; delivery fee not included.",
+    "cart_subtotal_note": "Estimated price (VAT included). A final quote is confirmed by our team.",
     "panel_your_bento": "Your bento",
     "panel_clear": "Clear",
     "panel_download": "Download",
@@ -156,7 +181,7 @@ const I18N = {
     "fullname_placeholder": "Your name",
     "label_notes": "Notes / special requests (optional)",
     "notes_placeholder": "e.g. no chili, peanut allergy...",
-    "confirm_request": "Confirm request",
+    "confirm_request": "Request a quote",
     "order_done_title": "Thank you",
     "order_done_desc": "Your request has been received and our team will follow up shortly.",
     "screenshot_note": "Please take a screenshot of this screen to save your order code.",
@@ -182,7 +207,7 @@ const I18N = {
     "hours_dining_label": "Rokusho | Modern Izakaya",
     "hours_dining_time": "Mon – Sun · 5PM – Late",
     "hours_lunch_label": "Kenko Bento | Lunch Delivery",
-    "hours_lunch_time": "Mon – Sun · 11AM – 1:30PM",
+    "hours_lunch_time": "Everyday · 11AM – 1:30PM",
     "footer_follow": "Follow",
     "footer_order_on": "Order on",
     "footer_directions": "Get directions",
@@ -195,15 +220,27 @@ const I18N = {
   "vi": {
   "nav_menu": "Bento của bạn",
   "nav_about": "Về chúng tôi",
+  "nav_contact": "Liên hệ",
+  "intro_scroll_skip": "Chạm vào màn hình để bỏ qua",
+  "contact_sheet_title": "Liên hệ với chúng tôi",
+  "contact_call": "Gọi điện",
+  "checkout_note_preorder": "Chỉ nhận đặt trước: vui lòng đặt ít nhất 1 giờ trước khung giờ bạn chọn.",
+  "added_sheet_title": "Đã thêm vào giỏ",
+  "added_add_more": "Chọn thêm bento",
+  "added_go_cart": "Đi đến giỏ hàng",
 
   "mode_byo": "Tự tạo Bento",
   "mode_picks": "Set nổi bật",
+  "mixmatch_card_title": "Bento của bạn",
+  "mixmatch_card_desc": "Lựa chọn thành phần theo sở thích và nhu cầu cá nhân",
+  "brand_intro_desc": "Bento healthy chuẩn Nhật — tự chọn nguyên liệu hoặc chọn set có sẵn, giao tươi mỗi ngày.",
+  "byo_back": "Thực đơn",
   "picks_eyebrow": "Chọn nhanh",
   "picks_title": "Bento nổi bật",
   "picks_desc": "Các set Bento bán chạy do đầu bếp tuyển chọn. Chỉ cần chọn số lượng và thêm vào giỏ hàng.",
   "picks_search_placeholder": "Tìm bento…",
   "picks_filter_all": "Tất cả",
-  "picks_veg_quick": "Chay",
+  "picks_veg_quick": "Recommend",
   "picks_group_sheet_title": "Chọn nhóm bento",
   "picks_no_results": "Không tìm thấy bento phù hợp.",
   "add_to_cart_short": "Thêm vào giỏ",
@@ -244,11 +281,11 @@ const I18N = {
   "order_confirmed_title": "Đã xác nhận yêu cầu",
 
   "cart_nutrition_total": "Tổng dinh dưỡng",
-  "cart_nutrition_note": "Giá trị dinh dưỡng là ước tính, có thể có sai số trong thực tế.",
+  "cart_nutrition_note": "Giá trị dinh dưỡng chỉ mang tính tham khảo, có thể thay đổi trong quá trình chế biến thực tế.",
   "order_nutrition_total": "Tổng dinh dưỡng",
 
   "hero_eyebrow": "Tính dinh dưỡng",
-  "hero_title": "Tự do kết hợp Bento theo ý bạn",
+  "hero_title": "Mix & Match Your Own Bento",
   "hero_desc": "Tự chọn Protein, tinh bột, món ăn kèm và nước sốt để tạo nên hộp Bento chuẩn vị Nhật theo sở thích của bạn.",
 
   "step1_title": "Chọn Protein",
@@ -276,7 +313,7 @@ const I18N = {
   "label_fat": "Chất béo",
   "label_price": "Giá",
   "cart_subtotal_label": "Tạm tính",
-  "cart_subtotal_note": "Đã bao gồm VAT, chưa bao gồm phí vận chuyển.",
+  "cart_subtotal_note": "Giá tạm tính (đã gồm VAT). Báo giá chính thức khi nhân viên xác nhận.",
 
   "panel_your_bento": "Bento của bạn",
   "panel_clear": "Xóa tất cả",
@@ -318,7 +355,7 @@ const I18N = {
   "label_notes": "Ghi chú / yêu cầu khác (không bắt buộc)",
   "notes_placeholder": "VD: không ăn cay, dị ứng đậu phộng...",
 
-  "confirm_request": "Xác nhận yêu cầu",
+  "confirm_request": "Yêu cầu báo giá",
 
   "order_done_title": "Cảm ơn bạn!",
   "order_done_desc": "Yêu cầu của bạn đã được tiếp nhận. Nhân viên sẽ sớm liên hệ để xác nhận.",
@@ -352,7 +389,7 @@ const I18N = {
   "hours_dining_label": "Rokusho | Modern Izakaya",
   "hours_dining_time": "Thứ 2 - CN · 17:00 - Muộn",
   "hours_lunch_label": "Kenko Bento | Lunch Delivery",
-  "hours_lunch_time": "Thứ 2 - CN · 11:00 - 13:30",
+  "hours_lunch_time": "Hằng ngày · 11:00 - 13:30",
   "footer_follow": "Theo dõi",
   "footer_order_on": "Đặt món trên",
   "footer_directions": "Chỉ đường",
@@ -461,17 +498,17 @@ const WEEKDAY_INITIALS = {
 function tr_(key){ return (I18N[LANG] && I18N[LANG][key]) || I18N.en[key] || key; }
 function currentLocale(){ return LOCALE_MAP[LANG] || 'en-US'; }
 
-// Sheet prices are "exclude VAT & SVC" (see BentoMenuAPI.gs) — the customer-
-// facing price adds the in-house 5% service charge and 8% VAT on top.
-// Kept as a single multiplier applied only at display time, so every running
-// total sums raw base prices first and rounds once, at the end, like kcal.
-const PRICE_MULTIPLIER = 1.05 * 1.08;
+// Sheet prices are the "Proposed Price (exclude VAT & SVC)" column — the
+// customer-facing price adds 8% VAT on top (no service charge). Applied only
+// at display time, so every running total sums raw base prices first and
+// rounds once at the end, like kcal.
+const PRICE_MULTIPLIER = 1.08;
 function fmtPrice(basePrice){
-  return Math.round((basePrice||0) * PRICE_MULTIPLIER).toLocaleString('vi-VN') + 'đ';
+  return Math.round((basePrice||0) * PRICE_MULTIPLIER).toLocaleString('vi-VN');
 }
 function fmtPriceDelta(basePriceDelta){
   const v = Math.round((basePriceDelta||0) * PRICE_MULTIPLIER);
-  return (v>=0?'+':'') + v.toLocaleString('vi-VN') + 'đ';
+  return (v>=0?'+':'') + v.toLocaleString('vi-VN');
 }
 function itemName(item){
   if(LANG==='en') return item.name;
@@ -688,10 +725,11 @@ function cardTemplate(item,cat){
       <span class="step-count">${q}</span>
       <button type="button" class="step-btn plus" data-ing-qty="${item.id}" data-ing-cat="${cat}" data-dir="1" aria-label="Increase quantity">+</button>
     </span>` : '';
+  const media = item.image
+    ? `<img class="ing-media-img" src="${itemImg(item.image)}" onerror="this.onerror=null;this.src='${LOGO_MARK_SRC}'" alt="${name}">`
+    : `<span class="ing-illustration" role="img" aria-label="${name}">${iconSvg(item.icon)}</span>`;
   return `<div class="ing-card${selected?' has-qty':''}" data-cat="${cat}" data-id="${item.id}" data-select="${item.id}" data-select-cat="${cat}">
-    <span class="ing-media">
-      <span class="ing-illustration" role="img" aria-label="${name}">${iconSvg(item.icon)}</span>
-    </span>
+    <span class="ing-media${item.image?' has-photo':''}">${media}</span>
     <span class="ing-name">${name}</span>
     <span class="ing-price">${fmtPrice(item.price)}</span>
     <span class="ing-kcal">${item.kcal} kcal</span>
@@ -718,8 +756,8 @@ function pickCardTemplate(pick){
   const nutri = pickNutrition(pick);
   const meta = GROUP_META[pick.group];
   const name = pickName(pick);
-  return `<div class="pick-card" data-pick-id="${pick.id}">
-    <div class="pick-media" style="background:${meta.pastelBg}"><img class="pick-media-img" src="${LOGO_MARK_SRC}" alt="${name}"></div>
+  return `<div class="pick-card${isRecommendPick(pick)?' is-recommend':''}" data-pick-id="${pick.id}">
+    <div class="pick-media${pick.image?' has-photo':''}">${isRecommendPick(pick)?`<span class="pick-reco-badge">♥ ${tr_('picks_veg_quick')}</span>`:''}<img class="pick-media-img" src="${itemImg(pick.image)}" onerror="this.onerror=null;this.src='${LOGO_MARK_SRC}';var m=this.closest('.pick-media');if(m)m.classList.remove('has-photo')" alt="${name}"></div>
     <div class="pick-body">
       <div class="pick-name">${name}</div>
       <div class="pick-price">${fmtPrice(nutri.price)}</div>
@@ -739,10 +777,23 @@ function pickCardTemplate(pick){
 let pickSearchQuery = '';
 let pickGroupFilter = 'all';
 
+// Ingredient ids the "Recommend" quick-filter keys on (see RECOMMEND_ITEMS).
+const RECOMMEND_ITEMS = ['salmon','chicken-breast'];
+// A pick is "recommended" if it contains salmon or chicken breast. Substring
+// match so portion-suffixed ids (e.g. "chicken-breast-full-portion") count.
+function isRecommendPick(pick){
+  if(/chirashi/i.test(pick.name || '')) return true;
+  const items = Array.isArray(pick.items) ? pick.items : [];
+  return items.some(id=>RECOMMEND_ITEMS.some(key=>String(id).includes(key)));
+}
 function filteredPicks(){
   const q = pickSearchQuery.trim().toLowerCase();
   return PICKS.filter(p=>{
-    if(pickGroupFilter!=='all' && p.group!==pickGroupFilter) return false;
+    if(pickGroupFilter==='recommend'){
+      if(!isRecommendPick(p)) return false;
+    } else if(pickGroupFilter!=='all' && p.group!==pickGroupFilter){
+      return false;
+    }
     if(!q) return true;
     const hay = [pickName(p), p.name, pickTagline(p), p.tagline].join(' ').toLowerCase();
     return hay.includes(q);
@@ -761,14 +812,16 @@ function renderPicksChips(){
   // shortcut, instead of the full chip row.
   const groupLabelFor = g => g==='all' ? tr_('picks_filter_all') : groupLabel(g);
   const btnLabel = document.getElementById('picksMobileGroupLabel');
-  if(btnLabel) btnLabel.textContent = groupLabelFor(pickGroupFilter);
+  // 'recommend' is a cross-group quick filter, not a collection — the group
+  // pill falls back to "All" so groupLabel() is never asked for a missing group.
+  if(btnLabel) btnLabel.textContent = pickGroupFilter==='recommend' ? tr_('picks_filter_all') : groupLabelFor(pickGroupFilter);
   const list = document.getElementById('picksGroupList');
   if(list){
     list.innerHTML = chips.map(g=>
       `<button type="button" class="picks-group-sheet-option${pickGroupFilter===g?' is-active':''}" data-group-sheet="${g}">${groupLabelFor(g)}</button>`
     ).join('');
   }
-  document.getElementById('picksMobileVeg').classList.toggle('is-active', pickGroupFilter==='vegetarian');
+  document.getElementById('picksMobileVeg').classList.toggle('is-active', pickGroupFilter==='recommend');
 }
 
 // Each collection renders as its own horizontally-scrolling row (up to 4
@@ -779,12 +832,11 @@ function renderPicks(){
   renderPicksChips();
   const filtered = filteredPicks();
   const groupsWithItems = GROUP_ORDER.filter(g=>filtered.some(p=>p.group===g));
-  document.getElementById('picksGrid').innerHTML = groupsWithItems.length ? groupsWithItems.map(g=>{
+  document.getElementById('picksGrid').innerHTML = (groupsWithItems.length ? groupsWithItems.map(g=>{
     const meta = GROUP_META[g];
     const items = filtered.filter(p=>p.group===g);
     return `<div class="picks-group" data-group="${g}">
       <div class="picks-group-head">
-        <span class="picks-group-dot" style="background:${meta.color}"></span>
         <div><h3>${groupLabel(g)}</h3><p>${groupDesc(g)}</p></div>
       </div>
       <div class="picks-carousel-wrap">
@@ -793,7 +845,7 @@ function renderPicks(){
         <button type="button" class="picks-carousel-arrow next" data-carousel-next="${g}" aria-label="Next">›</button>
       </div>
     </div>`;
-  }).join('') : `<p class="picks-no-results">${tr_('picks_no_results')}</p>`;
+  }).join('') : `<p class="picks-no-results">${tr_('picks_no_results')}</p>`);
   // Deferred a frame: right after innerHTML is set, the new cards haven't been
   // laid out yet, so scrollWidth/clientWidth would still reflect the old (or
   // empty) content and misjudge whether each row actually overflows.
@@ -824,7 +876,7 @@ function observePicksGroups(){
         const btnLabel = document.getElementById('picksMobileGroupLabel');
         if(btnLabel) btnLabel.textContent = groupLabel(g);
       }
-      document.getElementById('picksMobileVeg').classList.toggle('is-active', g==='vegetarian');
+      document.getElementById('picksMobileVeg').classList.toggle('is-active', pickGroupFilter==='recommend');
     });
   }, {rootMargin:'-130px 0px -65% 0px', threshold:0});
   groupEls.forEach(el=>picksGroupObserver.observe(el));
@@ -1063,8 +1115,9 @@ function openPickDetail(pickId, editCartId){
   if(!pick) return;
   const meta = GROUP_META[pick.group];
   const media = document.getElementById('pickModalMedia');
-  media.innerHTML = `<img class="pick-media-img" src="${LOGO_MARK_SRC}" alt="${pickName(pick)}">`;
-  media.style.background = meta.pastelBg;
+  media.innerHTML = `<img class="pick-media-img" src="${itemImg(pick.image)}" onerror="this.onerror=null;this.src='${LOGO_MARK_SRC}';var m=this.closest('.pick-modal-media');if(m)m.classList.remove('has-photo')" alt="${pickName(pick)}">`;
+  media.classList.toggle('has-photo', !!pick.image);
+  media.style.background = '';
   media.style.color = '';
   const groupEl = document.getElementById('pickModalGroup');
   groupEl.textContent = groupLabel(pick.group);
@@ -1130,9 +1183,17 @@ function renderIngredientDetailSheet(){
   const name = itemName(item);
   const pastel = CAT_PASTEL[ingDetailCat];
   const media = document.getElementById('ingDetailMedia');
-  media.innerHTML = `<span class="ing-illustration" role="img" aria-label="${name}">${iconSvg(item.icon)}</span>`;
-  media.style.background = pastel.bg;
-  media.style.color = pastel.text;
+  if(item.image){
+    media.innerHTML = `<img class="pick-media-img" src="${itemImg(item.image)}" onerror="this.onerror=null;this.src='${LOGO_MARK_SRC}'" alt="${name}">`;
+    media.classList.add('has-photo');
+    media.style.background = '';
+    media.style.color = '';
+  } else {
+    media.innerHTML = `<span class="ing-illustration" role="img" aria-label="${name}">${iconSvg(item.icon)}</span>`;
+    media.classList.remove('has-photo');
+    media.style.background = pastel.bg;
+    media.style.color = pastel.text;
+  }
   document.getElementById('ingDetailName').textContent = name;
   document.getElementById('ingDetailPrice').textContent = fmtPrice(item.price);
   document.getElementById('ingDetailMacros').innerHTML = `
@@ -1194,8 +1255,11 @@ function renderStats(){
 function lineRow(item, cat){
   const pastel = CAT_PASTEL[cat];
   const q = qty[item.id];
+  const badge = item.image
+    ? `<span class="line-badge has-photo"><img src="${itemImg(item.image)}" onerror="this.onerror=null;this.src='${LOGO_MARK_SRC}'" alt="${itemName(item)}"></span>`
+    : `<span class="line-badge" style="background:${pastel.bg};color:${pastel.text}">${iconSvg(item.icon)}</span>`;
   return `<div class="line-row" data-cat="${cat}">
-    <span class="line-badge" style="background:${pastel.bg};color:${pastel.text}">${iconSvg(item.icon)}</span>
+    ${badge}
     <span class="line-info">
       <span class="line-name">${itemName(item)}</span>
       <span class="line-price">${fmtPrice(item.price*q)}</span>
@@ -1229,7 +1293,8 @@ function renderPanel(){
     <div class="stat-box"><b>${t.protein.toFixed(1)}g</b><span>${tr_('label_protein')}</span></div>
     <div class="stat-box"><b>${t.carbs.toFixed(1)}g</b><span>${tr_('label_carbs')}</span></div>
     <div class="stat-box"><b>${t.fat.toFixed(1)}g</b><span>${tr_('label_fat')}</span></div>
-  </div>`;
+  </div>
+  <p class="checkout-note">${tr_('cart_nutrition_note')}</p>`;
 
   // Note field only makes sense once there's an actual bento to attach it
   // to — hidden while the panel is empty, same as the totals above it.
@@ -1554,8 +1619,10 @@ function addCustomBentoToCart(){
   renderAll();
   renderCartBadge();
   showToast(tr_('toast_added'));
-  cartStep = 'review';
-  openCartPanel();
+  // Close the "Your bento" side panel, then offer the next step: add another
+  // one (back to the main list) or head to the cart — see #addedSheet handlers.
+  closePanel();
+  openAddedSheet();
 }
 
 function addPickToCart(pickId, qty, note){
@@ -1736,18 +1803,34 @@ const PICKUP_SLOTS = [
   {id:'13:15', label:'1:15 – 1:30 PM'}
 ];
 
-const PICKUP_LOCATION_ADDRESS = 'Rokusho Saigon, 02 Thi Sách, Bến Nghé, Quận 1, TP. Hồ Chí Minh';
-const PICKUP_LOCATION_MAPS_URL = 'https://www.google.com/maps?q=Rokusho+Saigon,+02+Thi+S%C3%A1ch,+S%C3%A0i+G%C3%B2n,+H%E1%BB%93+Ch%C3%AD+Minh+700000&ftid=0x31752fdc279436fd:0xda4176c8fd161f4f&entry=gps';
+const PICKUP_LOCATION_ADDRESS = 'Kenko Bento by Rokusho — Số 2 Thi Sách, Phường Sài Gòn, TP. Hồ Chí Minh';
+const PICKUP_LOCATION_MAPS_URL = 'https://maps.app.goo.gl/5yLvMW6ecNKBo8sm6';
 
-function earliestAllowedDate(){
-  const now = new Date();
-  const cutoffPassed = now.getHours() >= 18;
-  const offset = cutoffPassed ? 2 : 1;
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate()+offset);
-}
+// Pre-order rule: an order must be placed at least this many minutes before
+// the chosen slot starts. Same-day slots that fall inside this window are
+// dropped; once every slot today is within it, today closes and the earliest
+// bookable date rolls to tomorrow.
+const PREORDER_LEAD_MIN = 60;
+function slotStartMin(slotId){ const p = slotId.split(':'); return (+p[0])*60 + (+p[1]); }
 function isoDate(d){
   const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
   return `${y}-${m}-${day}`;
+}
+// Slots available for a given date + order type: all of them for a future
+// date, or only those at least PREORDER_LEAD_MIN ahead of now for today.
+function slotsForDate(dateIso, orderType){
+  const slots = orderType==='pickup' ? PICKUP_SLOTS : DELIVERY_SLOTS;
+  if(dateIso !== isoDate(new Date())) return slots;
+  const now = new Date();
+  const cutoff = now.getHours()*60 + now.getMinutes() + PREORDER_LEAD_MIN;
+  return slots.filter(s => slotStartMin(s.id) >= cutoff);
+}
+function earliestAllowedDate(){
+  const now = new Date();
+  const today = isoDate(now);
+  const todayOpen = slotsForDate(today,'delivery').length > 0 || slotsForDate(today,'pickup').length > 0;
+  const offset = todayOpen ? 0 : 1;
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate()+offset);
 }
 function calendarHtml(){
   const earliest = earliestAllowedDate();
@@ -1823,6 +1906,37 @@ function closePicksGroupSheet(){
   document.body.style.overflow='';
 }
 
+// Contact bottom-sheet (Call / Messenger / Zalo / WhatsApp) — reuses the
+// group-sheet styling. Each option is a plain link that deep-links to the
+// relevant app; tapping one also dismisses the sheet.
+function openContactSheet(){
+  document.getElementById('contactSheet').classList.add('is-open');
+  document.getElementById('contactSheet').setAttribute('aria-hidden','false');
+  document.getElementById('contactOverlay').classList.add('is-open');
+  document.body.style.overflow='hidden';
+}
+function closeContactSheet(){
+  document.getElementById('contactSheet').classList.remove('is-open');
+  document.getElementById('contactSheet').setAttribute('aria-hidden','true');
+  document.getElementById('contactOverlay').classList.remove('is-open');
+  document.body.style.overflow='';
+}
+
+// "Added to cart" prompt after building a bento: add another (back to the
+// main list) or go straight to the cart.
+function openAddedSheet(){
+  document.getElementById('addedSheet').classList.add('is-open');
+  document.getElementById('addedSheet').setAttribute('aria-hidden','false');
+  document.getElementById('addedOverlay').classList.add('is-open');
+  document.body.style.overflow='hidden';
+}
+function closeAddedSheet(){
+  document.getElementById('addedSheet').classList.remove('is-open');
+  document.getElementById('addedSheet').setAttribute('aria-hidden','true');
+  document.getElementById('addedOverlay').classList.remove('is-open');
+  document.body.style.overflow='';
+}
+
 // Lightweight note-only sheet for build-your-own cart lines — Chef's Pick
 // lines reopen their full customize modal instead (see openPickDetail),
 // which already has its own note field built in.
@@ -1883,8 +1997,11 @@ function cartLineTemplate(line){
     ? ` data-cart-edit-pick="${line.pickId}" data-cart-edit-cartid="${line.cartId}"`
     : ` data-cart-edit-note="${line.cartId}"`;
   const noteFlag = line.note ? `<span class="cart-line-note-flag" title="${escHtml(line.note)}">📝</span>` : '';
+  const thumbSrc = isEditablePick
+    ? itemImg((PICKS.find(p=>p.id===line.pickId)||{}).image)
+    : 'img/mix-match.png';
   return `<div class="cart-line is-editable"${editAttrs}>
-    <span class="cart-line-thumb"><img src="${LOGO_MARK_SRC}" alt="${displayLabel}"></span>
+    <span class="cart-line-thumb"><img src="${thumbSrc}" onerror="this.onerror=null;this.src='${LOGO_MARK_SRC}'" alt="${displayLabel}"></span>
     <div class="cart-line-main">
       <div class="cart-line-label">${displayLabel}${noteFlag}</div>
       <div class="cart-line-sub">${sub} · ${Math.round(n.kcal)} kcal</div>
@@ -1915,7 +2032,7 @@ function renderCartReview(body, footer){
   body.innerHTML = cart.map(cartLineTemplate).join('') +
     (()=>{ const n = cartNutritionTotals(); return `
      <div class="cart-summary-row total"><span>${tr_('cart_subtotal_label')}</span><span>${fmtPrice(n.price)}</span></div>
-     ${checkoutData.orderType==='pickup' ? '' : `<p class="checkout-note">${tr_('cart_subtotal_note')}</p>`}
+     <p class="checkout-note">${tr_('cart_subtotal_note')}</p>
      <div class="cart-nutrition-title">${tr_('cart_nutrition_total')}</div>
      <div class="totals-grid">
        <div class="stat-box"><b>${Math.round(n.kcal)}</b><span>${tr_('label_kcal')}</span></div>
@@ -1936,13 +2053,24 @@ function renderCartDatetime(body, footer){
     checkoutData.date = isoDate(d);
     checkoutData.dateLabel = d.toLocaleDateString(currentLocale(),{weekday:'short',month:'short',day:'numeric'});
   }
-  const slots = isPickup ? PICKUP_SLOTS : DELIVERY_SLOTS;
+  const orderType = isPickup ? 'pickup' : 'delivery';
+  let slots = slotsForDate(checkoutData.date, orderType);
+  // Today's remaining slots for this order type may all sit inside the 1-hour
+  // pre-order window — roll the date forward to the next day, which always has
+  // every slot available.
+  if(!slots.length){
+    const d = new Date(checkoutData.date + 'T00:00:00');
+    d.setDate(d.getDate() + 1);
+    checkoutData.date = isoDate(d);
+    checkoutData.dateLabel = d.toLocaleDateString(currentLocale(),{weekday:'short',month:'short',day:'numeric'});
+    checkoutData.slot = ''; checkoutData.slotLabel = '';
+    slots = slotsForDate(checkoutData.date, orderType);
+  }
   if(!checkoutData.slot || !slots.find(s=>s.id===checkoutData.slot)){
     checkoutData.slot = slots[0].id;
     checkoutData.slotLabel = slots[0].label;
   }
-  const cutoffPassed = new Date().getHours() >= 18;
-  const note = cutoffPassed ? tr_('checkout_note_late') : tr_('checkout_note_ontime');
+  const note = tr_('checkout_note_preorder');
 
   body.innerHTML = `
     <div class="order-type-row">
@@ -2164,7 +2292,6 @@ function renderCartDone(body, footer){
       <p>${tr_('order_done_desc')}</p>
       <div class="order-code">${lastOrder.code}</div>
       <p class="order-screenshot-note">${tr_('screenshot_note')}</p>
-      <p class="order-followup-note">${tr_('followup_note')}</p>
       <div class="order-items-box">
         ${lastOrder.lines.map(line=>{
           const lineKcal = Math.round(line.nutrition.kcal * line.qty);
@@ -2183,7 +2310,6 @@ function renderCartDone(body, footer){
         }).join('')}
       </div>
       <div class="order-summary">
-        <div><span>${tr_('cart_subtotal_label')}</span><b>${fmtPrice(lastOrder.nutrition.price)}</b></div>
         <div><span>${tr_('order_items')}</span><b>${lastOrder.itemCount}</b></div>
         <div><span>${tr_(lastOrder.contact.orderType==='pickup' ? 'order_type_pickup' : 'order_delivery')}</span><b>${lastOrder.dateLabel}, ${lastOrder.slotLabel}</b></div>
         <div><span>${tr_('order_contact')}</span><b>${doneDisplayTitle} ${lastOrder.contact.name}, ${lastOrder.contact.phone}</b></div>
@@ -2280,6 +2406,8 @@ function startNewOrder(){
 }
 
 /* ---------- view switching (Build your own / Chef's picks) ---------- */
+function isMobile(){ return window.matchMedia('(max-width:760px)').matches; }
+
 function switchView(view){
   currentView = view;
   document.querySelectorAll('.mode-pill').forEach(p=>p.classList.toggle('is-active', p.getAttribute('data-view')===view));
@@ -2392,7 +2520,7 @@ document.addEventListener('click', e=>{
   // (which just set whichever filter was clicked) — tapping it again drops
   // back to "all" instead of being stuck on Vegetarian with no quick way out.
   if(e.target.closest('#picksMobileVeg')){
-    pickGroupFilter = pickGroupFilter==='vegetarian' ? 'all' : 'vegetarian';
+    pickGroupFilter = pickGroupFilter==='recommend' ? 'all' : 'recommend';
     renderPicks();
     return;
   }
@@ -2417,6 +2545,23 @@ document.addEventListener('click', e=>{
     else { document.getElementById('picksSearchMobile').value = ''; pickSearchQuery = ''; renderPicks(); }
     return;
   }
+
+  // Contact sheet: open from the header button, close on overlay/backdrop or
+  // after tapping a method (the link's own navigation still fires).
+  if(e.target.closest('[data-contact-open]')){ openContactSheet(); return; }
+  if(e.target.id==='contactOverlay'){ closeContactSheet(); return; }
+  if(e.target.closest('[data-contact-close]')){ closeContactSheet(); return; }
+
+  // "Added to cart" prompt: add another bento (back to the main list / builder)
+  // or go to the cart.
+  if(e.target.id==='addedOverlay'){ closeAddedSheet(); return; }
+  if(e.target.closest('#addMoreBtn')){ closeAddedSheet(); switchView(isMobile() ? 'picks' : 'byo'); window.scrollTo(0,0); return; }
+  if(e.target.closest('#goCartBtn')){ closeAddedSheet(); cartStep='review'; if(isMobile()) switchView('picks'); openCartPanel(); return; }
+
+  // Mix & Match card (mobile list) → open the build-your-own builder.
+  if(e.target.closest('[data-open-byo]')){ switchView('byo'); window.scrollTo(0,0); return; }
+  // Builder's mobile back button → return to the main list.
+  if(e.target.closest('#byoBackBtn')){ switchView('picks'); window.scrollTo(0,0); return; }
 
   const carPrev = e.target.closest('[data-carousel-prev]');
   if(carPrev){ scrollCarousel(carPrev.getAttribute('data-carousel-prev'), -1); return; }
@@ -2638,6 +2783,9 @@ function loadMenuAndInit(){
       renderAll();
       renderPicks();
       renderCartBadge();
+      // On mobile the app opens straight to the Chef's Picks list; the
+      // build-your-own builder is reached only via the Mix & Match card.
+      if(isMobile()) switchView('picks');
       startMenuPolling();
     })
     .catch(err=>{
@@ -2703,6 +2851,44 @@ function applyMenuUpdate(menu){
 
   if(droppedNames.length) showToast(tr_('toast_menu_updated_items_removed'));
 }
+
+/* ---------- intro splash video ---------- */
+(function(){
+  const intro = document.getElementById('introVideo');
+  if(!intro) return;
+  const loader = document.getElementById('pageLoader');
+  // The intro video is a first-visit-only splash. On any later load/reload in
+  // the same session we skip it and fall back to the plain logo loader below.
+  let seen = false;
+  try{ seen = sessionStorage.getItem('rk_intro_seen') === '1'; }catch(e){}
+  if(seen){ intro.remove(); return; }
+  try{ sessionStorage.setItem('rk_intro_seen','1'); }catch(e){}
+  // First visit: the video is the splash, so the logo loader never shows.
+  if(loader) loader.remove();
+  const vid = document.getElementById('introVideoEl');
+  let done = false;
+  function dismiss(){
+    if(done) return;
+    done = true;
+    intro.classList.add('is-hidden');
+    intro.addEventListener('transitionend', ()=>intro.remove(), {once:true});
+  }
+  // Tapping/clicking anywhere on the splash skips the clip.
+  intro.addEventListener('click', dismiss);
+  if(vid){
+    vid.addEventListener('ended', dismiss);
+    vid.addEventListener('error', dismiss);
+    const p = vid.play && vid.play();
+    if(p && p.catch) p.catch(()=>{}); // autoplay blocked — wait for a gesture
+    // No video data shortly after load = missing/unplayable file: don't trap
+    // the customer behind a black screen.
+    setTimeout(()=>{ if(vid.readyState < 2) dismiss(); }, 1500);
+  } else {
+    dismiss();
+  }
+  // Absolute safety cap so the intro can never wedge the page.
+  setTimeout(dismiss, 20000);
+})();
 
 /* ---------- page loader ---------- */
 (function(){
