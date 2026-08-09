@@ -757,7 +757,7 @@ function pickCardTemplate(pick){
   const meta = GROUP_META[pick.group];
   const name = pickName(pick);
   return `<div class="pick-card${isRecommendPick(pick)?' is-recommend':''}" data-pick-id="${pick.id}">
-    <div class="pick-media${pick.image?' has-photo':''}">${isRecommendPick(pick)?`<span class="pick-reco-badge">♥ ${tr_('picks_veg_quick')}</span>`:''}<img class="pick-media-img" src="${itemImg(pick.image)}" onerror="this.onerror=null;this.src='${LOGO_MARK_SRC}';var m=this.closest('.pick-media');if(m)m.classList.remove('has-photo')" alt="${name}"></div>
+    <div class="pick-media${pick.image?' has-photo':''}">${isRecommendPick(pick)?`<span class="pick-reco-badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.3l-1.5-1.35C5.4 14.36 2.5 11.72 2.5 8.5 2.5 6.02 4.42 4.1 6.9 4.1c1.4 0 2.74.65 3.6 1.68a4.77 4.77 0 0 1 3.6-1.68c2.48 0 4.4 1.92 4.4 4.4 0 3.22-2.9 5.86-8 10.45z"/></svg>${tr_('picks_veg_quick')}</span>`:''}<img class="pick-media-img" src="${itemImg(pick.image)}" onerror="this.onerror=null;this.src='${LOGO_MARK_SRC}';var m=this.closest('.pick-media');if(m)m.classList.remove('has-photo')" alt="${name}"></div>
     <div class="pick-body">
       <div class="pick-name">${name}</div>
       <div class="pick-price">${fmtPrice(nutri.price)}</div>

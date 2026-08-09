@@ -844,10 +844,11 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
    the photo only, plus a small "like" badge at its top-left corner. */
 .pick-card.is-recommend .pick-media{box-shadow:inset 0 0 0 2px var(--rk-primary);}
 .pick-reco-badge{
-  position:absolute;top:6px;left:6px;z-index:2;display:inline-flex;align-items:center;gap:3px;
+  position:absolute;top:6px;left:6px;z-index:2;display:inline-flex;align-items:center;gap:4px;
   padding:3px 8px;border-radius:999px;background:var(--rk-primary);color:#fff;
-  font-size:10.5px;font-weight:700;line-height:1;letter-spacing:.02em;box-shadow:0 1px 3px rgba(0,0,0,.18);
+  font-size:10px;font-weight:700;line-height:1;letter-spacing:.02em;box-shadow:0 1px 3px rgba(0,0,0,.18);
 }
+.pick-reco-badge svg{width:11px;height:11px;flex:none;fill:currentColor;}
 /* Mobile-only quick-add "+" (see .pick-quickadd click handling in JS) —
    desktop keeps tap-anywhere-opens-detail as the only interaction. */
 .pick-quickadd{display:none;}
