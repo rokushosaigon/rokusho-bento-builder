@@ -1436,18 +1436,18 @@ function buildOrderReceiptHtml(order){
     const lineKcal = Math.round(line.nutrition.kcal * line.qty);
     const linePrice = fmtPrice(line.nutrition.price * line.qty);
     groups += `<div class="r-line">
-      <span class="r-thumb"><img src="${LOGO_MARK_SRC}" alt=""></span>
-      <span style="flex:1">${line.label} × ${line.qty}</span>
-      <span style="text-align:right;">
-        <b style="display:block;">${linePrice}</b>
-        <small style="display:block;font-size:10px;color:var(--rk-ink-soft);font-weight:400;">${lineKcal} kcal</small>
+      <span class="r-thumb"><img src="${line.image || LOGO_MARK_SRC}" onerror="this.onerror=null;this.src='${LOGO_MARK_SRC}'" alt=""></span>
+      <span class="r-line-label">${line.label} × ${line.qty}</span>
+      <span class="r-line-price">
+        <b>${linePrice}</b>
+        <small>${lineKcal} kcal</small>
       </span>
     </div>`;
     if(line.ingredients && line.ingredients.length){
-      groups += `<div style="padding:0 0 6px 38px;font-size:11.5px;color:var(--rk-ink-soft);">${line.ingredients.map(ing=>ing.name+' x'+ing.qty).join(', ')}</div>`;
+      groups += `<div class="r-line-detail">${line.ingredients.map(ing=>ing.name+' x'+ing.qty).join(', ')}</div>`;
     }
     if(line.note){
-      groups += `<div style="padding:0 0 8px 38px;font-size:11.5px;color:var(--rk-primary);font-style:italic;">${tr_('line_note_label')}: ${escHtml(line.note)}</div>`;
+      groups += `<div class="r-line-detail r-line-note">${tr_('line_note_label')}: ${escHtml(line.note)}</div>`;
     }
   });
 
@@ -2300,7 +2300,7 @@ function renderCartDone(body, footer){
             : '';
           const linePrice = fmtPrice(line.nutrition.price * line.qty);
           return `<div class="order-item-row">
-            <span class="order-item-thumb"><img src="${LOGO_MARK_SRC}" alt="${line.label}"></span>
+            <span class="order-item-thumb"><img src="${line.image || LOGO_MARK_SRC}" onerror="this.onerror=null;this.src='${LOGO_MARK_SRC}'" alt="${line.label}"></span>
             <div class="order-item-body">
               <div class="order-item-main"><span>${line.label} × ${line.qty}</span><b>${linePrice}</b></div>
               <div class="order-item-sub">${lineKcal} kcal</div>
@@ -2347,20 +2347,22 @@ function snapshotCartLines(){
     if(line.type==='pick'){
       const pick = PICKS.find(p=>p.id===line.pickId);
       const label = pick ? pickName(pick) : line.label;
-      return {type: line.type, label, qty: line.qty, nutrition: lineNutrition(line), ingredients: null, note};
+      return {type: line.type, label, qty: line.qty, nutrition: lineNutrition(line), ingredients: null, note, image: itemImg(pick && pick.image)};
     }
     if(line.type==='pick-custom'){
+      const basePick = PICKS.find(p=>p.id===line.pickId);
       const ingredients = line.changes.map(c=>{
         if(c.kind==='swap') return {name: `${c.toName} (${tr_('cart_swap_replaces')} ${c.fromName})`, qty:1, cat:c.cat};
         return {name: c.name, qty: c.qty, cat: c.cat};
       });
-      return {type: line.type, label: line.label, qty: line.qty, nutrition: lineNutrition(line), ingredients, note};
+      return {type: line.type, label: line.label, qty: line.qty, nutrition: lineNutrition(line), ingredients, note, image: itemImg(basePick && basePick.image)};
     }
     const ingredients = line.lines.map(l=>{
       const found = findItem(l.id);
       return {name: found ? itemName(found.item) : l.name, qty: l.qty, cat: found ? found.cat : l.cat};
     });
-    return {type: line.type, label: tr_('custom_bento_label'), qty: line.qty, nutrition: lineNutrition(line), ingredients, note};
+    // Build-your-own bentos have no single dish photo — use the mix & match art.
+    return {type: line.type, label: tr_('custom_bento_label'), qty: line.qty, nutrition: lineNutrition(line), ingredients, note, image: 'img/mix-match.png'};
   });
 }
 
