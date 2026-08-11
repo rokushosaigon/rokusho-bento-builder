@@ -2326,14 +2326,14 @@ function renderCartDone(body, footer){
         <div class="order-subtotal-row"><span>${tr_('order_subtotal_label')}</span><b>${fmtPrice(lastOrder.nutrition.price)}</b></div>
         ${lastOrder.contact.orderType!=='pickup' ? `<p class="order-subtotal-note">${tr_('order_ship_excluded')}</p>` : ''}
       </div>
-      <div class="order-summary">
-        <div><span>${tr_('order_bento_label')}</span><b>${lastOrder.itemCount}</b></div>
-        <div><span>${tr_(lastOrder.contact.orderType==='pickup' ? 'order_type_pickup' : 'order_delivery')}</span><b>${lastOrder.dateLabel}, ${lastOrder.slotLabel}</b></div>
-        <div><span>${tr_('order_contact')}</span><b>${doneDisplayTitle} ${lastOrder.contact.name}, ${lastOrder.contact.phone}</b></div>
-        <div><span>${tr_(lastOrder.contact.orderType==='pickup' ? 'pickup_location_label' : 'order_address')}</span><b>${lastOrder.contact.address}</b></div>
-        <div><span>${tr_('order_nutrition_total')}</span><b>${Math.round(lastOrder.nutrition.kcal)} kcal · ${lastOrder.nutrition.protein.toFixed(1)}g ${tr_('label_protein')} · ${lastOrder.nutrition.carbs.toFixed(1)}g ${tr_('label_carbs')} · ${lastOrder.nutrition.fat.toFixed(1)}g ${tr_('label_fat')}</b></div>
-        ${lastOrder.contact.notes ? `<div><span>${tr_('order_notes')}</span><b>${lastOrder.contact.notes}</b></div>` : ''}
-      </div>
+      <table class="order-summary">
+        <tr><td class="os-label">${tr_('order_bento_label')}</td><td class="os-value">${lastOrder.itemCount}</td></tr>
+        <tr><td class="os-label">${tr_(lastOrder.contact.orderType==='pickup' ? 'order_type_pickup' : 'order_delivery')}</td><td class="os-value">${lastOrder.dateLabel}, ${lastOrder.slotLabel}</td></tr>
+        <tr><td class="os-label">${tr_('order_contact')}</td><td class="os-value">${doneDisplayTitle} ${lastOrder.contact.name}, ${lastOrder.contact.phone}</td></tr>
+        <tr><td class="os-label">${tr_(lastOrder.contact.orderType==='pickup' ? 'pickup_location_label' : 'order_address')}</td><td class="os-value">${lastOrder.contact.address}</td></tr>
+        <tr><td class="os-label">${tr_('order_nutrition_total')}</td><td class="os-value">${Math.round(lastOrder.nutrition.kcal)} kcal · ${lastOrder.nutrition.protein.toFixed(1)}g ${tr_('label_protein')} · ${lastOrder.nutrition.carbs.toFixed(1)}g ${tr_('label_carbs')} · ${lastOrder.nutrition.fat.toFixed(1)}g ${tr_('label_fat')}</td></tr>
+        ${lastOrder.contact.notes ? `<tr><td class="os-label">${tr_('order_notes')}</td><td class="os-value">${lastOrder.contact.notes}</td></tr>` : ''}
+      </table>
     </div>`;
   footer.innerHTML = `<button class="btn btn-solid" id="cartNewOrderBtn">${tr_('new_order_btn')}</button>`;
 }
