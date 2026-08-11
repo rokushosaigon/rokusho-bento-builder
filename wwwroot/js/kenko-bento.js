@@ -1969,49 +1969,48 @@ function cartLineTemplate(line){
     ? (PICKS.find(p=>p.id===line.pickId) ? pickName(PICKS.find(p=>p.id===line.pickId)) : line.label)
     : isPickCustom ? line.label
     : tr_('custom_bento_label');
-  const sub = isPick ? tr_('chefs_pick_label')
-    : isPickCustom ? tr_('chefs_pick_customized_label')
-    : `${line.lines.length} ${tr_(line.lines.length>1?'ingredient_plural':'ingredient_singular')}`;
   const n = lineNutrition(line);
   // Chef's Pick lines (plain or customized) open the full detail popup on
   // click instead of an inline breakdown — only build-your-own bentos still
   // use the old show/hide toggle.
-  const canExpand = line.type==='custom';
+  // Delivery-app style line: build-your-own bentos list every ingredient with
+  // its own kcal inline; Chef's Picks show just the name (customised ones list
+  // what changed). The whole row stays tap-to-edit; the "edit" text is just an
+  // affordance sitting under the name, like the screenshot's "Chỉnh sửa".
   let breakdown = '';
-  if(canExpand && line.expanded){
-    breakdown = `<div class="cart-line-breakdown">${line.lines.map(l=>{
+  if(line.type==='custom'){
+    breakdown = `<div class="cart-line-ings">${line.lines.map(l=>{
       const found = findItem(l.id);
       const dName = found ? itemName(found.item) : l.name;
-      return `<div><span>${dName} x${l.qty}</span><span>${l.kcal*l.qty} kcal</span></div>`;
+      const q = l.qty>1 ? ` ×${l.qty}` : '';
+      return `<div class="cart-line-ing">${dName}${q} · ${Math.round(l.kcal*l.qty)} kcal</div>`;
+    }).join('')}</div>`;
+  } else if(isPickCustom && line.changes && line.changes.length){
+    breakdown = `<div class="cart-line-ings">${line.changes.map(c=>{
+      const label = c.kind==='swap'
+        ? `${c.toName} (${tr_('cart_swap_replaces')} ${c.fromName})`
+        : `${c.name}${c.qty>1?` ×${c.qty}`:''}`;
+      return `<div class="cart-line-ing">${label}</div>`;
     }).join('')}</div>`;
   }
-  const toggle = canExpand ? `<span class="cart-line-toggle" data-toggle-line="${line.cartId}">${line.expanded?tr_('cart_hide_ing'):tr_('cart_show_ing')}</span>` : '';
-  // Every line — build-your-own or Chef's Pick, customized or not — is
-  // tappable to open its note in a sheet (kitchen-facing, e.g. "no chili"):
-  // Chef's Pick lines reopen the full customize modal (already has a note
-  // field), build-your-own lines open a lighter note-only sheet since they
-  // have no other detail view to reuse. A small "•" marker after the sub
-  // line signals an existing note without showing its text inline.
-  const editHint = `<span class="cart-line-toggle">${isEditablePick ? tr_('cart_edit_details') : tr_('cart_add_note')}</span>`;
+  const editLabel = isEditablePick ? tr_('cart_edit_details') : tr_('cart_add_note');
   const editAttrs = isEditablePick
     ? ` data-cart-edit-pick="${line.pickId}" data-cart-edit-cartid="${line.cartId}"`
     : ` data-cart-edit-note="${line.cartId}"`;
-  const noteFlag = line.note ? `<span class="cart-line-note-flag" title="${escHtml(line.note)}">📝</span>` : '';
+  const noteText = line.note ? `<div class="cart-line-note-text">${escHtml(line.note)}</div>` : '';
   const thumbSrc = isEditablePick
     ? itemImg((PICKS.find(p=>p.id===line.pickId)||{}).image)
     : 'img/mix-match.png';
   return `<div class="cart-line is-editable"${editAttrs}>
     <span class="cart-line-thumb"><img src="${thumbSrc}" onerror="this.onerror=null;this.src='${LOGO_MARK_SRC}'" alt="${displayLabel}"></span>
     <div class="cart-line-main">
-      <div class="cart-line-label">${displayLabel}${noteFlag}</div>
-      <div class="cart-line-sub">${sub} · ${Math.round(n.kcal)} kcal</div>
-      ${toggle}
-      ${editHint}
+      <div class="cart-line-label">${displayLabel}</div>
+      <span class="cart-line-edit">${editLabel}</span>
       ${breakdown}
+      ${noteText}
     </div>
     <div class="cart-line-right">
       <div class="cart-line-price">${fmtPrice(n.price*line.qty)}</div>
-      <div class="cart-line-kcal">${Math.round(n.kcal*line.qty)} kcal</div>
       <span class="stepper">
         <button type="button" class="step-btn minus" data-cartline="${line.cartId}" data-dir="-1" aria-label="Decrease quantity">–</button>
         <span class="step-count">${line.qty}</span>
