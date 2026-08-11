@@ -128,6 +128,9 @@ const I18N = {
     "cart_nutrition_total": "Nutrition total",
     "cart_nutrition_note": "Nutrition values are for reference only and may change during actual preparation.",
     "order_nutrition_total": "Nutrition total",
+    "order_bento_label": "Bento",
+    "order_subtotal_label": "Provisional total",
+    "order_ship_excluded": "Delivery fee not included yet.",
     "hero_eyebrow": "Calorie calculator",
     "hero_title": "Mix & Match Your Own Bento",
     "hero_desc": "Pick your protein, carbs, sides and sauce in pure Japanese style — delicious, balanced, made exactly your way.",
@@ -283,6 +286,9 @@ const I18N = {
   "cart_nutrition_total": "Tổng dinh dưỡng",
   "cart_nutrition_note": "Giá trị dinh dưỡng chỉ mang tính tham khảo, có thể thay đổi trong quá trình chế biến thực tế.",
   "order_nutrition_total": "Tổng dinh dưỡng",
+  "order_bento_label": "Bento",
+  "order_subtotal_label": "Tổng tạm tính",
+  "order_ship_excluded": "Chưa bao gồm phí giao hàng.",
 
   "hero_eyebrow": "Tính dinh dưỡng",
   "hero_title": "Mix & Match Your Own Bento",
@@ -2305,15 +2311,23 @@ function renderCartDone(body, footer){
           return `<div class="order-item-row">
             <span class="order-item-thumb"><img src="${line.image || LOGO_MARK_SRC}" onerror="this.onerror=null;this.src='${LOGO_MARK_SRC}'" alt="${line.label}"></span>
             <div class="order-item-body">
-              <div class="order-item-main"><span class="order-item-name">${line.label} × ${line.qty}</span><b>${linePrice}</b></div>
+              <div class="order-item-name">${line.label}</div>
               ${ings}
               ${noteHtml}
+            </div>
+            <div class="order-item-right">
+              <div class="order-item-price">${linePrice}</div>
+              <span class="order-item-qty">${line.qty}</span>
             </div>
           </div>`;
         }).join('')}
       </div>
+      <div class="order-subtotal">
+        <div class="order-subtotal-row"><span>${tr_('order_subtotal_label')}</span><b>${fmtPrice(lastOrder.nutrition.price)}</b></div>
+        ${lastOrder.contact.orderType!=='pickup' ? `<p class="order-subtotal-note">${tr_('order_ship_excluded')}</p>` : ''}
+      </div>
       <div class="order-summary">
-        <div><span>${tr_('order_items')}</span><b>${lastOrder.itemCount}</b></div>
+        <div><span>${tr_('order_bento_label')}</span><b>${lastOrder.itemCount}</b></div>
         <div><span>${tr_(lastOrder.contact.orderType==='pickup' ? 'order_type_pickup' : 'order_delivery')}</span><b>${lastOrder.dateLabel}, ${lastOrder.slotLabel}</b></div>
         <div><span>${tr_('order_contact')}</span><b>${doneDisplayTitle} ${lastOrder.contact.name}, ${lastOrder.contact.phone}</b></div>
         <div><span>${tr_(lastOrder.contact.orderType==='pickup' ? 'pickup_location_label' : 'order_address')}</span><b>${lastOrder.contact.address}</b></div>

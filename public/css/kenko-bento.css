@@ -1155,21 +1155,27 @@ footer{background:var(--rk-paper);border-top:1px solid var(--rk-line);margin-top
 }
 .order-screenshot-note{font-size:12px;color:var(--rk-yuzu-deep);background:var(--rk-yuzu-pale);border-radius:10px;padding:10px 12px;margin-bottom:18px;}
 .order-summary{text-align:left;background:var(--rk-white);border:1px solid var(--rk-line);border-radius:12px;padding:14px;font-size:13px;}
-.order-summary div{display:flex;justify-content:space-between;padding:4px 0;color:var(--rk-ink-soft);}
-.order-summary div b{color:var(--rk-ink);font-weight:600;}
+.order-summary div{display:flex;justify-content:space-between;gap:14px;padding:4px 0;color:var(--rk-ink-soft);}
+.order-summary div span:first-child{flex:none;}
+.order-summary div b{color:var(--rk-ink);font-weight:600;text-align:right;flex:1;min-width:0;}
 .order-items-box{text-align:left;background:var(--rk-white);border:1px solid var(--rk-line);border-radius:12px;padding:14px;font-size:13px;margin-bottom:10px;}
-.order-item-row{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;}
+.order-item-row{display:flex;gap:12px;align-items:stretch;margin-bottom:14px;}
 .order-item-row:last-child{margin-bottom:0;}
 .order-item-thumb{width:56px;height:56px;border-radius:12px;flex:none;overflow:hidden;background:var(--rk-paper-deep);}
 .order-item-thumb img{width:100%;height:100%;object-fit:cover;opacity:1;display:block;}
 .order-item-body{flex:1;min-width:0;}
-.order-item-main{display:flex;justify-content:space-between;gap:12px;align-items:baseline;}
 .order-item-name{font-size:14px;font-weight:650;color:var(--rk-ink);line-height:1.3;}
-.order-item-main b{color:var(--rk-ink);font-weight:700;white-space:nowrap;}
 .order-item-ings{margin-top:4px;}
 .order-item-ing{font-size:12.5px;color:var(--rk-ink-soft);line-height:1.55;}
 .order-item-note{font-size:12.5px;color:var(--rk-ink-soft);opacity:.8;margin-top:5px;}
+.order-item-right{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;flex:none;gap:8px;}
+.order-item-price{font-size:14px;font-weight:700;color:var(--rk-ink);white-space:nowrap;font-family:var(--font-body);}
+.order-item-qty{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--rk-primary);color:var(--rk-primary);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;font-family:var(--font-mono);}
 .order-item-sub{font-size:11.5px;color:var(--rk-ink-soft);opacity:.8;margin-top:2px;}
+
+.order-subtotal{background:var(--rk-white);border:1px solid var(--rk-line);border-radius:12px;padding:12px 14px;margin-bottom:10px;text-align:left;}
+.order-subtotal-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-weight:700;font-size:15px;color:var(--rk-ink);}
+.order-subtotal-note{font-size:11.5px;color:var(--rk-ink-soft);margin:5px 0 0;}
 
 /* ============================================================
    MOBILE — tuned against iPhone 14 Pro Max (430×932 CSS px)
