@@ -2293,17 +2293,21 @@ function renderCartDone(body, footer){
       <p class="order-screenshot-note">${tr_('screenshot_note')}</p>
       <div class="order-items-box">
         ${lastOrder.lines.map(line=>{
-          const lineKcal = Math.round(line.nutrition.kcal * line.qty);
-          const sub = (line.ingredients && line.ingredients.length)
-            ? `<div class="order-item-sub">${line.ingredients.map(ing=>ing.name+' x'+ing.qty).join(', ')}</div>`
-            : '';
           const linePrice = fmtPrice(line.nutrition.price * line.qty);
+          const ings = (line.ingredients && line.ingredients.length)
+            ? `<div class="order-item-ings">${line.ingredients.map(ing=>{
+                const q = ing.qty>1 ? ` ×${ing.qty}` : '';
+                const kc = ing.kcal ? ` · ${Math.round(ing.kcal*ing.qty)} kcal` : '';
+                return `<div class="order-item-ing">${ing.name}${q}${kc}</div>`;
+              }).join('')}</div>`
+            : '';
+          const noteHtml = line.note ? `<div class="order-item-note">${escHtml(line.note)}</div>` : '';
           return `<div class="order-item-row">
             <span class="order-item-thumb"><img src="${line.image || LOGO_MARK_SRC}" onerror="this.onerror=null;this.src='${LOGO_MARK_SRC}'" alt="${line.label}"></span>
             <div class="order-item-body">
-              <div class="order-item-main"><span>${line.label} × ${line.qty}</span><b>${linePrice}</b></div>
-              <div class="order-item-sub">${lineKcal} kcal</div>
-              ${sub}
+              <div class="order-item-main"><span class="order-item-name">${line.label} × ${line.qty}</span><b>${linePrice}</b></div>
+              ${ings}
+              ${noteHtml}
             </div>
           </div>`;
         }).join('')}
@@ -2358,7 +2362,7 @@ function snapshotCartLines(){
     }
     const ingredients = line.lines.map(l=>{
       const found = findItem(l.id);
-      return {name: found ? itemName(found.item) : l.name, qty: l.qty, cat: found ? found.cat : l.cat};
+      return {name: found ? itemName(found.item) : l.name, qty: l.qty, cat: found ? found.cat : l.cat, kcal: l.kcal};
     });
     // Build-your-own bentos have no single dish photo — use the mix & match art.
     return {type: line.type, label: tr_('custom_bento_label'), qty: line.qty, nutrition: lineNutrition(line), ingredients, note, image: 'img/mix-match.png'};
