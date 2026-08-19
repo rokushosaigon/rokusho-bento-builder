@@ -106,12 +106,12 @@ const I18N = {
     "checkout_note_ontime": "Order before 6:00 PM today for tomorrow's delivery. Any date further out is always available, with no cutoff.",
     "delivery_date_label": "Delivery date",
     "delivery_slot_label": "Delivery time slot",
-    "checkout_slot_note": "Times are an estimate — our rider will arrive within the selected 30-minute window, every day from 11:00 AM to 1:30 PM.",
+    "checkout_slot_note": "Times are an estimate — our rider will arrive within the selected 30-minute window, every day 11:00 AM–1:30 PM or 5:30–11 PM.",
     "order_type_pickup": "Pickup",
     "pickup_time_title": "Pickup time",
     "pickup_date_label": "Pickup date",
     "pickup_slot_label": "Pickup time slot",
-    "checkout_pickup_slot_note": "Please arrive within your selected 15-minute window, every day from 11:00 AM to 1:30 PM.",
+    "checkout_pickup_slot_note": "Please arrive within your selected 15-minute window, every day 11:00 AM–1:30 PM or 5:30–11 PM.",
     "pickup_location_label": "Pickup location",
     "continue_details": "Continue to your details",
     "label_address": "Delivery address",
@@ -208,9 +208,12 @@ const I18N = {
     "footer_tagline": "Your Japanese-style healthy food companion.",
     "footer_contact": "Contact",
     "hours_dining_label": "Rokusho | Modern Izakaya",
-    "hours_dining_time": "Mon – Sun · 5PM – Late",
-    "hours_lunch_label": "Kenko Bento | Lunch Delivery",
-    "hours_lunch_time": "Everyday · 11AM – 1:30PM",
+    "hours_dining_time": "Everyday · 5PM – Late",
+    "hours_lunch_label": "Kenko Bento | Healthy Bento Delivery",
+    "hours_lunch_time": "Everyday\n10:30 AM – 1:30 PM\n5PM – 11PM",
+    "hours_lunch_time_short": "Everyday · 10:30AM–1:30PM & 5–11PM",
+    "slot_group_lunch": "Lunch",
+    "slot_group_dinner": "Dinner",
     "footer_follow": "Follow",
     "footer_order_on": "Order on",
     "footer_directions": "Get directions",
@@ -262,12 +265,12 @@ const I18N = {
   "checkout_note_ontime": "Đặt trước 18:00 hôm nay để nhận hàng vào ngày mai. Bạn cũng có thể chọn bất kỳ ngày nào sau đó.",
   "delivery_date_label": "Ngày giao",
   "delivery_slot_label": "Khung giờ giao",
-  "checkout_slot_note": "Thời gian giao mang tính dự kiến trong khung giờ bạn đã chọn (11:00 - 13:30).",
+  "checkout_slot_note": "Thời gian giao mang tính dự kiến trong khung giờ bạn đã chọn (11:00 - 13:30 hoặc 17:30 - 23:00).",
   "order_type_pickup": "Tự đến lấy",
   "pickup_time_title": "Thời gian lấy hàng",
   "pickup_date_label": "Ngày lấy hàng",
   "pickup_slot_label": "Khung giờ lấy hàng",
-  "checkout_pickup_slot_note": "Vui lòng đến trong khung giờ 15 phút bạn đã chọn, mỗi ngày từ 11:00 - 13:30.",
+  "checkout_pickup_slot_note": "Vui lòng đến trong khung giờ 15 phút bạn đã chọn, mỗi ngày từ 11:00 - 13:30 hoặc 17:30 - 23:00.",
   "pickup_location_label": "Địa điểm lấy hàng",
   "continue_details": "Tiếp tục",
   "label_address": "Địa chỉ nhận hàng",
@@ -393,9 +396,12 @@ const I18N = {
   "footer_tagline": "Bento chuẩn Nhật mỗi ngày.",
   "footer_contact": "Liên hệ",
   "hours_dining_label": "Rokusho | Modern Izakaya",
-  "hours_dining_time": "Thứ 2 - CN · 17:00 - Muộn",
-  "hours_lunch_label": "Kenko Bento | Lunch Delivery",
-  "hours_lunch_time": "Hằng ngày · 11:00 - 13:30",
+  "hours_dining_time": "Hằng ngày · 17:00 - Muộn",
+  "hours_lunch_label": "Kenko Bento | Healthy Bento Delivery",
+  "hours_lunch_time": "Hằng ngày\n10:30 - 13:30\n17:00 - 23:00",
+  "hours_lunch_time_short": "Hằng ngày · 10:30–13:30 & 17:00–23:00",
+  "slot_group_lunch": "Buổi trưa",
+  "slot_group_dinner": "Buổi tối",
   "footer_follow": "Theo dõi",
   "footer_order_on": "Đặt món trên",
   "footer_directions": "Chỉ đường",
@@ -1786,16 +1792,28 @@ let calendarViewDate = null;
 // Empty until wired up to a real customer/order database.
 const CUSTOMER_DB = {};
 
-// Delivery window is always 11:00 AM – 1:30 PM, split into 30-minute estimate slots.
+// Two delivery windows: lunch 11:00 AM–1:30 PM and dinner 5:30–11 PM, each
+// split into 30-minute estimate slots.
 const DELIVERY_SLOTS = [
   {id:'11:00', label:'11:00 – 11:30 AM'},
   {id:'11:30', label:'11:30 AM – 12:00 PM'},
   {id:'12:00', label:'12:00 – 12:30 PM'},
   {id:'12:30', label:'12:30 – 1:00 PM'},
-  {id:'13:00', label:'1:00 – 1:30 PM'}
+  {id:'13:00', label:'1:00 – 1:30 PM'},
+  {id:'17:30', label:'5:30 – 6:00 PM'},
+  {id:'18:00', label:'6:00 – 6:30 PM'},
+  {id:'18:30', label:'6:30 – 7:00 PM'},
+  {id:'19:00', label:'7:00 – 7:30 PM'},
+  {id:'19:30', label:'7:30 – 8:00 PM'},
+  {id:'20:00', label:'8:00 – 8:30 PM'},
+  {id:'20:30', label:'8:30 – 9:00 PM'},
+  {id:'21:00', label:'9:00 – 9:30 PM'},
+  {id:'21:30', label:'9:30 – 10:00 PM'},
+  {id:'22:00', label:'10:00 – 10:30 PM'},
+  {id:'22:30', label:'10:30 – 11:00 PM'}
 ];
 
-// Pickup window is the same 11:00 AM – 1:30 PM, split into tighter 15-minute slots.
+// Same two windows, split into tighter 15-minute pickup slots.
 const PICKUP_SLOTS = [
   {id:'11:00', label:'11:00 – 11:15 AM'},
   {id:'11:15', label:'11:15 – 11:30 AM'},
@@ -1806,7 +1824,29 @@ const PICKUP_SLOTS = [
   {id:'12:30', label:'12:30 – 12:45 PM'},
   {id:'12:45', label:'12:45 – 1:00 PM'},
   {id:'13:00', label:'1:00 – 1:15 PM'},
-  {id:'13:15', label:'1:15 – 1:30 PM'}
+  {id:'13:15', label:'1:15 – 1:30 PM'},
+  {id:'17:30', label:'5:30 – 5:45 PM'},
+  {id:'17:45', label:'5:45 – 6:00 PM'},
+  {id:'18:00', label:'6:00 – 6:15 PM'},
+  {id:'18:15', label:'6:15 – 6:30 PM'},
+  {id:'18:30', label:'6:30 – 6:45 PM'},
+  {id:'18:45', label:'6:45 – 7:00 PM'},
+  {id:'19:00', label:'7:00 – 7:15 PM'},
+  {id:'19:15', label:'7:15 – 7:30 PM'},
+  {id:'19:30', label:'7:30 – 7:45 PM'},
+  {id:'19:45', label:'7:45 – 8:00 PM'},
+  {id:'20:00', label:'8:00 – 8:15 PM'},
+  {id:'20:15', label:'8:15 – 8:30 PM'},
+  {id:'20:30', label:'8:30 – 8:45 PM'},
+  {id:'20:45', label:'8:45 – 9:00 PM'},
+  {id:'21:00', label:'9:00 – 9:15 PM'},
+  {id:'21:15', label:'9:15 – 9:30 PM'},
+  {id:'21:30', label:'9:30 – 9:45 PM'},
+  {id:'21:45', label:'9:45 – 10:00 PM'},
+  {id:'22:00', label:'10:00 – 10:15 PM'},
+  {id:'22:15', label:'10:15 – 10:30 PM'},
+  {id:'22:30', label:'10:30 – 10:45 PM'},
+  {id:'22:45', label:'10:45 – 11:00 PM'}
 ];
 
 const PICKUP_LOCATION_ADDRESS = 'Kenko Bento by Rokusho — Số 2 Thi Sách, Phường Sài Gòn, TP. Hồ Chí Minh';
@@ -1830,6 +1870,23 @@ function slotsForDate(dateIso, orderType){
   const now = new Date();
   const cutoff = now.getHours()*60 + now.getMinutes() + PREORDER_LEAD_MIN;
   return slots.filter(s => slotStartMin(s.id) >= cutoff);
+}
+// Splits slots into the lunch (11:00 AM – 1:30 PM) and dinner (5:30 – 11 PM)
+// windows and renders each as its own labeled row, so the jump from 1:30 PM
+// to 5:30 PM reads as two sessions rather than one confusing gap.
+function slotButtonHtml(s){
+  return `<button type="button" class="date-chip${checkoutData.slot===s.id?' is-selected':''}" data-slot="${s.id}" data-slot-label="${s.label}">${s.label}</button>`;
+}
+function slotGroupsHtml(slots){
+  const lunch = slots.filter(s=>slotStartMin(s.id) < 15*60);
+  const dinner = slots.filter(s=>slotStartMin(s.id) >= 15*60);
+  if(!lunch.length || !dinner.length){
+    return `<div class="slot-grid">${slots.map(slotButtonHtml).join('')}</div>`;
+  }
+  return `<div class="slot-group-label">${tr_('slot_group_lunch')}</div>
+    <div class="slot-grid">${lunch.map(slotButtonHtml).join('')}</div>
+    <div class="slot-group-label">${tr_('slot_group_dinner')}</div>
+    <div class="slot-grid">${dinner.map(slotButtonHtml).join('')}</div>`;
 }
 function earliestAllowedDate(){
   const now = new Date();
@@ -2086,9 +2143,7 @@ function renderCartDatetime(body, footer){
     <div class="form-field"><label>${tr_(isPickup ? 'pickup_date_label' : 'delivery_date_label')}</label></div>
     <div class="calendar">${calendarHtml()}</div>
     <div class="form-field"><label>${tr_(isPickup ? 'pickup_slot_label' : 'delivery_slot_label')}</label></div>
-    <div class="slot-grid">
-      ${slots.map(s=>`<button type="button" class="date-chip${checkoutData.slot===s.id?' is-selected':''}" data-slot="${s.id}" data-slot-label="${s.label}">${s.label}</button>`).join('')}
-    </div>
+    ${slotGroupsHtml(slots)}
     <p class="checkout-note">${tr_(isPickup ? 'checkout_pickup_slot_note' : 'checkout_slot_note')}</p>
   `;
   footer.innerHTML = `<div style="display:flex;gap:10px;width:100%">
