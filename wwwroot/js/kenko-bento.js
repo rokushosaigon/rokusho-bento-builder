@@ -201,7 +201,6 @@ const I18N = {
     "toast_fill_fields_pickup": "Please fill in your name and phone number.",
     "toast_invalid_phone": "Please enter a valid phone number for the selected country.",
     "toast_slow_down": "Please wait a few seconds before submitting again.",
-    "soba_sauce_confirm": "Soba only pairs with mentsuyu sauce. Are you sure you want to change the sauce?",
     "menu_load_error": "Couldn't load the menu right now.",
     "menu_load_retry": "Retry",
     "toast_menu_updated_items_removed": "The menu just changed — some of your selected items are no longer available and were removed.",
@@ -387,7 +386,6 @@ const I18N = {
   "toast_fill_fields": "Vui lòng nhập đầy đủ họ tên, số điện thoại và địa chỉ nhận hàng.",
   "toast_fill_fields_pickup": "Vui lòng nhập đầy đủ họ tên và số điện thoại.",
   "toast_invalid_phone": "Vui lòng nhập số điện thoại hợp lệ theo quốc gia đã chọn.",
-  "soba_sauce_confirm": "Mì soba chỉ hợp với sốt Mentsuyu. Bạn có chắc muốn đổi sang sốt khác không?",
   "toast_slow_down": "Vui lòng đợi vài giây trước khi gửi lại.",
   "menu_load_error": "Không tải được thực đơn lúc này.",
   "menu_load_retry": "Thử lại",
@@ -686,25 +684,9 @@ function categoryCount(cat){
   return DATA[cat].reduce((sum,it)=>sum+qty[it.id],0);
 }
 
-// Soba is only served with mentsuyu (cold noodle dipping sauce) — picking soba
-// auto-selects it. Either picking a different sauce OR removing mentsuyu
-// itself afterwards asks for confirmation instead of blocking outright:
-// "Yes" lets the change go through like a normal sauce pick, "No" leaves
-// mentsuyu selected untouched.
-const SOBA_SAUCE_LOCK = 'mentsuyu';
 function setItemQty(cat, id, newQty){
   newQty = Math.max(0, newQty);
-  if(cat==='sauce' && qty['soba']>0){
-    const isAddingOtherSauce = id!==SOBA_SAUCE_LOCK && newQty>0;
-    const isRemovingMentsuyu = id===SOBA_SAUCE_LOCK && newQty<qty[id];
-    if((isAddingOtherSauce || isRemovingMentsuyu) && !confirm(tr_('soba_sauce_confirm'))) return;
-  }
-  const wasSelected = qty[id] > 0;
   qty[id] = newQty;
-  if(cat==='carbs' && id==='soba' && !wasSelected && newQty>0){
-    DATA.sauce.forEach(it=>{ qty[it.id] = 0; });
-    qty[SOBA_SAUCE_LOCK] = 1;
-  }
   renderAll();
   if(ingDetailId===id) syncIngredientDetailQty();
 }
